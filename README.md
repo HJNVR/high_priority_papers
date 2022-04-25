@@ -1,7 +1,7 @@
 # Overview
 
 
-## 11 Selected high priority papers
+## 11 selected high priority papers
 
 1. Empirical asset pricing via machine learning (2020)
 2. A Comprehensive Look at the Empirical Performance of Equity Premium Prediction (2008)

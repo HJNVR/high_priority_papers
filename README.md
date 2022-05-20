@@ -97,8 +97,10 @@ $ pip install fredapi
 - `investpy`  
 $ pip install investpy
 
-
 # How to run
+- Input user-defined parameters into config.json. See the 'Configuration settings' section below for more details.
+- Run the specific paper's `py` file to generate features for paper.
+- Results can be found in the results folder.
 
 # Outputs
 

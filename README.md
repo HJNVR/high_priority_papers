@@ -1,6 +1,6 @@
 # Overview
 
-This repository contains the python code (including other related files/folders) for the generation of the features used in the following 11 selected `high priority` research papers.
+This repository contains the Python code (including other related files/folders) for the generation of the features used in the following 11 selected `high priority` research papers.
 
 # Introduction to the 11 selected high priority papers
 
@@ -122,7 +122,7 @@ All the python code in this repository will follow the best practices as stated 
 
 # Contact information
 
-Please feel free to contact this repo's owner at the email below for further information or collaboration - 
+Please feel free to contact this repo's owner at the email below for clarifications, further information or collaboration - 
 
 Repo owner: Noor  
 Repo owner email: muhammadnag.2021@mitb.smu.edu.sg

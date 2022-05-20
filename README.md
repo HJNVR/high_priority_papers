@@ -52,12 +52,12 @@ X Zhong, D Enke
 10. The empirical risk return relation  A factor analysis approach (2007) |  
 SC Ludvigson, S Ng
 
-   Summary: The paper uses dynamic factor analysis for large datasets of macroeconomic and financial information via principal component analysis, whereby a large amount of economic information can be summarized by a few estimated factors. 2 sets of quarterly datasets are used: one comprising 209 series of macroeconomic indicators, and one comprising 172 series of financial indicators. 
+    Summary: The paper uses dynamic factor analysis for large datasets of macroeconomic and financial information via principal component analysis, whereby a large amount of economic information can be summarized by a few estimated factors. 2 sets of quarterly datasets are used: one comprising 209 series of macroeconomic indicators, and one comprising 172 series of financial indicators. 
 
 11. CNNpred CNN-based stock market prediction using a diverse set of variables (2019) |  
 E Hoseinzade, S Haratizadeh
 
-   Summary: The paper introduces a CNN-based framework that can be applied on a collection of data from a variety of sources, including different markets, in order to extract features for predicting the future of those markets. The suggested framework is applied for predicting the next day’s direction of movement for the indices of S&P 500, NASDAQ, DJI, NYSE, and RUSSELL based on various sets of initial variables. 82 variables are used as inputs, consisting of technical indicators, big U.S. companies, commodities, the exchange rate of currencies, future contracts, world’s stock indices, and other variables.
+    Summary: The paper introduces a CNN-based framework that can be applied on a collection of data from a variety of sources, including different markets, in order to extract features for predicting the future of those markets. The suggested framework is applied for predicting the next day’s direction of movement for the indices of S&P 500, NASDAQ, DJI, NYSE, and RUSSELL based on various sets of initial variables. 82 variables are used as inputs, consisting of technical indicators, big U.S. companies, commodities, the exchange rate of currencies, future contracts, world’s stock indices, and other variables.
 
 # Requirements
 

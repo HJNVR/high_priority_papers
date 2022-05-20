@@ -120,7 +120,7 @@ All the python code in this repository will follow the best practices as stated 
 # References
 - Original reference papers can be accessed from the `reference_papers` folder
 
-# Contact and communication information
+# Contact information
 
 Please feel free to contact this repo's owner at the email below for further information or collaboration - 
 

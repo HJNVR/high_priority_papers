@@ -99,8 +99,8 @@ $ pip install investpy
 
 # How to run
 - Input user-defined parameters into config.json. See the 'Configuration settings' section below for more details.
-- Run the specific paper's `py` file to generate features for paper.
-- Results can be found in the results folder.
+- Run the specific research paper's `py` file to download raw data and generate features for the paper.
+- Results can be found in the `result` folder.
 
 # Outputs
 

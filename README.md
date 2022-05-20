@@ -100,12 +100,22 @@ $ pip install investpy
 # How to run
 - Input user-defined parameters into config.json. See the 'Configuration settings' section below for more details.
 - Run the specific research paper's `py` file to download raw data and generate features for the paper.
-- Results can be found in the `result` folder.
+- Result/output file (csv) can be found in the `result` folder.
+
+# Configuration settings
+
+The following configuration settings are available within the config.json file:
+
+- wrds_username: Enter the WRDS username. This allows for a pgpass file to be created such that usernames and passwords do not need to be typed in repeatedly.
+- start_year and end_year: Start and end year of raw data query for YahooFinance, Compustat and CRSP databases.
 
 # Outputs
+The output of each `py` file will be saved in the result folder in csv format.
 
-## Files
-The outputs of the 'src' file will be saved in a newly-created `result` folder.
+# Python code standard and best practices
+All the python code in this repository will follow the best practices as stated in the following guide/documentation for both the code layout and styling:
+
+`PEP 8 documentation` (Link: https://peps.python.org/pep-0008/)
 
 # References
 - Original reference papers can be accessed from the `reference_papers` folder

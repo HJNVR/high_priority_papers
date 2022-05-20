@@ -63,7 +63,7 @@ E Hoseinzade, S Haratizadeh
 
 - src folder (11 py files to generate features for each of the 11 papers)
 - config file (json file containing necessary parameters such as start/end dates for raw data query/download)
-- pre-processing (standardized codes for pre-processing data, if applicable)
+- pre-processing (standardized code for pre-processing data, if applicable)
 - test folder (unit test code for code testing)
 - raw_data folder (csv files, if applicable)
 - result folder (output files in csv format)
@@ -86,7 +86,7 @@ $ pip install wrds
 - Install `Yahoo Finance` library  
 $ pip install yahoo-finance
 
-- Install `unittest` library  
+- Install `unittest` library (for code testing)   
 $ pip install unittest
 
 ## APIs
@@ -98,7 +98,7 @@ $ pip install fredapi
 $ pip install investpy
 
 # How to run
-- Input user-defined parameters into config.json. See the 'Configuration settings' section below for more details.
+- Input user-defined parameters into config.json. See the `Configuration settings` section below for more details.
 - Run the specific research paper's `py` file to download raw data and generate features for the paper.
 - Result/output file (csv) can be found in the `result` folder.
 
@@ -107,13 +107,13 @@ $ pip install investpy
 The following configuration settings are available within the config.json file:
 
 - wrds_username: Enter the WRDS username. This allows for a pgpass file to be created such that usernames and passwords do not need to be typed in repeatedly.
-- start_year and end_year: Start and end year of raw data query for YahooFinance, Compustat and CRSP databases.
+- start_year and end_year: Start and end year of raw data query for Yahoo Finance, Compustat and CRSP databases.
 
 # Outputs
-The output of each `py` file will be saved in the result folder in csv format.
+The output of each `py` file will be saved in the `result` folder in csv format.
 
 # Python code standard and best practices
-All the python code in this repository will follow the best practices as stated in the following guide/documentation in terms of formatting, code layout and styling:
+All the python code in this repository will follow the best practices as stated in the following guide/documentation in terms of formatting, code layout and styling -
 
 `PEP 8 documentation` (Link: https://peps.python.org/pep-0008/)
 

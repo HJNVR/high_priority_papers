@@ -94,7 +94,7 @@ $ pip install unittest
 - `fredapi`  
 $ pip install fredapi
 
-- `investpy`
+- `investpy`  
 $ pip install investpy
 
 

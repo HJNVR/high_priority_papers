@@ -1,6 +1,6 @@
 # Overview
 
-This repository contains the Python code (including other related files/folders) for the generation of the features used in the following 11 selected `high priority` research papers.
+This repository contains the python code (including other related files/folders) for the generation of the features used in the following 11 selected `high priority` research papers.
 
 # Introduction to the 11 selected high priority papers
 

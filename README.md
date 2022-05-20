@@ -74,9 +74,9 @@ E Hoseinzade, S Haratizadeh
 
 ## Databases
 
-- Wharton Research Data Sevices (WRDS) account with access to Compustat, CRSP and IBES. WRDS is typically available to faculty, students, and researchers at subscribing universities.
+- `Wharton Research Data Sevices (WRDS)` account with access to Compustat, CRSP and IBES. WRDS is typically available to faculty, students, and researchers at subscribing universities.
 
-- Federal Reserve Economic Data (FRED) API key to query macroeconomic data. Requesting an API key is free of charge.
+- `Federal Reserve Economic Data (FRED)` API key to query macroeconomic data. Requesting an API key is free of charge.
 
 ## Libraries
 

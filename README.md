@@ -72,14 +72,16 @@ E Hoseinzade, S Haratizadeh
 
 # Requirements and dependencies
 
-## Libraries
-
-- Install the WRDS-Py library.  
-$ pip install wrds
+## Databases
 
 - Wharton Research Data Sevices (WRDS) account with access to Compustat, CRSP and IBES. WRDS is typically available to faculty, students, and researchers at subscribing universities.
 
 - Federal Reserve Economic Data (FRED) API key to query macroeconomic data. Requesting an API key is free of charge.
+
+## Libraries
+
+- Install the WRDS-Py library.  
+$ pip install wrds
 
 - Install Yahoo Finance library  
 $ pip install yahoo-finance

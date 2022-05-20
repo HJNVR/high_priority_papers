@@ -80,7 +80,7 @@ E Hoseinzade, S Haratizadeh
 
 ## Libraries
 
-- Install the `WRDS-Py` library.  
+- Install the `WRDS-Py` library  
 $ pip install wrds
 
 - Install `Yahoo Finance` library  

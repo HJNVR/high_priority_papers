@@ -2,7 +2,7 @@
 
 This repository contains the Python code (including other related files/folders) for the generation of the features used in the following 11 selected 'high priority' research papers.
 
-# 11 selected high priority papers
+# Introduction to the 11 selected high priority papers
 
 1. Empirical asset pricing via machine learning (2020) |  
 S Gu, B Kelly, D Xiu

@@ -113,7 +113,7 @@ The following configuration settings are available within the config.json file:
 The output of each `py` file will be saved in the result folder in csv format.
 
 # Python code standard and best practices
-All the python code in this repository will follow the best practices as stated in the following guide/documentation for both the code layout and styling:
+All the python code in this repository will follow the best practices as stated in the following guide/documentation in terms of formatting, code layout and styling:
 
 `PEP 8 documentation` (Link: https://peps.python.org/pep-0008/)
 

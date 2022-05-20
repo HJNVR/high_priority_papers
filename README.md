@@ -74,26 +74,26 @@ E Hoseinzade, S Haratizadeh
 
 ## Libraries
 
-- Install the WRDS-Py library.
-  $ pip install wrds
+- Install the WRDS-Py library.  
+$ pip install wrds
 
 - Wharton Research Data Sevices (WRDS) account with access to Compustat, CRSP and IBES. WRDS is typically available to faculty, students, and researchers at subscribing universities.
 
 - Federal Reserve Economic Data (FRED) API key to query macroeconomic data. Requesting an API key is free of charge.
 
-- Install Yahoo Finance library
-  $ pip install yahoo-finance
+- Install Yahoo Finance library  
+$ pip install yahoo-finance
 
-- Install unittest library 
-  $ pip install unittest
+- Install unittest library  
+$ pip install unittest
 
 ## APIs
 
-- fredapi    
-  $ pip install fredapi
+- fredapi  
+$ pip install fredapi
 
-- investpy
-  $ pip install investpy
+- investpy  
+$ pip install investpy
 
 
 # How to run

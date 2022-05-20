@@ -4,7 +4,7 @@ This repository contains code for generating the features as used in the followi
 
 # 11 selected high priority papers
 
-1. Empirical asset pricing via machine learning (2020) /n
+1. Empirical asset pricing via machine learning (2020) /
 S Gu, B Kelly, D Xiu (2020)
 
    Summary: The paper performs a comparative analysis of machine learning methods for measuring asset risk premiums, including linear regression, generalized linear models with penalization, dimension reduction via principal components regression (PCR) and partial least squares (PLS), regression trees, and neural networks. Input features include 94 stock-level predictive characteristics from Green et al. (2017), as well as 8 macro variables from Goyal & Welch (2008).

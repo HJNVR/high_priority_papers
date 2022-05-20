@@ -1,8 +1,8 @@
 # Overview
 
-This repository contains the Python code (including other related files/folders) for the generation of the features used in the following 11 selected 'high priority' research papers.
+This repository contains the Python code (including other related files/folders) for the generation of the features used in the following 11 selected `high priority` research papers.
 
-# Introduction to the 11 selected 'high priority' papers
+# Introduction to the 11 selected `high priority` papers
 
 1. Empirical asset pricing via machine learning (2020) |  
 S Gu, B Kelly, D Xiu
@@ -58,6 +58,18 @@ SC Ludvigson, S Ng
 E Hoseinzade, S Haratizadeh
 
     Summary: The paper introduces a CNN-based framework that can be applied on a collection of data from a variety of sources, including different markets, in order to extract features for predicting the future of those markets. The suggested framework is applied for predicting the next day’s direction of movement for the indices of S&P 500, NASDAQ, DJI, NYSE, and RUSSELL based on various sets of initial variables. 82 variables are used as inputs, consisting of technical indicators, big U.S. companies, commodities, the exchange rate of currencies, future contracts, world’s stock indices, and other variables.
+
+# Basic folder structure
+ 
+- src folder (py files to generate features for each paper)
+- config file (json file format)
+- raw_data folder (csv files, if applicable)
+- result folder (output files in csv file formats)
+- reference_papers folder (pdf of each research paper including supplementary online appendix, if applicable)
+- test folder (unit test code for testing codes)
+- pre-processing (standardized codes for pre-processing)
+
+
 
 # Requirements
 

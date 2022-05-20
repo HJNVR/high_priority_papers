@@ -59,19 +59,42 @@ E Hoseinzade, S Haratizadeh
 
     Summary: The paper introduces a CNN-based framework that can be applied on a collection of data from a variety of sources, including different markets, in order to extract features for predicting the future of those markets. The suggested framework is applied for predicting the next day’s direction of movement for the indices of S&P 500, NASDAQ, DJI, NYSE, and RUSSELL based on various sets of initial variables. 82 variables are used as inputs, consisting of technical indicators, big U.S. companies, commodities, the exchange rate of currencies, future contracts, world’s stock indices, and other variables.
 
-# Structure of repo folders/files
- 
-- src folder (py files to generate features for each paper)
-- config file (json file format)
+# Structure of repository folders/files
+
+- src folder (11 py files to generate features for each of the 11 papers)
+- config file (json file containing necessary parameters such as start/end dates for raw data query/download)
+- pre-processing (standardized codes for pre-processing data, if applicable)
+- test folder (unit test code for code testing)
 - raw_data folder (csv files, if applicable)
-- result folder (output files in csv file formats)
-- reference_papers folder (pdf of each research paper including supplementary online appendix, if applicable)
-- test folder (unit test code for testing codes)
-- pre-processing (standardized codes for pre-processing)
+- result folder (output files in csv format)
+- sample folder (sample src, config, raw data, pre-processing and result output files)
+- reference_papers folder (pdf of all the 11 papers including supplementary online appendix, if applicable)
 
+# Requirements and dependencies
 
+## Libraries
 
-# Requirements
+- Install the WRDS-Py library.
+  $ pip install wrds
+
+- Wharton Research Data Sevices (WRDS) account with access to Compustat, CRSP and IBES. WRDS is typically available to faculty, students, and researchers at subscribing universities.
+
+- Federal Reserve Economic Data (FRED) API key to query macroeconomic data. Requesting an API key is free of charge.
+
+- Install Yahoo Finance library
+  $ pip install yahoo-finance
+
+- Install unittest library 
+  $ pip install unittest
+
+## APIs
+
+- fredapi    
+  $ pip install fredapi
+
+- investpy
+  $ pip install investpy
+
 
 # How to run
 

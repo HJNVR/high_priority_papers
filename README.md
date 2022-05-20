@@ -61,7 +61,7 @@ E Hoseinzade, S Haratizadeh
 
 # Structure of repository folders/files
 
-- src folder (11 py files to generate features for each of the 11 papers)
+- src folder (11 `generate_feature` py files to generate features for each of the 11 papers)
 - config file (json file containing necessary parameters such as start/end dates for raw data query/download)
 - pre-processing (standardized code for pre-processing data, if applicable)
 - test folder (unit test code for code testing)

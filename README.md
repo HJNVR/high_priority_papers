@@ -80,21 +80,21 @@ E Hoseinzade, S Haratizadeh
 
 ## Libraries
 
-- Install the WRDS-Py library.  
+- Install the `WRDS-Py` library.  
 $ pip install wrds
 
-- Install Yahoo Finance library  
+- Install `Yahoo Finance` library  
 $ pip install yahoo-finance
 
-- Install unittest library  
+- Install `unittest` library  
 $ pip install unittest
 
 ## APIs
 
-- fredapi  
+- `fredapi`  
 $ pip install fredapi
 
-- investpy  
+- `investpy`
 $ pip install investpy
 
 

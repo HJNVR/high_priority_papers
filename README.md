@@ -118,7 +118,7 @@ All the python code in this repository will follow the best practices as stated 
 `PEP 8 documentation` (Link: https://peps.python.org/pep-0008/)
 
 # References
-- Original reference papers can be accessed from the `reference_papers` folder
+- Original reference paper (with supplementary appendix, if applicable) can be accessed from the reference_papers folder
 
 # Contact information
 

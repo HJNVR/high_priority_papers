@@ -66,7 +66,7 @@ E Hoseinzade, S Haratizadeh
 - result folder (output files in csv format)
 - raw_data folder (csv files, if applicable)
 - reference_papers folder (pdf of all the 11 papers including supplementary online appendix, if applicable)
-- sample folder (sample src, config, raw data, pre-processing and result output files)
+- sample folder (sample src, config, raw data and result output files)
 
 # Requirements and dependencies
 

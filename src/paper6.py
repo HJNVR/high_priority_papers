@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import datetime
-import pandas_datareader
 import wrds
 import json
 
@@ -311,7 +310,7 @@ if __name__ == "__main__":
     crsp_msf['prc'] = crsp_msf['prc'].astype(float)
 
     # import list of S&P500 company tickers/permnos
-    stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
+    stocks = pd.read_csv('paper6/S&P500 companies list (2000 to 2020).csv')
     permnos = stocks['permno'].values
 
     # create dictionary with key as stock permno and value as dataframe downloaded from yahoo finance

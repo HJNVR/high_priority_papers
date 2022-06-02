@@ -3,178 +3,211 @@
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
-
-from fredapi import Fred
+import wrds
+import json
 import investpy
+import yfinance as yf
+from fredapi import Fred
+
+# functions to calculate stock specific features
+
+# 1&2 Date & Close
 
 
-def download_stock(ticker):
-    """Download stock according to different tickers.
-
-    @ticker: String
-            Ticker of stock
-
-    @return: DataFrame
-            Stock data
-    """
-    df_ticker = yf.download(ticker, start=start_date, end=end_date)
-    return df_ticker
-
-
-def calculate_ema(prices, days, smoothing=2):
-    """Calculate exponential moving average.
-
-    @prices: Float
-            Close stock prices at different dates
-
-    @days: Int 
-            Number of days
-
-    @smoothings: Int
-            Optional
-    """
-    ema = []
-    for num_day in range(days-1):
-        ema.append(0)
-    ema.append(sum(prices[:days]) / days)
-    for price in prices[days:]:
-        ema.append((price * (smoothing / (1 + days))) +
-                   ema[-1] * (1 - (smoothing / (1 + days))))
-    return ema
-
-
-def cal_export(df):
-     """ Call all functions below and combine into a single dataframe
-
-    @df: DataFrame
-        
-    """
-    df = Close(df)
-    df = SPYt(df)
-    df = SPYt1(df)
-    df = SPYt2(df)
-    df = SPYt3(df)
-    df = RDP5(df)
-    df = RDP10(df)
-    df = RDP15(df)
-    df = RDP20(df)
-    df = EMA10(df)
-    df = EMA20(df)
-    df = EMA50(df)
-    df = EMA200(df)
-    return df
-
-
-# Below functions are to calculate the respective features
-def Close(df):
-    return df.drop(['Open', 'High', 'Low', 'Adj Close', 'Volume'], axis=1)
+def close(df):
+    df.rename(columns={'prc': 'close'}, inplace=True)
+    return df.drop(['vol'], axis=1)
 
 # 3 SPYt
 
 
-def SPYt(df):
-    df['SPYt'] = df['Close'].pct_change()
+def spyt(df):
+    df['spyt'] = df['close'].pct_change()
     return df
 
 # 4 SPYt1
 
 
-def SPYt1(df):
-    df['Close_l1'] = df['Close'].shift(1)
-    df['SPYt1'] = df['Close_l1'].pct_change()
+def spyt1(df):
+    df['Close_l1'] = df['close'].shift(1)
+    df['spyt1'] = df['Close_l1'].pct_change()
     return df.drop(['Close_l1'], axis=1)
 
 # 5 SPYt2
 
 
-def SPYt2(df):
-    df['Close_l2'] = df['Close'].shift(2)
-    df['SPYt2'] = df['Close_l2'].pct_change()
+def spyt2(df):
+    df['Close_l2'] = df['close'].shift(2)
+    df['spyt2'] = df['Close_l2'].pct_change()
     return df.drop(['Close_l2'], axis=1)
 
 # 6 SPYt3
 
 
-def SPYt3(df):
-    df['Close_l3'] = df['Close'].shift(3)
-    df['SPYt3'] = df['Close_l3'].pct_change()
+def spyt3(df):
+    df['Close_l3'] = df['close'].shift(3)
+    df['spyt3'] = df['Close_l3'].pct_change()
     return df.drop(['Close_l3'], axis=1)
 
 # 7 RDP5
 
 
-def RDP5(df):
-    df['Close_l5'] = df['Close'].shift(5)
-    df['RDP5'] = (df['Close']-df['Close_l5'])/df['Close_l5']*100
+def rdp5(df):
+    df['Close_l5'] = df['close'].shift(5)
+    df['rdp5'] = (df['close']-df['Close_l5'])/df['Close_l5']*100
     return df.drop(['Close_l5'], axis=1)
 
 # 8 RDP10
 
 
-def RDP10(df):
-    df['Close_l10'] = df['Close'].shift(10)
-    df['RDP10'] = (df['Close']-df['Close_l10'])/df['Close_l10']*100
+def rdp10(df):
+    df['Close_l10'] = df['close'].shift(10)
+    df['rdp10'] = (df['close']-df['Close_l10'])/df['Close_l10']*100
     return df.drop(['Close_l10'], axis=1)
 
 # 9 RDP15
 
 
-def RDP15(df):
-    df['Close_l15'] = df['Close'].shift(15)
-    df['RDP15'] = (df['Close']-df['Close_l15'])/df['Close_l15']*100
+def rdp15(df):
+    df['Close_l15'] = df['close'].shift(15)
+    df['rdp15'] = (df['close']-df['Close_l15'])/df['Close_l15']*100
     return df.drop(['Close_l15'], axis=1)
 
 # 10 RDP20
 
 
-def RDP20(df):
-    df['Close_l20'] = df['Close'].shift(20)
-    df['RDP20'] = (df['Close']-df['Close_l20'])/df['Close_l20']*100
+def rdp20(df):
+    df['Close_l20'] = df['close'].shift(20)
+    df['rdp20'] = (df['close']-df['Close_l20'])/df['Close_l20']*100
     return df.drop(['Close_l20'], axis=1)
 
 # 11 EMA10
 
 
-def EMA10(df):
-    df['EMA10'] = calculate_ema(df['Close'], 10)
+def calculate_ema(prices, days, smoothing=2):
+    ema = []
+    if len(prices) < days:
+        ema += [0]*len(prices)
+    else:
+        for num_day in range(days-1):
+            ema.append(0)
+        ema.append(sum(prices[:days]) / days)
+        for price in prices[days:]:
+            ema.append((price * (smoothing / (1 + days))) +
+                       ema[-1] * (1 - (smoothing / (1 + days))))
+    return ema
+
+
+def ema10(df):
+    df['ema10'] = calculate_ema(df['close'], 10)
     return df
 
 # 12 EMA20
 
 
-def EMA20(df):
-    df['EMA20'] = calculate_ema(df['Close'], 20)
+def ema20(df):
+    df['ema20'] = calculate_ema(df['close'], 20)
     return df
 
 # 13 EMA50
 
 
-def EMA50(df):
-    df['EMA50'] = calculate_ema(df['Close'], 50)
+def ema50(df):
+    df['ema50'] = calculate_ema(df['close'], 50)
     return df
 
 # 14 EMA200
 
 
-def EMA200(df):
-    df['EMA200'] = calculate_ema(df['Close'], 200)
+def ema200(df):
+    df['ema200'] = calculate_ema(df['close'], 200)
+    return df
+
+# function to calculate all features
+
+
+def cal_export(df):
+    df = close(df)
+    df = spyt(df)
+    df = spyt1(df)
+    df = spyt2(df)
+    df = spyt3(df)
+    df = rdp5(df)
+    df = rdp10(df)
+    df = rdp15(df)
+    df = rdp20(df)
+    df = ema10(df)
+    df = ema20(df)
+    df = ema50(df)
+    df = ema200(df)
+    df.index = df.index.to_period('M')
     return df
 
 
 if __name__ == "__main__":
+    # load config file
+    with open('config.json') as config_file:
+        data = json.load(config_file)
+
+    start_year = data['start_year']
+    end_year = data['end_year']
+    wrds_username = data['wrds_username']
+
+    parm = {"start_year": start_year, "end_year": end_year}
+
+    # import list of S&P500 company tickers
+    # query data from WRDS
+    #user: muhdnoor
+    # password: WRDSaccess_135@
+    conn = wrds.Connection(wrds_username=wrds_username)
+
+    crsp_msf = conn.raw_sql("""
+                          select a.date, a.permno, a.prc, a.vol
+                          from crsp.msf as a
+                          left join crsp.msenames as b
+                          on a.permno=b.permno
+                          where b.namedt<=a.date
+                          and a.date<=b.nameendt
+                          and a.date >= '01/01/%(start_year)s'
+                          and a.date <= '12/31/%(end_year)s'
+                          and b.exchcd between 1 and 3
+                          """, params=parm)
+
+    conn.close()
+
+    # change date and price column format in dataframe
+    crsp_msf['date'] = pd.to_datetime(crsp_msf['date'])
+    crsp_msf.set_index('date', inplace=True)
+    crsp_msf['prc'] = crsp_msf['prc'].astype(float)
+
     start_date = '2000-01-01'
     end_date = '2020-12-31'
 
+    # import list of S&P500 company tickers/permnos
+    stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
+    permnos = stocks['permno'].values
+    tickers = stocks['ticker'].values
+
+    # create dictionary with key as stock permno and value as dataframe downloaded from yahoo finance
+    dic = {}
+    for p in permnos:
+        dic[p] = crsp_msf[crsp_msf['permno'] == p]
+
+    # check number of empty dataframes
+    delisted = []
+    count = 0
+    for k, v in dic.items():
+        if v.shape[0] == 0:
+            delisted.append(k)
+        else:
+            count += 1
+
+    # calculate features and export as csv file
+    for k, v in dic.items():
+        cal_export(v).to_csv('../result/paper9/'+str(k)+'.csv')
+
     df = yf.download("SPY", start=start_date, end=end_date)
 
-    # Calculate features
-
-    # 1 Date_SPY
-
-    # 2 Close_SPY
-
-    # 3 SPYt
     df['SPYt'] = df['Adj Close'].pct_change()
     # df_SPY['SPYt']=df_SPY['Adj Close'].resample('M').ffill().pct_change()
 
@@ -281,259 +314,238 @@ if __name__ == "__main__":
     df_JPM = yf.download("JPM", start=start_date, end=end_date)
     df['JPM'] = df_JPM['Adj Close'].pct_change()
 
-    # import list of S&P500 company tickers
-    stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
-    tickers = stocks['ticker'].values
-
-    dic = {}
-    for t in tickers:
-        dic[t] = download_stock(t)
-
-    # calculate features and export as csv file
-    for k, v in dic.items():
-        if v.shape[0] == 5284:
-            cal_export(v).to_csv('../result/paper9/'+k+'.csv')
-
     # Fred API key: ab766afb0df13dba8492403a7865f852
     fred = Fred(api_key='ab766afb0df13dba8492403a7865f852')
-    T1 = fred.get_series(
+    t1 = fred.get_series(
         'DTB4WK', observation_start=start_date, observation_end=end_date)
-    T1.index.name = 'Date'
-    T1.rename('T1', inplace=True)
+    t1.index.name = 'Date'
+    t1.rename('T1', inplace=True)
 
-    T3 = fred.get_series(
+    t3 = fred.get_series(
         'DTB3', observation_start=start_date, observation_end=end_date)
-    T3.index.name = 'Date'
-    T3.rename('T3', inplace=True)
+    t3.index.name = 'Date'
+    t3.rename('T3', inplace=True)
 
-    T6 = fred.get_series(
+    t6 = fred.get_series(
         'DTB6', observation_start=start_date, observation_end=end_date)
-    T6.index.name = 'Date'
-    T6.rename('T6', inplace=True)
+    t6.index.name = 'Date'
+    t6.rename('T6', inplace=True)
 
-    T60 = fred.get_series(
+    t60 = fred.get_series(
         'DGS5', observation_start=start_date, observation_end=end_date)
-    T60.index.name = 'Date'
-    T60.rename('T60', inplace=True)
+    t60.index.name = 'Date'
+    t60.rename('T60', inplace=True)
 
-    T120 = fred.get_series(
+    t120 = fred.get_series(
         'DGS10', observation_start=start_date, observation_end=end_date)
-    T120.index.name = 'Date'
-    T120.rename('T120', inplace=True)
+    t120.index.name = 'Date'
+    t120.rename('T120', inplace=True)
 
-    CD1 = fred.get_series(
+    cd1 = fred.get_series(
         'DCD1M', observation_start=start_date, observation_end=end_date)
-    CD1.index.name = 'Date'
-    CD1.rename('CD1', inplace=True)
+    cd1.index.name = 'Date'
+    cd1.rename('CD1', inplace=True)
 
-    CD3 = fred.get_series(
+    cd3 = fred.get_series(
         'DCD90', observation_start=start_date, observation_end=end_date)
-    CD3.index.name = 'Date'
-    CD3.rename('CD3', inplace=True)
+    cd3.index.name = 'Date'
+    cd3.rename('CD3', inplace=True)
 
-    CD6 = fred.get_series(
+    cd6 = fred.get_series(
         'DCD6M', observation_start=start_date, observation_end=end_date)
-    CD6.index.name = 'Date'
-    CD6.rename('CD6', inplace=True)
+    cd6.index.name = 'Date'
+    cd6.rename('CD6', inplace=True)
 
     data = pd.read_csv("FRB_H15.csv")
     data = data.iloc[5:, :]
     data['Series Description'] = pd.to_datetime(data['Series Description'])
 
-    CTB3M = pd.Series(
+    ctb3m = pd.Series(
         data['Market yield on U.S. Treasury securities at 3-month   constant maturity, quoted on investment basis'])
-    CTB3M.reset_index(drop=True, inplace=True)
-    CTB3M.index = data['Series Description'].values
-    CTB3M = CTB3M.dropna()
-    CTB3M = CTB3M[CTB3M.values != 'ND'].astype(float)
-    CTB3M = CTB3M - CTB3M.shift()
-    CTB3M = CTB3M[(CTB3M.index >= start_date) & (CTB3M.index <= end_date)]
-    CTB3M.index.name = 'Date'
-    CTB3M.rename('CTB3M', inplace=True)
+    ctb3m.reset_index(drop=True, inplace=True)
+    ctb3m.index = data['Series Description'].values
+    ctb3m = ctb3m.dropna()
+    ctb3m = ctb3m[ctb3m.values != 'ND'].astype(float)
+    ctb3m = ctb3m - ctb3m.shift()
+    ctb3m = ctb3m[(ctb3m.index >= start_date) & (ctb3m.index <= end_date)]
+    ctb3m.index.name = 'Date'
+    ctb3m.rename('CTB3M', inplace=True)
 
-    CTB6M = pd.Series(
+    ctb6m = pd.Series(
         data['Market yield on U.S. Treasury securities at 6-month   constant maturity, quoted on investment basis'])
-    CTB6M.reset_index(drop=True, inplace=True)
-    CTB6M.index = data['Series Description'].values
-    CTB6M = CTB6M.dropna()
-    CTB6M = CTB6M[CTB6M.values != 'ND'].astype(float)
-    CTB6M = CTB6M - CTB6M.shift()
-    CTB6M = CTB6M[(CTB6M.index >= start_date) & (CTB6M.index <= end_date)]
-    CTB6M.index.name = 'Date'
-    CTB6M.rename('CTB6M', inplace=True)
+    ctb6m.reset_index(drop=True, inplace=True)
+    ctb6m.index = data['Series Description'].values
+    ctb6m = ctb6m.dropna()
+    ctb6m = ctb6m[ctb6m.values != 'ND'].astype(float)
+    ctb6m = ctb6m - ctb6m.shift()
+    ctb6m = ctb6m[(ctb6m.index >= start_date) & (ctb6m.index <= end_date)]
+    ctb6m.index.name = 'Date'
+    ctb6m.rename('CTB6M', inplace=True)
 
-    CTB1Y = pd.Series(
+    ctb1y = pd.Series(
         data['Market yield on U.S. Treasury securities at 1-year   constant maturity, quoted on investment basis'])
-    CTB1Y.reset_index(drop=True, inplace=True)
-    CTB1Y.index = data['Series Description'].values
-    CTB1Y = CTB1Y.dropna()
-    CTB1Y = CTB1Y[CTB1Y.values != 'ND'].astype(float)
-    CTB1Y = CTB1Y - CTB1Y.shift()
-    CTB1Y = CTB1Y[(CTB1Y.index >= start_date) & (CTB1Y.index <= end_date)]
-    CTB1Y.index.name = 'Date'
-    CTB1Y.rename('CTB1Y', inplace=True)
+    ctb1y.reset_index(drop=True, inplace=True)
+    ctb1y.index = data['Series Description'].values
+    ctb1y = ctb1y.dropna()
+    ctb1y = ctb1y[ctb1y.values != 'ND'].astype(float)
+    ctb1y = ctb1y - ctb1y.shift()
+    ctb1y = ctb1y[(ctb1y.index >= start_date) & (ctb1y.index <= end_date)]
+    ctb1y.index.name = 'Date'
+    ctb1y.rename('CTB1Y', inplace=True)
 
-    CTB5Y = pd.Series(
+    ctb5y = pd.Series(
         data['Market yield on U.S. Treasury securities at 5-year   constant maturity, quoted on investment basis'])
-    CTB5Y.reset_index(drop=True, inplace=True)
-    CTB5Y.index = data['Series Description'].values
-    CTB5Y = CTB5Y.dropna()
-    CTB5Y = CTB5Y[CTB5Y.values != 'ND'].astype(float)
-    CTB5Y = CTB5Y - CTB5Y.shift()
-    CTB5Y = CTB5Y[(CTB5Y.index >= start_date) & (CTB5Y.index <= end_date)]
-    CTB5Y.index.name = 'Date'
-    CTB5Y.rename('CTB5Y', inplace=True)
+    ctb5y.reset_index(drop=True, inplace=True)
+    ctb5y.index = data['Series Description'].values
+    ctb5y = ctb5y.dropna()
+    ctb5y = ctb5y[ctb5y.values != 'ND'].astype(float)
+    ctb5y = ctb5y - ctb5y.shift()
+    ctb5y = ctb5y[(ctb5y.index >= start_date) & (ctb5y.index <= end_date)]
+    ctb5y.index.name = 'Date'
+    ctb5y.rename('CTB5Y', inplace=True)
 
-    CTB10Y = pd.Series(
+    ctb10y = pd.Series(
         data['Market yield on U.S. Treasury securities at 10-year   constant maturity, quoted on investment basis'])
-    CTB10Y.reset_index(drop=True, inplace=True)
-    CTB10Y.index = data['Series Description'].values
-    CTB10Y = CTB10Y.dropna()
-    CTB10Y = CTB10Y[CTB10Y.values != 'ND'].astype(float)
-    CTB10Y = CTB10Y - CTB10Y.shift()
-    CTB10Y = CTB10Y[(CTB10Y.index >= start_date) & (CTB10Y.index <= end_date)]
-    CTB10Y.index.name = 'Date'
-    CTB10Y.rename('CTB10Y', inplace=True)
+    ctb10y.reset_index(drop=True, inplace=True)
+    ctb10y.index = data['Series Description'].values
+    ctb10y = ctb10y.dropna()
+    ctb10y = ctb10y[ctb10y.values != 'ND'].astype(float)
+    ctb10y = ctb10y - ctb10y.shift()
+    ctb10y = ctb10y[(ctb10y.index >= start_date) & (ctb10y.index <= end_date)]
+    ctb10y.index.name = 'Date'
+    ctb10y.rename('CTB10Y', inplace=True)
 
-    AAA = fred.get_series(
+    aaa = fred.get_series(
         'DAAA', observation_start=start_date, observation_end=end_date)
-    AAA.index.name = 'Date'
-    AAA.rename('AAA', inplace=True)
+    aaa.index.name = 'Date'
+    aaa.rename('AAA', inplace=True)
 
-    BAA = fred.get_series(
+    baa = fred.get_series(
         'DBAA', observation_start=start_date, observation_end=end_date)
-    BAA.index.name = 'Date'
-    BAA.rename('BAA', inplace=True)
+    baa.index.name = 'Date'
+    baa.rename('BAA', inplace=True)
 
-    TE1 = T120 - T1
-    TE1.index.name = 'Date'
-    TE1.rename('TE1', inplace=True)
+    te1 = t120 - t1
+    te1.index.name = 'Date'
+    te1.rename('TE1', inplace=True)
 
-    TE2 = T120 - T3
-    TE2.index.name = 'Date'
-    TE2.rename('TE2', inplace=True)
+    te2 = t120 - t3
+    te2.index.name = 'Date'
+    te2.rename('TE2', inplace=True)
 
-    TE3 = T120 - T6
-    TE3.index.name = 'Date'
-    TE3.rename('TE3', inplace=True)
+    te3 = t120 - t6
+    te3.index.name = 'Date'
+    te3.rename('TE3', inplace=True)
 
-    TE5 = T3 - T1
-    TE5.index.name = 'Date'
-    TE5.rename('TE5', inplace=True)
+    te5 = t3 - t1
+    te5.index.name = 'Date'
+    te5.rename('TE5', inplace=True)
 
-    TE6 = T6 - T1
-    TE6.index.name = 'Date'
-    TE6.rename('TE6', inplace=True)
+    te6 = t6 - t1
+    te6.index.name = 'Date'
+    te6.rename('TE6', inplace=True)
 
-    DE1 = BAA - AAA
-    DE1.index.name = 'Date'
-    DE1.rename('DE1', inplace=True)
+    de1 = baa - aaa
+    de1.index.name = 'Date'
+    de1.rename('DE1', inplace=True)
 
-    DE2 = BAA - T120
-    DE2.index.name = 'Date'
-    DE2.rename('DE2', inplace=True)
+    de2 = baa - t120
+    de2.index.name = 'Date'
+    de2.rename('DE2', inplace=True)
 
-    DE4 = BAA - T6
-    DE4.index.name = 'Date'
-    DE4.rename('DE4', inplace=True)
+    de4 = baa - t6
+    de4.index.name = 'Date'
+    de4.rename('DE4', inplace=True)
 
-    DE5 = BAA - T3
-    DE5.index.name = 'Date'
-    DE5.rename('DE5', inplace=True)
+    de5 = baa - t3
+    de5.index.name = 'Date'
+    de5.rename('DE5', inplace=True)
 
-    DE6 = BAA - T1
-    DE6.index.name = 'Date'
-    DE6.rename('DE6', inplace=True)
+    de6 = baa - t1
+    de6.index.name = 'Date'
+    de6.rename('DE6', inplace=True)
 
-    DE7 = CD6 - T6
-    DE7.index.name = 'Date'
-    DE7.rename('DE7', inplace=True)
+    de7 = cd6 - t6
+    de7.index.name = 'Date'
+    de7.rename('DE7', inplace=True)
 
     data = pd.read_excel(
         "https://www.eia.gov/dnav/pet/hist_xls/RWTCd.xls", sheet_name='Data 1', skiprows=2)
     data = data.set_index('Date')
 
-    Oil = (data - data.shift()) / data.shift()  # need SPY dates as control
-    Oil = Oil[(Oil.index >= start_date) & (Oil.index <= end_date)]
-    Oil.rename(columns={
+    oil = (data - data.shift()) / data.shift()  # need SPY dates as control
+    oil = oil[(oil.index >= start_date) & (oil.index <= end_date)]
+    oil.rename(columns={
                'Cushing, OK WTI Spot Price FOB (Dollars per Barrel)': 'Oil'}, inplace=True)
 
     # investpy
     start_date = "31/12/1999"
     end_date = "31/12/2020"
 
-    USD_Y = investpy.get_currency_cross_historical_data(
+    usd_y = investpy.get_currency_cross_historical_data(
         currency_cross='USD/JPY', from_date=start_date, to_date=end_date)
-    USD_Y = USD_Y['Close']
-    USD_Y.rename('USD_Y', inplace=True)
+    usd_y = usd_y['Close']
+    usd_y.rename('USD_Y', inplace=True)
 
-    USD_GBP = investpy.get_currency_cross_historical_data(
+    usd_gbp = investpy.get_currency_cross_historical_data(
         currency_cross='GBP/USD', from_date=start_date, to_date=end_date)
-    USD_GBP = USD_GBP['Close']
-    USD_GBP.rename('USD_GBP', inplace=True)
+    usd_gbp = usd_gbp['Close']
+    usd_gbp.rename('USD_GBP', inplace=True)
 
-    USD_CAD = investpy.get_currency_cross_historical_data(
+    usd_cad = investpy.get_currency_cross_historical_data(
         currency_cross='USD/CAD', from_date=start_date, to_date=end_date)
-    USD_CAD = USD_CAD['Close']
-    USD_CAD.rename('USD_CAD', inplace=True)
+    usd_cad = usd_cad['Close']
+    usd_cad.rename('USD_CAD', inplace=True)
 
-    USD_CNY = investpy.get_currency_cross_historical_data(
+    usd_cny = investpy.get_currency_cross_historical_data(
         currency_cross='USD/CNY', from_date=start_date, to_date=end_date)
-    USD_CNY = USD_CNY['Close']
-    USD_CNY.rename('USD_CNY', inplace=True)
+    usd_cny = usd_cny['Close']
+    usd_cny.rename('USD_CNY', inplace=True)
 
-    Gold = investpy.get_currency_cross_historical_data(
+    gold = investpy.get_currency_cross_historical_data(
         currency_cross='XAU/USD', from_date=start_date, to_date=end_date)
-    Gold['Gold'] = (Gold['Close'] - Gold['Close'].shift()) / \
-        Gold['Close'].shift()
-    Gold = Gold['Gold']
+    gold['Gold'] = (gold['Close'] - gold['Close'].shift()) / \
+        gold['Close'].shift()
+    gold = gold['Gold']
 
     df = df[['Close', 'SPYt', 'SPYt1', 'SPYt2', 'SPYt3', 'RDP5', 'RDP10', 'RDP15', 'RDP20', 'EMA10', 'EMA20', 'EMA50',
              'EMA200', 'HSI', 'SSE', 'FCHI', 'FTSE', 'GDAXI', 'DJI', 'IXIC', 'V', 'AAPL', 'MSFT', 'XOM', 'GE', 'JNJ', 'WFC', 'AMZN', 'JPM']]
 
-    df = df.join(T1)
-    df = df.join(T3)
-    df = df.join(T6)
-    df = df.join(T60)
-    df = df.join(T120)
-    df = df.join(CD1)
-    df = df.join(CD3)
-    df = df.join(CD6)
-    df = df.join(Oil)
-    df = df.join(Gold)
-    df = df.join(CTB3M)
-    df = df.join(CTB6M)
-    df = df.join(CTB1Y)
-    df = df.join(CTB5Y)
-    df = df.join(CTB10Y)
-    df = df.join(AAA)
-    df = df.join(BAA)
-    df = df.join(TE1)
-    df = df.join(TE2)
-    df = df.join(TE3)
-    df = df.join(TE5)
-    df = df.join(TE6)
-    df = df.join(DE1)
-    df = df.join(DE2)
-    df = df.join(DE4)
-    df = df.join(DE5)
-    df = df.join(DE6)
-    df = df.join(DE7)
-    df = df.join(USD_Y)
-    df = df.join(USD_GBP)
-    df = df.join(USD_CAD)
-    df = df.join(USD_CNY)
+    df = df.join(t1)
+    df = df.join(t3)
+    df = df.join(t6)
+    df = df.join(t60)
+    df = df.join(t120)
+    df = df.join(cd1)
+    df = df.join(cd3)
+    df = df.join(cd6)
+    df = df.join(oil)
+    df = df.join(gold)
+    df = df.join(ctb3m)
+    df = df.join(ctb6m)
+    df = df.join(ctb1y)
+    df = df.join(ctb5y)
+    df = df.join(ctb10y)
+    df = df.join(aaa)
+    df = df.join(baa)
+    df = df.join(te1)
+    df = df.join(te2)
+    df = df.join(te3)
+    df = df.join(te5)
+    df = df.join(te6)
+    df = df.join(de1)
+    df = df.join(de2)
+    df = df.join(de4)
+    df = df.join(de5)
+    df = df.join(de6)
+    df = df.join(de7)
+    df = df.join(usd_y)
+    df = df.join(usd_gbp)
+    df = df.join(usd_cad)
+    df = df.join(usd_cny)
     df = df.iloc[1:, :]
 
+    # convert to monthly
+    df = df.groupby([df.index.year, df.index.month]).last()
+
     df.to_csv('../result/paper9/common_features.csv')
-
-    # pre-processing
-    #df.fillna(0)
-    #convert to monthly
-    #convert to yearly
-    #convert to quarterly
-
-
-
-
-

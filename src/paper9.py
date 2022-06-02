@@ -184,7 +184,7 @@ if __name__ == "__main__":
     end_date = '2020-12-31'
 
     # import list of S&P500 company tickers/permnos
-    stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
+    stocks = pd.read_csv('paper9/S&P500 companies list (2000 to 2020).csv')
     permnos = stocks['permno'].values
     tickers = stocks['ticker'].values
 
@@ -356,7 +356,7 @@ if __name__ == "__main__":
     cd6.index.name = 'Date'
     cd6.rename('CD6', inplace=True)
 
-    data = pd.read_csv("FRB_H15.csv")
+    data = pd.read_csv('paper9/FRB_H15.csv')
     data = data.iloc[5:, :]
     data['Series Description'] = pd.to_datetime(data['Series Description'])
 

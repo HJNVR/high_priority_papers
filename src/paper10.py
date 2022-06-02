@@ -1,4 +1,11 @@
 # Feature generation and pre-processing of paper 10
+# current issues:
+#1.  Dividend: cannot find the reinvested dividends
+#2.  Portfolio price: cannot find the reinvested price
+#3.  d-p: based on 1. and 2.
+#4.  factor: link does not work, cannot find in the source paper
+#5.  CAY: same issue as 4.
+#6.  DRI-Global Insight : datasets not exist
 # ============================================================================
 
 import numpy as np

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[23]:
 
 
 #WRDS login details are as follows:
@@ -10,7 +10,7 @@
 #password: WRDSaccess_135@
 
 
-# In[2]:
+# In[24]:
 
 
 from IPython.core.display import display, HTML
@@ -234,7 +234,7 @@ monthly = monthly.drop(["year"], axis=1)
 # print("generated_raw_variables.csv saved to result folder")
 
 
-# In[22]:
+# In[25]:
 
 
 # Generate all macro features
@@ -318,7 +318,7 @@ features = features[['date','d/p','d/y','e/p','d/e','svar','b/m','ntis',
 
 features
 
-features.to_csv("../result/generated_all_features.csv", index=False)
+features.to_csv("../result/paper2_features.csv", index=False)
 
 # print("generated_all_features.csv saved to result folder")
 

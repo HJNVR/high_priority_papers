@@ -34,14 +34,14 @@ from pandas.tseries.offsets import *
 
 conn = wrds.Connection()
 
-fred = Fred('inputs/fred-api.txt')
-raw_monthly = pd.read_csv('inputs/raw_monthly.csv', index_col = 'date')
-raw_quarterly = pd.read_csv('inputs/raw_quarterly.csv', index_col = 'date')
-raw_annual = pd.read_csv('inputs/raw_annual.csv', index_col = 'date')
+fred = Fred('paper2/fred-api.txt')
+raw_monthly = pd.read_csv('paper2/raw_monthly.csv', index_col = 'date')
+raw_quarterly = pd.read_csv('paper2/raw_quarterly.csv', index_col = 'date')
+raw_annual = pd.read_csv('paper2/raw_annual.csv', index_col = 'date')
 
 # Create result directory
-if not os.path.isdir('../result'):
-    os.mkdir("../result")
+# if not os.path.isdir('../result'):
+#     os.mkdir("../result")
 
 # Query S&P500 data
 

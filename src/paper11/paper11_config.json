@@ -1,0 +1,10 @@
+{
+	"wrds_username": "muhdnoor",
+	"start_year": 2000,
+	"start_year_daily_data": 1995,
+	"start_year_sp500_companies": 2000,
+	"end_year": 2020,
+	"annual_lag": 6,
+	"quarterly_lag": 6,
+	"S&P500_companies_only": "Yes"
+}

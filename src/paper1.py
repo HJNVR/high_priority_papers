@@ -16,7 +16,7 @@
 import wrds
 import json
 import warnings
-warnings.filterwarnings("ignore", category=RuntimeWarning) 
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # Load config file
 with open('config.json') as config_file:
@@ -32,7 +32,7 @@ db.close()
 # In[3]:
 
 
-#annual feature generation
+#annual
 
 import wrds
 import pandas as pd
@@ -53,8 +53,8 @@ wrds_username = data['wrds_username']
 parm = {"start_year": start_year, "end_year": end_year}
 
 # Create result directory
-# if not os.path.isdir('../result/'):
-#     os.mkdir("../result/")
+if not os.path.isdir('../result/'):
+    os.mkdir("../result/")
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -566,7 +566,15 @@ raw_annual['tb'] = raw_annual['tb_1'] / raw_annual['tb_1_ind']
 
 raw_annual = raw_annual.drop_duplicates(subset=['permno', 'datadate'])
 
-#Export 61 annual feature data to CSV file
+raw_annual = raw_annual[["permno", "datadate", "sic2", "absacc", "acc", "age", "agr", "bm", "bm_ia", "cashdebt", "cashpr", "cfp", "cfp_ia", 
+"chatoia", "chcsho", "chempia", "chinv", "chpmia", "convind", "currat", "depr", "divi", "divo",
+"dy", "egr", "ep", "gma", "grcapx", "grltnoa", "herf", "hire", "invest", "lev",
+"lgr", "mve_ia", "operprof", "orgcap", "pchcapx_ia", "pchcurrat", "pchdepr", "pchgm_pchsale", "pchquick", "pchsale_pchinvt",
+"pchsale_pchrect", "pchsale_pchxsga", "pchsaleinv", "pctacc", "ps", "quick", "rd", "rd_mve", "rd_sale", "realestate",
+"roic", "salecash", "saleinv", "salerec", "secured", "securedind", "sgr", "sin", "sp", "tang",
+"tb"]]
+
+# #Export 61 annual feature data to CSV file
 # raw_annual[["permno", "datadate", "sic2", "absacc", "acc", "age", "agr", "bm", "bm_ia", "cashdebt", "cashpr", "cfp", "cfp_ia", 
 # "chatoia", "chcsho", "chempia", "chinv", "chpmia", "convind", "currat", "depr", "divi", "divo",
 # "dy", "egr", "ep", "gma", "grcapx", "grltnoa", "herf", "hire", "invest", "lev",
@@ -578,10 +586,10 @@ raw_annual = raw_annual.drop_duplicates(subset=['permno', 'datadate'])
 # print("annual_features.csv saved to result folder")
 
 
-# In[4]:
+# In[5]:
 
 
-#Quarterly feature generation
+#quarter
 
 import wrds
 import pandas as pd
@@ -602,8 +610,8 @@ wrds_username = data['wrds_username']
 parm = {"start_year": start_year, "end_year": end_year}
 
 # Create result directory
-# if not os.path.isdir('../result/'):
-#     os.mkdir("../result/")
+if not os.path.isdir('../result/'):
+    os.mkdir("../result/")
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -775,7 +783,7 @@ raw_quarter = raw_quarter.drop(temp_stdcf, axis=1)
 
 # Query in comp.funda to calculate ms
 
-comp_annual = conn.raw_sql("""
+comp_annual1 = conn.raw_sql("""
                     select c.gvkey, f.datadate, f.fyear, substr(c.sic,1,2) as sic2, 
 
                     f.at, f.ni, f.oancf, f.ib, f.dp, f.xrd, f.capx, f.xad
@@ -795,42 +803,46 @@ comp_annual = conn.raw_sql("""
 
 conn.close()
 
-raw_annual = comp_annual.merge(comp_crsp_link[["gvkey", "permno"]], how="left", on=["gvkey"])
-raw_annual["permno"] = raw_annual["permno"].astype("Int64")
-raw_annual["datadate"] = pd.to_datetime(raw_annual["datadate"])
-raw_annual = raw_annual.sort_values(["permno", "datadate"]).drop_duplicates()
-raw_annual["date_std"] = raw_annual["datadate"] + MonthEnd(0)
+
+# In[6]:
+
+
+comp_annual1 = comp_annual1.merge(comp_crsp_link[["gvkey", "permno"]], how="left", on=["gvkey"])
+comp_annual1["permno"] = comp_annual1["permno"].astype("Int64")
+comp_annual1["datadate"] = pd.to_datetime(comp_annual1["datadate"])
+comp_annual1 = comp_annual1.sort_values(["permno", "datadate"]).drop_duplicates()
+comp_annual1["date_std"] = comp_annual1["datadate"] + MonthEnd(0)
 
 # Drop rows with no permno / fyear
 
-raw_annual.dropna(subset=["fyear", "permno"], inplace=True)
+comp_annual1.dropna(subset=["fyear", "permno"], inplace=True)
 raw_quarter.dropna(subset=["permno"], inplace=True)
 
 # ms
 
 # Calculate annual intermediate variables
-raw_annual["at_l1"] = raw_annual.groupby(["permno"])["at"].shift(1)
-raw_annual["roa"] = raw_annual["ni"] / ((raw_annual["at"] + raw_annual["at_l1"]) / 2)
-raw_annual["cfroa"] = raw_annual["oancf"] / ((raw_annual["at"] + raw_annual["at_l1"]) / 2)
-raw_annual["cfroa"] = np.where(raw_annual["oancf"].isnull(), (raw_annual["ib"] + raw_annual["dp"]) / 
-                               ((raw_annual["at"] + raw_annual["at_l1"]) /2), raw_annual["cfroa"])
-raw_annual["xrdint"] = raw_annual["xrd"] / ((raw_annual["at"] + raw_annual["at_l1"]) / 2)
-raw_annual["capxint"] = raw_annual["capx"] / ((raw_annual["at"] + raw_annual["at_l1"]) / 2)
-raw_annual["xadint"] = raw_annual["xad"] / ((raw_annual["at"] + raw_annual["at_l1"]) / 2)
+comp_annual1["at_l1"] = comp_annual1.groupby(["permno"])["at"].shift(1)
+comp_annual1["roa"] = comp_annual1["ni"] / ((comp_annual1["at"] + comp_annual1["at_l1"]) / 2)
+comp_annual1["cfroa"] = comp_annual1["oancf"] / ((comp_annual1["at"] + comp_annual1["at_l1"]) / 2)
+comp_annual1["cfroa"] = np.where(comp_annual1["oancf"].isnull(), (comp_annual1["ib"] + comp_annual1["dp"]) / 
+                               ((comp_annual1["at"] + comp_annual1["at_l1"]) /2), comp_annual1["cfroa"])
+comp_annual1["xrdint"] = comp_annual1["xrd"] / ((comp_annual1["at"] + comp_annual1["at_l1"]) / 2)
+comp_annual1["capxint"] = comp_annual1["capx"] / ((comp_annual1["at"] + comp_annual1["at_l1"]) / 2)
+comp_annual1["xadint"] = comp_annual1["xad"] / ((comp_annual1["at"] + comp_annual1["at_l1"]) / 2)
 
 # Calculate annual industry averages
-df_temp = raw_annual.groupby(["fyear", "sic2"], as_index=False)[["roa", "cfroa", "xrdint", "capxint", "xadint"]].median()
+df_temp = comp_annual1.groupby(["fyear", "sic2"], as_index=False)[["roa", "cfroa", "xrdint", "capxint", "xadint"]].median()
 df_temp = df_temp.rename(columns={"roa": "md_roa", "cfroa": "md_cfroa", "xrdint": "md_xrdint", 
                                   "capxint": "md_capxint", "xadint": "md_xadint"})
-raw_annual = pd.merge(raw_annual, df_temp, how="left", on=["fyear", "sic2"])
+comp_annual1 = pd.merge(comp_annual1, df_temp, how="left", on=["fyear", "sic2"])
 
 # Calculate annual values
-raw_annual["m1"] = np.where(raw_annual["roa"] > raw_annual["md_roa"], 1, 0)
-raw_annual["m2"] = np.where(raw_annual["cfroa"] > raw_annual["md_cfroa"], 1, 0)
-raw_annual["m3"] = np.where(raw_annual["oancf"] > raw_annual["ni"], 1, 0)
-raw_annual["m4"] = np.where(raw_annual["xrdint"] > raw_annual["md_xrdint"], 1, 0)
-raw_annual["m5"] = np.where(raw_annual["capxint"] > raw_annual["md_capxint"], 1, 0)
-raw_annual["m6"] = np.where(raw_annual["xadint"] > raw_annual["md_xadint"], 1, 0)
+comp_annual1["m1"] = np.where(comp_annual1["roa"] > comp_annual1["md_roa"], 1, 0)
+comp_annual1["m2"] = np.where(comp_annual1["cfroa"] > comp_annual1["md_cfroa"], 1, 0)
+comp_annual1["m3"] = np.where(comp_annual1["oancf"] > comp_annual1["ni"], 1, 0)
+comp_annual1["m4"] = np.where(comp_annual1["xrdint"] > comp_annual1["md_xrdint"], 1, 0)
+comp_annual1["m5"] = np.where(comp_annual1["capxint"] > comp_annual1["md_capxint"], 1, 0)
+comp_annual1["m6"] = np.where(comp_annual1["xadint"] > comp_annual1["md_xadint"], 1, 0)
 
 # raw_annual["m1"] = np.select([raw_annual["roa"] > raw_annual["md_roa"], raw_annual["roa"] <= raw_annual["md_roa"]], 
 #                              [1, 0], default = np.nan)
@@ -847,7 +859,7 @@ raw_annual["m6"] = np.where(raw_annual["xadint"] > raw_annual["md_xadint"], 1, 0
 
 # Merge to raw_quarter
 merge_cols = ["permno", "fyear", "m1", "m2", "m3", "m4", "m5", "m6"]
-raw_quarter = pd.merge(raw_quarter, raw_annual[merge_cols], how="left", 
+raw_quarter = pd.merge(raw_quarter, comp_annual1[merge_cols], how="left", 
                        left_on=["fyearq", "permno"], right_on=["fyear", "permno"])
 
 # Calculate quarterly intermediate variables
@@ -984,17 +996,20 @@ raw_quarter = pd.merge(raw_quarter, df_ear_aeavol, how="left", on=["permno", "da
 
 raw_quarter = raw_quarter.drop_duplicates(subset=['permno', 'datadate'])
 
-# Save to csv
+raw_quarter = raw_quarter[["permno", "datadate", "cash", "chtx", "roaq", "roeq", "rsup", 
+              "cinvest", "nincr", "roavol", "stdacc", "stdcf", "ms", "ear", "aeavol"]]
+
+# # Save to csv
 # raw_quarter[["permno", "datadate", "cash", "chtx", "roaq", "roeq", "rsup", 
 #              "cinvest", "nincr", "roavol", "stdacc", "stdcf", "ms", "ear", "aeavol"]].to_csv("../result/quarter_features.csv", index = False)
 
 # print("quarter_features.csv saved to result folder")
 
 
-# In[5]:
+# In[7]:
 
 
-#monthly feature generation
+#month
 
 import wrds
 import pandas as pd
@@ -1014,8 +1029,8 @@ wrds_username = data['wrds_username']
 parm = {"start_year": start_year, "end_year": end_year}
 
 # Create result directory
-# if not os.path.isdir('../result/'):
-#     os.mkdir("../result/")
+if not os.path.isdir('../result/'):
+    os.mkdir("../result/")
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -1161,17 +1176,20 @@ raw_month["beta"] = ""
 raw_month["betasq"] = ""
 raw_month["pricedelay"] = ""
 
-# Save to csv
+raw_month = raw_month[["permno", "date", "date_std", "ret", "total_ret", "chmom", "mom1m", "mom6m", "mom12m", "mom36m", 
+            "turn", "dolvol", "indmom", "mvel1", "shrout", "prc", "beta", "betasq", "pricedelay"]]
+
+# # Save to csv
 # raw_month[["permno", "date", "date_std", "ret", "total_ret", "chmom", "mom1m", "mom6m", "mom12m", "mom36m", 
 #            "turn", "dolvol", "indmom", "mvel1", "shrout", "prc", "beta", "betasq", "pricedelay"]].to_csv("../result/month_features.csv", index = False)
 
 # print("month_features.csv saved to result folder")
 
 
-# In[6]:
+# In[8]:
 
 
-#daily feature generation
+#daily
 
 import wrds
 import pandas as pd
@@ -1179,7 +1197,6 @@ import numpy as np
 import os
 import json
 from pandas.tseries.offsets import *
-from datetime import datetime
 
 # Load config file
 with open('config.json') as config_file:
@@ -1193,8 +1210,8 @@ wrds_username = data['wrds_username']
 parm = {"start_year": start_year_daily_data, "end_year": end_year}
 
 # Create result directory
-# if not os.path.isdir('../result/'):
-#     os.mkdir("../result/")
+if not os.path.isdir('../result/'):
+    os.mkdir("../result/")
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -1300,31 +1317,24 @@ df_idiovol = crsp_dsf.groupby(["permno", "yyyy-mm"], as_index=False)[["weekly_mo
 df_idiovol.rename(columns={"weekly_moving_abrd_std": "idiovol"}, inplace=True)
 
 daily_features = pd.merge(daily_features, df_idiovol, how="left", on=["permno", "yyyy-mm"])
-daily_features.sort_values(by=['permno','yyyy-mm'])
+daily_features = daily_features.sort_values(by=['permno','yyyy-mm'])
 
-# Save to csv
+# # Save to csv
 # daily_features.to_csv("../result/daily_features.csv", index = False)
 
 # print("daily_features.csv saved to result folder")
 
 
-# In[7]:
+# In[19]:
 
 
-#daily_features['yyyy-mm'].to_timestamp(freq='M')
-
-#daily_features['yyyy-mm'] = daily_features['yyyy-mm'].dt.to_timestamp(freq='M')
-
-
-# In[15]:
-
+#merge
 
 import wrds
 import pandas as pd
 import numpy as np
 import json
 from pandas.tseries.offsets import *
-import datetime as dt
 
 with open('config.json') as config_file:
     data = json.load(config_file)
@@ -1343,17 +1353,17 @@ parm_sp500 = {"start_year_sp500_companies": start_year_sp500_companies, "end_yea
 
 conn = wrds.Connection(wrds_username=wrds_username)
 
-# annual = pd.read_csv("../result/annual_features.csv")
-# quarter = pd.read_csv("../result/quarter_features.csv")
-# month = pd.read_csv("../result/month_features.csv")
-# daily = pd.read_csv("../result/daily_features.csv")
-
 annual = raw_annual
 quarter = raw_quarter
 month = raw_month
 daily = daily_features
 
+
+# In[34]:
+
+
 # Add ticker name
+conn = wrds.Connection(wrds_username=wrds_username)
 
 crsp_stocknames = conn.raw_sql("""
                     select * from crsp.stocknames 
@@ -1391,8 +1401,8 @@ quarter["date_std"] = quarter["date_std"] + MonthEnd(quarterly_lag + 1)
 month["date"] = pd.to_datetime(month["date"])
 month["date_std"] = pd.to_datetime(month["date_std"])
 
-#daily["yyyy-mm"] = pd.to_datetime(daily["yyyy-mm"])
-daily_features['yyyy-mm'] = daily_features['yyyy-mm'].dt.to_timestamp(freq='M')
+daily["yyyy-mm"] = daily["yyyy-mm"].astype(str)
+daily["yyyy-mm"] = pd.to_datetime(daily["yyyy-mm"])
 daily["date_std"] = daily["yyyy-mm"] + MonthEnd(0)
 daily["date_std"] = daily["date_std"] + MonthEnd(1)
 
@@ -1414,10 +1424,6 @@ combined = combined.drop(["date_std"], axis=1)
 quarter_cols = ["cash", "chtx", "roaq", "roeq", "rsup", "cinvest", "nincr", "roavol", "stdacc", "stdcf", "ms"]
 combined[quarter_cols] = combined[quarter_cols].ffill(axis=0, limit=3)
 
-
-# In[9]:
-
-
 # Fill annual values
 annual_cols = ["absacc", "acc", "age", "agr", "bm", "bm_ia", "cashdebt", "cashpr", "cfp", "cfp_ia", "chatoia", 
 			   "chcsho", "chempia", "chinv", "chpmia", "convind", "currat", "depr", "divi", "divo", "dy", "egr", "ep", "gma", 
@@ -1427,8 +1433,10 @@ annual_cols = ["absacc", "acc", "age", "agr", "bm", "bm_ia", "cashdebt", "cashpr
 			   "salerec", "secured", "securedind", "sgr", "sin", "sp", "tang", "tb"]
 combined[annual_cols] = combined[annual_cols].ffill(axis=0, limit=12)
 
+sp500_subset = combined[combined["permno"].isin(sp500)]
 
-# In[ ]:
+
+# In[42]:
 
 
 # Save to csv (all companies)
@@ -1439,10 +1447,4 @@ if sp500_companies_subset == "Yes":
 else:
 	combined.to_csv("../result/all_features_all_companies.csv", index=False)
 	print("all_features_all_companies.csv saved to result folder")
-
-
-# In[ ]:
-
-
-
 

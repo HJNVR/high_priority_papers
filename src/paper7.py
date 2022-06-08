@@ -1,14 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[54]:
+# In[ ]:
 
 
-from IPython.core.display import display, HTML
-display(HTML("<style>.container { width:90% !important; }</style>"))
+#WRDS login details are as follows:
+    
+#user: muhdnoor
+#password: WRDSaccess_135@
+
+#user: madelinelim
+#password: password3141592
 
 
-# In[55]:
+# In[40]:
 
 
 from fredapi import Fred
@@ -19,27 +24,34 @@ import json
 import os
 from pandas.tseries.offsets import *
 
+
+# In[41]:
+
+
 # Load config file
-with open('config.json') as config_file:
+with open('paper7_config.json') as config_file:
     data = json.load(config_file)
 
+start_date = data['start_date']
+end_date = data['end_date']
 start_year = data['start_year']
 end_year = data['end_year']
 wrds_username = data['wrds_username']
+fred = data['fred_api_key']
 
 parm = {"start_year": start_year, "end_year": end_year}
 
 parm_sp500 = {"start_year": start_year, "end_year": end_year}
 
 
-# In[56]:
+# In[42]:
 
 
 df_fred_md = pd.read_csv("https://files.stlouisfed.org/files/htdocs/fred-md/monthly/current.csv")
 df_fred_md = df_fred_md.iloc[1:,:]
 df_fred_md["sasdate"] = pd.to_datetime(df_fred_md["sasdate"])
 df_fred_md["sasdate"] = df_fred_md["sasdate"] + MonthEnd(0)
-paper_7_features = df_fred_md[["sasdate","AAA","AAAFFM","AMDMNOx","AMDMUOx","AWHMAN","AWOTMAN","BAA","BAAFFM","BUSINVx","BUSLOANS","CE16OV",
+paper_7_fredmd_features = df_fred_md[["sasdate","AAA","AAAFFM","AMDMNOx","AMDMUOx","AWHMAN","AWOTMAN","BAA","BAAFFM","BUSINVx","BUSLOANS","CE16OV",
               "CES0600000007","CES0600000008","CES1021000001","CES2000000008","CES3000000008","CLAIMSx","CLF16OV","CMRMTSPLx","COMPAPFFx","CONSPI","CP3Mx","CPIAPPSL",
               "CPIAUCSL","CPIMEDSL","CPITRNSL","CPIULFSL","CUMFNS","CUSR0000SA0L2","CUSR0000SA0L5","CUSR0000SAC","CUSR0000SAD","CUSR0000SAS","DDURRG3M086SBEA","DMANEMP",
               "DNDGRG3M086SBEA","DPCERA3M086SBEA","DSERRG3M086SBEA","DTCOLNVHFNM","DTCTHFNM","EXCAUSx","EXJPUSx","EXSZUSx","EXUSUKx","FEDFUNDS","GS1","GS10","GS5","HOUST",
@@ -49,39 +61,22 @@ paper_7_features = df_fred_md[["sasdate","AAA","AAAFFM","AMDMNOx","AMDMUOx","AWH
               "T5YFFM","TB3MS","TB3SMFFM","TB6MS","TB6SMFFM","TOTRESNS","UEMP15OV","UEMP15T26","UEMP27OV","UEMP5TO14","UEMPLT5","UEMPMEAN","UNRATE","USCONS","USFIRE",
               "USGOOD","USGOVT","USTPU","USTRADE","USWTRADE","W875RX1","WPSFD49207","WPSFD49502","WPSID61","WPSID62"]]
 
+paper_7_fredmd_features = paper_7_fredmd_features.query('20000101 <= sasdate < 20210131')
+paper_7_fredmd_features = paper_7_fredmd_features.reset_index(drop=True)
 
-# In[57]:
-
-
-paper_7_features = paper_7_features.query('20000101 <= sasdate < 20210131')
-paper_7_features = paper_7_features.reset_index(drop=True)
-
-
-# In[58]:
-
-
-start_date = '2000-01-01'
-end_date = '2020-12-31'
-
-# Fred API key: ab766afb0df13dba8492403a7865f852
-fred = Fred(api_key = 'ab766afb0df13dba8492403a7865f852')
+fred = Fred(api_key = fred)
 
 df7 = {}
 df7['AMBSL'] = fred.get_series('AMBSL', observation_start=start_date, observation_end=end_date)
 df7['MZMSL'] = fred.get_series('MZMSL', observation_start=start_date, observation_end=end_date)
 df7 = pd.DataFrame(df7)
-df7
+
+paper_7_fredmd_features = pd.concat([paper_7_fredmd_features, df7], axis=1)
+paper_7_fredmd_features = paper_7_fredmd_features.dropna(subset=['sasdate'])
+paper_7_fredmd_features = paper_7_fredmd_features.reset_index(drop=True)
 
 
-# In[59]:
-
-
-paper_7_features = pd.concat([paper_7_features, df7], axis=1)
-paper_7_features = paper_7_features.dropna(subset=['sasdate'])
-paper_7_features = paper_7_features.reset_index(drop=True)
-
-
-# In[ ]:
+# In[43]:
 
 
 # Query data from WRDS
@@ -100,10 +95,6 @@ crsp_msf = conn.raw_sql("""
                       """, params=parm)
 
 conn.close()
-
-
-# In[ ]:
-
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -179,10 +170,6 @@ raw_annual = raw_annual.drop(['linkdt', 'linkenddt'], axis=1)
 raw_annual['sic'] = pd.to_numeric(raw_annual['sic'])
 raw_annual['sic2'] = pd.to_numeric(raw_annual['sic2'])
 
-
-# In[ ]:
-
-
 month = crsp_msf.copy()
 month["date"] = pd.to_datetime(month["date"])
 month["date_std"] = month["date"] + MonthEnd(0)
@@ -194,15 +181,11 @@ annual["datadate"] = pd.to_datetime(annual["datadate"])
 annual["date_std"] = annual["datadate"] + MonthEnd(0)
 
 
-# In[ ]:
+# In[44]:
 
 
 combined = pd.merge(month, annual, how="left", on=["permno", "date_std"])
 combined.sort_values(["permno", "date_std"], inplace=True)
-
-
-# In[ ]:
-
 
 annual_cols = ['gvkey', 'cusip', 'datadate', 'fyear', 'cik', 'sic2', 'sic', 'naics',
        'sale', 'revt', 'cogs', 'xsga', 'dp', 'xrd', 'xad', 'ib', 'ebitda',
@@ -218,13 +201,7 @@ annual_cols = ['gvkey', 'cusip', 'datadate', 'fyear', 'cik', 'sic2', 'sic', 'nai
 combined[annual_cols] = combined[annual_cols].ffill(axis=0, limit=12)
 
 
-# In[ ]:
-
-
-combined
-
-
-# In[ ]:
+# In[45]:
 
 
 # Calculate features
@@ -402,17 +379,17 @@ combined['st_rev'] = combined['ret_l1']
 #46 Variance - variance of daily returns in the past two months
 
 
-# In[ ]:
+# In[46]:
 
 
-paper_7_features = combined[['date','permno','a2me','at','ato','beme','c','cto','pi2a_pctchange',
+paper_7_WRDS_features = combined[['date','permno','a2me','at','ato','beme','c','cto','pi2a_pctchange',
                             'e2p','fc2y','investment','lev','lme','lturnover','noa','oa','ol',
                             'pcm','pm','prof','q','r_2_1','r_12_2','r_12_7','r_36_13','rna','roa',
                             'roe','s2p','sga2s','st_rev']]
-paper_7_features
+paper_7_WRDS_features
 
 
-# In[ ]:
+# In[47]:
 
 
 # Add ticker name
@@ -425,7 +402,7 @@ crsp_stocknames = conn.raw_sql("""
 # Match ticker code to permno
 crsp_stocknames.sort_values(["permno", "nameenddt"], inplace=True)
 crsp_stocknames.drop_duplicates(subset=["permno"], keep="last", inplace=True)
-paper_3_features = pd.merge(paper_7_features, crsp_stocknames[["ticker", "permno"]], how="left", on=["permno"])
+paper_7_WRDS_features = pd.merge(paper_7_WRDS_features, crsp_stocknames[["ticker", "permno"]], how="left", on=["permno"])
 
 # Retrieve S&P500 constituent companies
 
@@ -442,30 +419,32 @@ sp500["permno"] = sp500["permno"].astype("Int64")
 sp500 = sp500["permno"].tolist()
 
 
-# In[ ]:
+# In[48]:
 
 
-# Save to csv
-paper_7_features = paper_7_features[paper_7_features["permno"].isin(sp500)]
-paper_7_features = paper_7_features[['date','permno','ticker','a2me','at','ato','beme','c','cto','pi2a_pctchange',
+paper_7_WRDS_features = paper_7_WRDS_features[paper_7_WRDS_features["permno"].isin(sp500)]
+paper_7_WRDS_features = paper_7_WRDS_features[['date','permno','ticker','a2me','at','ato','beme','c','cto','pi2a_pctchange',
                             'e2p','fc2y','investment','lev','lme','lturnover','noa','oa','ol',
                             'pcm','pm','prof','q','r_2_1','r_12_2','r_12_7','r_36_13','rna','roa',
                             'roe','s2p','sga2s','st_rev']]
 #paper_7_features = pd.merge(paper_7_features, crsp_stocknames[["ticker", "permno"]], how="left", on=["permno"])
-paper_7_features = paper_7_features.reset_index(drop=True)
-paper_7_features
+paper_7_WRDS_features = paper_7_WRDS_features.reset_index(drop=True)
+paper_7_WRDS_features
+
+
+# In[50]:
+
+
+# Save to csv
+paper_7_fredmd_features.to_csv('../result/paper7/paper7_fredmd_features.csv')
+
+paper_7_WRDS_features.to_csv('../result/paper7/paper7_WRDS_features.csv')
 
 
 # In[ ]:
 
 
-paper_7_features.to_csv('../result/paper7/paper7_features.csv')
-
-
-# In[ ]:
-
-
-# 18 features yet to be implemented
+# 18 features yet to be implemented (due to unclear definitions - need to clarify with author)
 
 # VXOCLSx
 # AC - Accrual
@@ -485,10 +464,4 @@ paper_7_features.to_csv('../result/paper7/paper7_features.csv')
 # ST_Rev - Short-term reversal
 # SUV - Standard unexplained volume
 # Variance - Variance
-
-
-# In[ ]:
-
-
-
 

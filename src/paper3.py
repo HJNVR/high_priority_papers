@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[56]:
+# In[15]:
 
 
 #WRDS login details are as follows:
@@ -9,15 +9,11 @@
 #user: muhdnoor
 #password: WRDSaccess_135@
 
-
-# In[57]:
-
-
-from IPython.core.display import display, HTML
-display(HTML("<style>.container { width:80% !important; }</style>"))
+#user: madelinelim
+#password: password3141592
 
 
-# In[58]:
+# In[16]:
 
 
 import wrds
@@ -28,7 +24,7 @@ import os
 from pandas.tseries.offsets import *
 
 # Load config file
-with open('config.json') as config_file:
+with open('paper3_config.json') as config_file:
     data = json.load(config_file)
 
 start_year = data['start_year']
@@ -40,11 +36,14 @@ parm = {"start_year": start_year, "end_year": end_year}
 parm_sp500 = {"start_year": start_year, "end_year": end_year}
 
 
-# In[59]:
+# In[17]:
 
 
 # Query data from WRDS
+
 conn = wrds.Connection(wrds_username=wrds_username)
+
+conn.create_pgpass_file()
 
 crsp_msf = conn.raw_sql("""
                       select a.ret, a.retx, a.prc, a.shrout, a.vol, a.date, a.permno
@@ -59,10 +58,6 @@ crsp_msf = conn.raw_sql("""
                       """, params=parm)
 
 conn.close()
-
-
-# In[60]:
-
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -138,10 +133,6 @@ raw_annual = raw_annual.drop(['linkdt', 'linkenddt'], axis=1)
 raw_annual['sic'] = pd.to_numeric(raw_annual['sic'])
 raw_annual['sic2'] = pd.to_numeric(raw_annual['sic2'])
 
-
-# In[61]:
-
-
 month = crsp_msf.copy()
 month["date"] = pd.to_datetime(month["date"])
 month["date_std"] = month["date"] + MonthEnd(0)
@@ -152,16 +143,8 @@ annual = raw_annual.copy()
 annual["datadate"] = pd.to_datetime(annual["datadate"])
 annual["date_std"] = annual["datadate"] + MonthEnd(0)
 
-
-# In[62]:
-
-
 combined = pd.merge(month, annual, how="left", on=["permno", "date_std"])
 combined.sort_values(["permno", "date_std"], inplace=True)
-
-
-# In[63]:
-
 
 annual_cols = ['gvkey', 'cusip', 'datadate', 'fyear', 'cik', 'sic2', 'sic', 'naics',
        'sale', 'revt', 'cogs', 'xsga', 'dp', 'xrd', 'xad', 'ib', 'ebitda',
@@ -177,7 +160,7 @@ annual_cols = ['gvkey', 'cusip', 'datadate', 'fyear', 'cik', 'sic2', 'sic', 'nai
 combined[annual_cols] = combined[annual_cols].ffill(axis=0, limit=12)
 
 
-# In[64]:
+# In[18]:
 
 
 # Calculate features
@@ -443,18 +426,13 @@ combined['tan'] = (0.715 * combined['rect_l1'] + 0.547 * combined['invt_l1'] + 0
 #63 Total vol - standard deviation of the residuals from a regression of excess returns on a constant
 
 
-# In[65]:
+# In[19]:
 
 
 paper_3_features = combined[['date','permno','a2me','ato','beme','c','c2d','cto','debt2p','ceq_pctchange','gm_sales_pctchange','so_pctchange',
                             'shrout_pctchange','pi2a_pctchange','e2p','eps','free_cf','investment','ipm','ivc','lev','LDP',
                             'lme','lturnover','noa','nop','o2p','oa','ol','pcm','pm','prof','q','rna','roa','roc','roe',
                             'roic','r_12_2','r_12_7','r_6_2','r_2_1','r_36_13','s2c','s2p','sales_g','sat','sga2s','tan']]
-paper_3_features
-
-
-# In[66]:
-
 
 # Add ticker name
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -483,30 +461,27 @@ sp500["permno"] = sp500["permno"].astype("Int64")
 sp500 = sp500["permno"].tolist()
 
 
-# In[68]:
+# In[20]:
 
 
 # Save to csv
+
 paper_3_features = paper_3_features[paper_3_features["permno"].isin(sp500)]
+
 paper_3_features = paper_3_features[['date','permno','ticker','a2me','ato','beme','c','c2d','cto','debt2p','ceq_pctchange','gm_sales_pctchange','so_pctchange',
                             'shrout_pctchange','pi2a_pctchange','e2p','eps','free_cf','investment','ipm','ivc','lev','LDP',
                             'lme','lturnover','noa','nop','o2p','oa','ol','pcm','pm','prof','q','rna','roa','roc','roe',
                             'roic','r_12_2','r_12_7','r_6_2','r_2_1','r_36_13','s2c','s2p','sales_g','sat','sga2s','tan']]
-#paper_3_features = pd.merge(paper_3_features, crsp_stocknames[["ticker", "permno"]], how="left", on=["permno"])
+
 paper_3_features = paper_3_features.reset_index(drop=True)
-paper_3_features
-
-
-# In[69]:
-
 
 paper_3_features.to_csv('../result/paper3/paper3_features.csv')
 
 
-# In[70]:
+# In[21]:
 
 
-# 16 yet to be implemented
+# 16 yet to be implemented (due to unclear definitions - need to clarify with author)
 
 # aoa
 # beme_adj

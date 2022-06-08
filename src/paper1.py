@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[5]:
 
 
 #WRDS login details are as follows:
@@ -10,51 +10,45 @@
 #password: WRDSaccess_135@
 
 
-# In[2]:
+# In[6]:
 
+
+# Import libraries
 
 import wrds
 import json
 import warnings
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-# Load config file
-with open('config.json') as config_file:
-    data = json.load(config_file)
+import pandas as pd
+import numpy as np
+import os
+import datetime
+from pandas.tseries.offsets import *
 
+
+# In[7]:
+
+
+# Load config file
+with open('paper1_config.json') as config_file:
+    data = json.load(config_file)
+    
+start_year = data['start_year']
+end_year = data['end_year']
 wrds_username = data['wrds_username']
+parm = {"start_year": start_year, "end_year": end_year}
+start_year_daily_data = data['start_year_daily_data']
 
 db = wrds.Connection(wrds_username=wrds_username)
 db.create_pgpass_file()
 db.close()
 
 
-# In[3]:
+# In[10]:
 
 
-#annual
-
-import wrds
-import pandas as pd
-import numpy as np
-import json
-import os
-import datetime
-from pandas.tseries.offsets import *
-
-# Load config file
-with open('config.json') as config_file:
-    data = json.load(config_file)
-
-start_year = data['start_year']
-end_year = data['end_year']
-wrds_username = data['wrds_username']
-
-parm = {"start_year": start_year, "end_year": end_year}
-
-# Create result directory
-if not os.path.isdir('../result/'):
-    os.mkdir("../result/")
+# Annual
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -420,7 +414,7 @@ raw_annual["avgat"] = (raw_annual["at"] + raw_annual["at_l1"]) / 2
 
 # Intermediate variable 8: cpi_data
 
-cpi_data = pd.read_csv("../src/cpi_data.csv")
+cpi_data = pd.read_csv("paper1/cpi_data.csv")
 cpi_data['DATE'] = pd.to_datetime(cpi_data['DATE'])
 cpi_data['DATE'] = cpi_data.DATE.dt.year.astype('float')
 cpi_data.rename(columns={'DATE':'fyear'}, inplace=True)
@@ -574,44 +568,11 @@ raw_annual = raw_annual[["permno", "datadate", "sic2", "absacc", "acc", "age", "
 "roic", "salecash", "saleinv", "salerec", "secured", "securedind", "sgr", "sin", "sp", "tang",
 "tb"]]
 
-# #Export 61 annual feature data to CSV file
-# raw_annual[["permno", "datadate", "sic2", "absacc", "acc", "age", "agr", "bm", "bm_ia", "cashdebt", "cashpr", "cfp", "cfp_ia", 
-# "chatoia", "chcsho", "chempia", "chinv", "chpmia", "convind", "currat", "depr", "divi", "divo",
-# "dy", "egr", "ep", "gma", "grcapx", "grltnoa", "herf", "hire", "invest", "lev",
-# "lgr", "mve_ia", "operprof", "orgcap", "pchcapx_ia", "pchcurrat", "pchdepr", "pchgm_pchsale", "pchquick", "pchsale_pchinvt",
-# "pchsale_pchrect", "pchsale_pchxsga", "pchsaleinv", "pctacc", "ps", "quick", "rd", "rd_mve", "rd_sale", "realestate",
-# "roic", "salecash", "saleinv", "salerec", "secured", "securedind", "sgr", "sin", "sp", "tang",
-# "tb"]].to_csv("../result/annual_features.csv", index = False)
 
-# print("annual_features.csv saved to result folder")
+# In[11]:
 
 
-# In[5]:
-
-
-#quarter
-
-import wrds
-import pandas as pd
-import numpy as np
-import json
-import os
-import datetime
-from pandas.tseries.offsets import *
-
-# Load config file
-with open('config.json') as config_file:
-    data = json.load(config_file)
-
-start_year = data['start_year']
-end_year = data['end_year']
-wrds_username = data['wrds_username']
-
-parm = {"start_year": start_year, "end_year": end_year}
-
-# Create result directory
-if not os.path.isdir('../result/'):
-    os.mkdir("../result/")
+# Quarter
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -803,10 +764,6 @@ comp_annual1 = conn.raw_sql("""
 
 conn.close()
 
-
-# In[6]:
-
-
 comp_annual1 = comp_annual1.merge(comp_crsp_link[["gvkey", "permno"]], how="left", on=["gvkey"])
 comp_annual1["permno"] = comp_annual1["permno"].astype("Int64")
 comp_annual1["datadate"] = pd.to_datetime(comp_annual1["datadate"])
@@ -844,19 +801,6 @@ comp_annual1["m4"] = np.where(comp_annual1["xrdint"] > comp_annual1["md_xrdint"]
 comp_annual1["m5"] = np.where(comp_annual1["capxint"] > comp_annual1["md_capxint"], 1, 0)
 comp_annual1["m6"] = np.where(comp_annual1["xadint"] > comp_annual1["md_xadint"], 1, 0)
 
-# raw_annual["m1"] = np.select([raw_annual["roa"] > raw_annual["md_roa"], raw_annual["roa"] <= raw_annual["md_roa"]], 
-#                              [1, 0], default = np.nan)
-# raw_annual["m2"] = np.select([raw_annual["cfroa"] > raw_annual["md_cfroa"], raw_annual["cfroa"] <= raw_annual["md_cfroa"]], 
-#                              [1, 0], default = np.nan)
-# raw_annual["m3"] = np.select([raw_annual["oancf"] > raw_annual["ni"], raw_annual["oancf"] <= raw_annual["ni"]], 
-#                              [1, 0], default = np.nan)
-# raw_annual["m4"] = np.select([raw_annual["xrdint"] > raw_annual["md_xrdint"], raw_annual["xrdint"] <= raw_annual["md_xrdint"]], 
-#                              [1, 0], default = np.nan)
-# raw_annual["m5"] = np.select([raw_annual["capxint"] > raw_annual["md_capxint"], raw_annual["capxint"] <= raw_annual["md_capxint"]], 
-#                              [1, 0], default = np.nan)
-# raw_annual["m6"] = np.select([raw_annual["xadint"] > raw_annual["md_xadint"], raw_annual["xadint"] <= raw_annual["md_xadint"]], 
-#                              [1, 0], default = np.nan)
-
 # Merge to raw_quarter
 merge_cols = ["permno", "fyear", "m1", "m2", "m3", "m4", "m5", "m6"]
 raw_quarter = pd.merge(raw_quarter, comp_annual1[merge_cols], how="left", 
@@ -879,19 +823,8 @@ raw_quarter = pd.merge(raw_quarter, df_temp, how="left", on=["fyear", "sic2"])
 raw_quarter["m7"] = np.where(raw_quarter["roavol"] < raw_quarter["md_roavol"], 1, 0)
 raw_quarter["m8"] = np.where(raw_quarter["sgrvol"] < raw_quarter["md_sgrvol"], 1, 0)
 
-# raw_quarter["m7"] = np.select([raw_quarter["roavol"] < raw_quarter["md_roavol"], raw_quarter["roavol"] >= raw_quarter["md_roavol"]],
-#                               [1, 0], default = np.nan)
-# raw_quarter["m8"] = np.select([raw_quarter["sgrvol"] < raw_quarter["md_sgrvol"], raw_quarter["sgrvol"] >= raw_quarter["md_sgrvol"]],
-#                               [1, 0], default = np.nan)
-
 # Calculate final value
 raw_quarter["ms"] = raw_quarter["m1"] + raw_quarter["m2"] + raw_quarter["m3"] + raw_quarter["m4"] +                     raw_quarter["m5"] + raw_quarter["m6"] + raw_quarter["m7"] + raw_quarter["m8"]
-
-# raw_quarter["ms"] = np.where((raw_quarter["m1"].notnull() & raw_quarter["m2"].notnull() & raw_quarter["m3"].notnull() &
-#                               raw_quarter["m4"].notnull() & raw_quarter["m5"].notnull() & raw_quarter["m6"].notnull() & 
-#                               raw_quarter["m7"].notnull() & raw_quarter["m8"].notnull()), 
-#                              raw_quarter["m1"] + raw_quarter["m2"] + raw_quarter["m3"] + raw_quarter["m4"] + 
-#                              raw_quarter["m5"] + raw_quarter["m6"] + raw_quarter["m7"] + raw_quarter["m8"], np.nan)
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -999,51 +932,14 @@ raw_quarter = raw_quarter.drop_duplicates(subset=['permno', 'datadate'])
 raw_quarter = raw_quarter[["permno", "datadate", "cash", "chtx", "roaq", "roeq", "rsup", 
               "cinvest", "nincr", "roavol", "stdacc", "stdcf", "ms", "ear", "aeavol"]]
 
-# # Save to csv
-# raw_quarter[["permno", "datadate", "cash", "chtx", "roaq", "roeq", "rsup", 
-#              "cinvest", "nincr", "roavol", "stdacc", "stdcf", "ms", "ear", "aeavol"]].to_csv("../result/quarter_features.csv", index = False)
 
-# print("quarter_features.csv saved to result folder")
+# In[12]:
 
 
-# In[7]:
-
-
-#month
-
-import wrds
-import pandas as pd
-import numpy as np
-import json
-import os
-from pandas.tseries.offsets import *
-
-# Load config file
-with open('config.json') as config_file:
-    data = json.load(config_file)
-
-start_year = data['start_year']
-end_year = data['end_year']
-wrds_username = data['wrds_username']
-
-parm = {"start_year": start_year, "end_year": end_year}
-
-# Create result directory
-if not os.path.isdir('../result/'):
-    os.mkdir("../result/")
+# Month
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
-
-# crsp_msf = conn.raw_sql("""
-#                         /*identifier*/
-#                         select permno, cusip,
-#                         /*variables of interest*/
-#                         date, ret, retx, prc, shrout, vol                      
-#                         from crsp.msf 
-#                         where date >= '01/01/%(start_year)s'
-#                         and date <= '12/31/%(end_year)s'
-#                         """, params=parm)
 
 crsp_msf = conn.raw_sql("""
                       select a.ret, a.retx, a.prc, a.shrout, a.vol, a.date, a.permno 
@@ -1062,7 +958,6 @@ crsp_dlret = conn.raw_sql("""
                           select permno, dlret, dlstdt 
                           from crsp.msedelist
                           """)
-
 
 crsp_msf["permno"] = crsp_msf["permno"].astype("Int64")
 crsp_msf["date"] = pd.to_datetime(crsp_msf["date"])
@@ -1179,39 +1074,13 @@ raw_month["pricedelay"] = ""
 raw_month = raw_month[["permno", "date", "date_std", "ret", "total_ret", "chmom", "mom1m", "mom6m", "mom12m", "mom36m", 
             "turn", "dolvol", "indmom", "mvel1", "shrout", "prc", "beta", "betasq", "pricedelay"]]
 
-# # Save to csv
-# raw_month[["permno", "date", "date_std", "ret", "total_ret", "chmom", "mom1m", "mom6m", "mom12m", "mom36m", 
-#            "turn", "dolvol", "indmom", "mvel1", "shrout", "prc", "beta", "betasq", "pricedelay"]].to_csv("../result/month_features.csv", index = False)
 
-# print("month_features.csv saved to result folder")
-
-
-# In[8]:
+# In[13]:
 
 
 #daily
 
-import wrds
-import pandas as pd
-import numpy as np
-import os
-import json
-from pandas.tseries.offsets import *
-
-# Load config file
-with open('config.json') as config_file:
-    data = json.load(config_file)
-
-start_year = data['start_year']
-start_year_daily_data = data['start_year_daily_data']
-end_year = data['end_year']
-wrds_username = data['wrds_username']
-
 parm = {"start_year": start_year_daily_data, "end_year": end_year}
-
-# Create result directory
-if not os.path.isdir('../result/'):
-    os.mkdir("../result/")
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -1319,32 +1188,15 @@ df_idiovol.rename(columns={"weekly_moving_abrd_std": "idiovol"}, inplace=True)
 daily_features = pd.merge(daily_features, df_idiovol, how="left", on=["permno", "yyyy-mm"])
 daily_features = daily_features.sort_values(by=['permno','yyyy-mm'])
 
-# # Save to csv
-# daily_features.to_csv("../result/daily_features.csv", index = False)
 
-# print("daily_features.csv saved to result folder")
+# In[ ]:
 
 
-# In[19]:
+# Merge Annual, Quarter, Month and Daily dataframes
 
-
-#merge
-
-import wrds
-import pandas as pd
-import numpy as np
-import json
-from pandas.tseries.offsets import *
-
-with open('config.json') as config_file:
-    data = json.load(config_file)
-
-start_year = data['start_year']
 start_year_sp500_companies = data['start_year_sp500_companies']
-end_year = data['end_year']
 annual_lag = data['annual_lag']
 quarterly_lag = data['quarterly_lag']
-wrds_username = data['wrds_username']
 sp500_companies_subset = data['S&P500_companies_only']
 
 parm = {"start_year": start_year, "end_year": end_year}
@@ -1357,10 +1209,6 @@ annual = raw_annual
 quarter = raw_quarter
 month = raw_month
 daily = daily_features
-
-
-# In[34]:
-
 
 # Add ticker name
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -1435,16 +1283,5 @@ combined[annual_cols] = combined[annual_cols].ffill(axis=0, limit=12)
 
 sp500_subset = combined[combined["permno"].isin(sp500)]
 
-
-# In[42]:
-
-
-# Save to csv (all companies)
-if sp500_companies_subset == "Yes":
-	sp500_subset = combined[combined["permno"].isin(sp500)]
-	sp500_subset.to_csv("../result/all_features_sp500_companies.csv", index=False)
-	print("all_features_sp500_companies.csv saved to result folder")
-else:
-	combined.to_csv("../result/all_features_all_companies.csv", index=False)
-	print("all_features_all_companies.csv saved to result folder")
+sp500_subset.to_csv("../result/paper1/paper1_features.csv", index=False)
 

@@ -1,22 +1,28 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
-from IPython.core.display import display, HTML
-display(HTML("<style>.container { width:90% !important; }</style>"))
-
-
-# In[2]:
+# In[9]:
 
 
 import pandas as pd
+import json
 from fredapi import Fred
 from pandas.tseries.offsets import *
 
 
-# In[3]:
+# In[17]:
+
+
+# Load config file
+with open('paper5_config.json') as config_file:
+    data = json.load(config_file)
+
+start_date = data['start_date']
+end_date = data['end_date']
+wrds_username = data['wrds_username']
+
+
+# In[18]:
 
 
 df_fred_md = pd.read_csv("https://files.stlouisfed.org/files/htdocs/fred-md/monthly/current.csv")
@@ -34,18 +40,18 @@ paper_5_features = df_fred_md[["sasdate","AAA","AAAFFM","ACOGNO","AMDMNOx","AMDM
               "USGOOD","USGOVT","USTPU","USTRADE","USWTRADE","W875RX1"]]
 
 
-# In[4]:
+# In[22]:
 
 
 paper_5_features = paper_5_features.query('20000101 <= sasdate < 20210131')
 paper_5_features = paper_5_features.reset_index(drop=True)
 
 
-# In[5]:
+# In[23]:
 
 
-start_date = '2000-01-01'
-end_date = '2020-12-31'
+# start_date = '2000-01-01'
+# end_date = '2020-12-31'
 
 # Fred API key: ab766afb0df13dba8492403a7865f852
 fred = Fred(api_key = 'ab766afb0df13dba8492403a7865f852')
@@ -61,16 +67,15 @@ df5['TWEXMMTH'] = fred.get_series('TWEXMMTH', observation_start=start_date, obse
 df5 = pd.DataFrame(df5)
 
 
-# In[6]:
+# In[24]:
 
 
 paper_5_features = pd.concat([paper_5_features, df5], axis=1)
 paper_5_features = paper_5_features.dropna(subset=['sasdate'])
 paper_5_features = paper_5_features.reset_index(drop=True)
-paper_5_features
 
 
-# In[7]:
+# In[25]:
 
 
 paper_5_features.to_csv('../result/paper5/paper5_features.csv')
@@ -79,7 +84,7 @@ paper_5_features.to_csv('../result/paper5/paper5_features.csv')
 # In[8]:
 
 
-# 7 features not implemented yet for Paper 5
+# 7 features not implemented yet for Paper 5 (data source unavailable)
 
 # NAPM
 # NAPMEI

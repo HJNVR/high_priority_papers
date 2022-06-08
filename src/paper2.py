@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[23]:
+# In[1]:
 
 
 #WRDS login details are as follows:
@@ -10,17 +10,10 @@
 #password: WRDSaccess_135@
 
 
-# In[24]:
+# In[2]:
 
 
-from IPython.core.display import display, HTML
-display(HTML("<style>.container { width:80% !important; }</style>"))
-
-
-# In[18]:
-
-
-# Generate macro variables
+# Import libraries
 
 import pandas as pd
 import os
@@ -30,22 +23,42 @@ from statistics import mean
 from full_fred.fred import Fred
 import yfinance as yf
 import wrds
-from pandas.tseries.offsets import *
+import json
 
-conn = wrds.Connection()
+
+# In[3]:
+
+
+# Load config file
+with open('paper2_config.json') as config_file:
+    data = json.load(config_file)
+    
+start_date = data['start_date']
+start_year = data['start_year']
+end_year = data['end_year']
+
+wrds_username = data['wrds_username']
+
+db = wrds.Connection(wrds_username=wrds_username)
+db.create_pgpass_file()
+db.close()
+
+
+# In[9]:
+
+
+# Generate macro variables
+
+conn = wrds.Connection(wrds_username=wrds_username)
 
 fred = Fred('paper2/fred-api.txt')
 raw_monthly = pd.read_csv('paper2/raw_monthly.csv', index_col = 'date')
 raw_quarterly = pd.read_csv('paper2/raw_quarterly.csv', index_col = 'date')
 raw_annual = pd.read_csv('paper2/raw_annual.csv', index_col = 'date')
 
-# Create result directory
-# if not os.path.isdir('../result'):
-#     os.mkdir("../result")
-
 # Query S&P500 data
 
-start_date = '1954-01-01'
+start_date = data['start_date']
 ticker = yf.Ticker("^GSPC")
 sp500_d = ticker.history(period="max")
 sp500_d = sp500_d[['Close']]
@@ -55,7 +68,7 @@ sp500_m['yyyy-mm'] = sp500_m.index.to_period('M')
 # Query DJIA data (historical data not available before 1992)
 
 ticker = '^DJI'
-start_date = '2020-01-02'
+start_date = data['start_date']
 djia_d = yf.download(ticker, start_date)
 djia_d = djia_d[['Close']]
 djia_m = djia_d.loc[djia_d.groupby(djia_d.index.to_period('M')).apply(lambda x: x.index.max())]
@@ -82,8 +95,8 @@ baa = clean_datasets(baa)
 
 # Query WRDS data
 
-wrds_nyse = conn.raw_sql("""select caldt, totval, vwretx from crsp_q_indexes.msia where caldt >= '1950-01-01'""")
-wrds_sp500 = conn.raw_sql("""select caldt, vwretd, vwretx from crsp_q_indexes.msp500 where caldt >= '1955-01-01'""")
+wrds_nyse = conn.raw_sql("""select caldt, totval, vwretx from crsp_q_indexes.msia where caldt >= '2000-01-01'""")
+wrds_sp500 = conn.raw_sql("""select caldt, vwretd, vwretx from crsp_q_indexes.msp500 where caldt >= '2000-01-01'""")
 
 # Calculate monthly data
 
@@ -106,7 +119,6 @@ lty1 = lty1[:'2019-12-31']
 lty['date'] = pd.to_datetime(lty['date'])
 lty2 = lty[['date', 'value']]
 lty2 = lty2.set_index('date', drop=True)
-# lty2 = lty2['2019-12-31':]
 lty2 = lty2['2020-01-01':]
 lty2.rename(columns={'value': 'lty'}, inplace=True)
 lty2['lty'] = lty2['lty'].astype(float)
@@ -229,26 +241,13 @@ monthly = pd.merge(monthly, eqis[['year', 'eqis']], on=['year'], how='left')
 monthly['eqis'] = monthly['eqis'].ffill(axis=0, limit=12)
 monthly = monthly.drop(["year"], axis=1)
 
-# Save data
-# monthly.to_csv("../result/generated_raw_variables.csv", index=False)
-# print("generated_raw_variables.csv saved to result folder")
 
-
-# In[25]:
+# In[12]:
 
 
 # Generate all macro features
 
-import numpy as np
-import pandas as pd
-
-#raw = pd.read_csv("../result/generated_raw_variables.csv")
-
 raw = monthly
-
-start_date = "2000-01-01"
-
-end_date = "2020-12-31"
 
 # Copy feature variables
 features = raw[['date', 'yyyy-mm', 'CRSP_SPvw', 'CRSP_SPvwx', 'Rfree', 'b/m', 'tbl', 'svar', 'ntis', 
@@ -260,18 +259,6 @@ features['d/p'] = np.log(raw['D12']) - np.log(raw['sp500'])
 
 #2 Earnings price ratio
 features['e/p'] = np.log(raw['E12']) - np.log(raw['sp500'])
-
-#3 Stock variance
-#features['svar'] 
-
-#4 Book-to-market ratio
-#features['b/m']
-
-#5 Net equity expansion
-#features['ntis']
-
-#6 Treasury bill rates
-#features['tbl']
 
 #7 Term spread
 features['tms'] = raw['lty'] - raw['tbl']
@@ -285,42 +272,15 @@ features['d/y'] = np.log(raw['D12']) - np.log(raw['sp500'].shift(1))
 #10 Dividend payout ratio
 features['d/e'] = np.log(raw['D12']) - np.log(raw['E12'])
 
-#11 Cross-sectional beta premium - not updated by Goyal
-#features['csp']
-
-#12 Percent equity issuing
-#features['eqis']
-
-#13 Long-term government bond yield
-#features['lty']
-
-#14 Long-term rate of returns
-#features['ltr']
-
 #15 Default return spread
 features['dfr'] = raw['corpr'] - raw['ltr']
 
-#16 Inflation
-#features['infl']
-
-#17 Investment to capital ratio
-#features['ik']
-
 # Start at chosen start date
-features = features.loc[(features['date'] >= start_date) & (features['date'] <= end_date)]
-
-features["date"] = features["date"] + MonthEnd(0)
-
-features = features.reset_index(drop=True) 
-
-features = features[['date','d/p','d/y','e/p','d/e','svar','b/m','ntis',
-                    'eqis','tbl','lty','ltr','tms','dfy','dfr','infl','ik']]
+features = features[features['date'] >= start_date]
 
 features
 
-features.to_csv("../result/paper2_features.csv", index=False)
-
-# print("generated_all_features.csv saved to result folder")
+features.to_csv("../result/paper2/paper2_features.csv", index=False)
 
 
 # In[ ]:

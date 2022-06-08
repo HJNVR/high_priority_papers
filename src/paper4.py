@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[1]:
 
 
 #WRDS login details are as follows:
@@ -10,14 +10,7 @@
 #password: WRDSaccess_135@
 
 
-# In[15]:
-
-
-from IPython.core.display import display, HTML
-display(HTML("<style>.container { width:80% !important; }</style>"))
-
-
-# In[16]:
+# In[2]:
 
 
 import wrds
@@ -28,7 +21,7 @@ import os
 from pandas.tseries.offsets import *
 
 # Load config file
-with open('config.json') as config_file:
+with open('paper4_config.json') as config_file:
     data = json.load(config_file)
 
 start_year = data['start_year']
@@ -40,7 +33,7 @@ parm = {"start_year": start_year, "end_year": end_year}
 parm_sp500 = {"start_year": start_year, "end_year": end_year}
 
 
-# In[17]:
+# In[3]:
 
 
 # Query data from WRDS
@@ -59,10 +52,6 @@ crsp_msf = conn.raw_sql("""
                       """, params=parm)
 
 conn.close()
-
-
-# In[18]:
-
 
 # Query data from WRDS
 conn = wrds.Connection(wrds_username=wrds_username)
@@ -139,7 +128,7 @@ raw_annual['sic'] = pd.to_numeric(raw_annual['sic'])
 raw_annual['sic2'] = pd.to_numeric(raw_annual['sic2'])
 
 
-# In[19]:
+# In[4]:
 
 
 month = crsp_msf.copy()
@@ -152,16 +141,8 @@ annual = raw_annual.copy()
 annual["datadate"] = pd.to_datetime(annual["datadate"])
 annual["date_std"] = annual["datadate"] + MonthEnd(0)
 
-
-# In[20]:
-
-
 combined = pd.merge(month, annual, how="left", on=["permno", "date_std"])
 combined.sort_values(["permno", "date_std"], inplace=True)
-
-
-# In[21]:
-
 
 annual_cols = ['gvkey', 'cusip', 'datadate', 'fyear', 'cik', 'sic2', 'sic', 'naics',
        'sale', 'revt', 'cogs', 'xsga', 'dp', 'xrd', 'xad', 'ib', 'ebitda',
@@ -177,7 +158,7 @@ annual_cols = ['gvkey', 'cusip', 'datadate', 'fyear', 'cik', 'sic2', 'sic', 'nai
 combined[annual_cols] = combined[annual_cols].ffill(axis=0, limit=12)
 
 
-# In[22]:
+# In[5]:
 
 
 # Calculate features
@@ -393,18 +374,13 @@ combined['prc'] = np.log(combined['market_equity_l1'] / combined['shrout_l1'])
 combined['shrout_3monthmovingaverage'] = combined.shrout.rolling(3).mean()
 combined['shvol'] = combined['shrout_3monthmovingaverage'] / combined['shrout_l1']
 
-
-# In[23]:
-
-
 paper_4_features = combined[['date','permno','size','value','prof','valprof','nissa','growth','aturnover','gmargins',
                              'divp','ep','cfp','noa','inv','invcap','inv_growth','sgrowth','lev','roaa','roea',
                             'sp','mom','mom12','momrev','lrrev','valuem','nissm','roe','rome','roa','strev','ciss',
                             'prc','shvol']]
-paper_4_features
 
 
-# In[24]:
+# In[7]:
 
 
 # Add ticker name
@@ -434,30 +410,26 @@ sp500["permno"] = sp500["permno"].astype("Int64")
 sp500 = sp500["permno"].tolist()
 
 
-# In[25]:
+# In[8]:
 
 
 # Save to csv
 paper_4_features = paper_4_features[paper_4_features["permno"].isin(sp500)]
+
 paper_4_features = paper_4_features[['date','permno','ticker','size','value','prof','valprof','nissa','growth','aturnover','gmargins',
                              'divp','ep','cfp','noa','inv','invcap','inv_growth','sgrowth','lev','roaa','roea',
                             'sp','mom','mom12','momrev','lrrev','valuem','nissm','roe','rome','roa','strev','ciss',
                             'prc','shvol']]
-#paper_4_features = pd.merge(paper_4_features, crsp_stocknames[["ticker", "permno"]], how="left", on=["permno"])
+
 paper_4_features = paper_4_features.reset_index(drop=True)
-paper_4_features
-
-
-# In[26]:
-
 
 paper_4_features.to_csv('../result/paper4/paper4_features.csv')
 
 
-# In[27]:
+# In[ ]:
 
 
-#17 features yet to be implemented
+#17 features yet to be implemented (due to unclear definitions - need to clarify with author)
 
 # Piotroski’s F-score
 # Debt Issuance
@@ -476,224 +448,4 @@ paper_4_features.to_csv('../result/paper4/paper4_features.csv')
 # Industry Relative Reversals (Low Volatility)
 # Industry Momentum-Reversal
 # Firm Age
-
-
-# In[28]:
-
-
-# Calculate features
-
-# WRDS financial ratios
-
-1. P/E (Diluted, Excl. EI) (pe_exi) – Valuation. Price-to-Earnings, excl. Extraordinary
-Items (diluted).
-
-2. P/E (Diluted, Incl. EI) (pe_inc) – Valuation. Price-to-Earnings, incl. Extraordinary
-Items (diluted).
-
-3. Price/Sales (ps) – Valuation. Multiple of Market Value of Equity to Sales.
-
-4. Price/Cash flow (pcf ) – Valuation. Multiple of Market Value of Equity to Net Cash Flow
-from Operating Activities.
-
-5. Enterprise Value Multiple (evm) – Valuation. Multiple of Enterprise Value to EBITDA.
-
-6. Book/Market (bm) – Valuation. Book Value of Equity as a fraction of Market Value of
-Equity.
-
-7. Shiller’s Cyclically Adjusted P/E Ratio (capei) – Valuation. Multiple of Market Value
-of Equity to 5-year moving average of Net Income.
-
-8. Dividend Payout Ratio (dpr) – Valuation. Dividends as a fraction of Income Before Extra.
-Items.
-
-9. Net Profit Margin (npm) – Profitability. Net Income as a fraction of Sales.
-
-10. Operating Profit Margin Before Depreciation (opmbd) – Profitability. Operating Income
-Before Depreciation as a fraction of Sales.
-
-11. Operating Profit Margin After Depreciation (opmad) – Profitability. Operating Income
-After Depreciation as a fraction of Sales.
-
-12. Gross Profit Margin (gpm) – Profitability. Gross Profit as a fraction of Sales.
-
-13. Pre-tax Profit Margin (ptpm) – Profitability. Pretax Income as a fraction of Sales.
-
-14. Cash Flow Margin (cfm) – Financial Soundness. Income before Extraordinary Items and
-Depreciation as a fraction of Sales.
-
-15. Return on Assets (roa) – Profitability. Operating Income Before Depreciation as a fraction
-of average Total Assets based on most recent two periods.
-
-16. Return on Equity (roe) – Profitability. Net Income as a fraction of average Book Equity
-based on most recent two periods, where Book Equity is defined as the sum of Total Parent
-Stockholders’ Equity and Deferred Taxes and Investment Tax Credit.
-
-17. Return on Capital Employed (roce) – Profitability. Earnings Before Interest and Taxes
-as a fraction of average Capital Employed based on most recent two periods, where Capital
-Employed is the sum of Debt in Long-term and Current Liabilities and Common/Ordinary
-Equity.
-
-18. After-tax Return on Average Common Equity (aftret_eq) – Profitability. Net Income
-as a fraction of average of Common Equity based on most recent two periods.
-
-19. After-tax Return on Invested Capital (aftret_invcapx) – Profitability. Net Income plus
-Interest Expenses as a fraction of Invested Capital.
-
-20. After-tax Return on Total Stockholders’ Equity (aftret_equity) – Profitability. Net
-Income as a fraction of average of Total Shareholders’ Equity based on most recent two
-periods.
-
-21. Pre-tax return on Net Operating Assets (pretret_noa) – Profitability. Operating Income
-After Depreciation as a fraction of average Net Operating Assets (NOA) based on most
-recent two periods, where NOA is defined as the sum of Property Plant and Equipment and
-Current Assets minus Current Liabilities.
-
-22. Pre-tax Return on Total Earning Assets (pretret_earnat) – Profitability. Operating
-Income After Depreciation as a fraction of average Total Earnings Assets (TEA) based on
-most recent two periods, where TEA is defined as the sum of Property Plant and Equipment
-and Current Assets.
-
-23. Common Equity/Invested Capital (equity_invcap) – Capitalization. Common Equity
-as a fraction of Invested Capital.
-
-24. Long-term Debt/Invested Capital (debt_invcap) – Capitalization. Long-term Debt as
-a fraction of Invested Capital.
-
-25. Total Debt/Invested Capital (totdebt_invcap) – Capitalization. Total Debt (Long-term
-and Current) as a fraction of Invested Capital.
-
-26. Interest/Average Long-term Debt (int_debt) – Financial Soundness. Interest as a fraction
-of average Long-term debt based on most recent two periods.
-
-27. Interest/Average Total Debt (int_totdebt) – Financial Soundness. Interest as a fraction
-of average Total Debt based on most recent two periods.
-
-28. Cash Balance/Total Liabilities (cash_lt) – Financial Soundness. Cash Balance as a
-fraction of Total Liabilities.
-
-29. Inventory/Current Assets (invt_act) – Financial Soundness. Inventories as a fraction of
-Current Assets.
-
-30. Receivables/Current Assets (rect_act) – Financial Soundness. Accounts Receivables as
-a fraction of Current Assets.
-
-31. Total Debt/Total Assets (debt_at) – Solvency. Total Liabilities as a fraction of Total
-Assets.
-
-32. Short-Term Debt/Total Debt (short_debt) – Financial Soundness. Short-term Debt as
-a fraction of Total Debt.
-
-33. Current Liabilities/Total Liabilities (curr_debt) – Financial Soundness. Current Liabilities
-as a fraction of Total Liabilities.
-
-34. Long-term Debt/Total Liabilities (lt_debt) – Financial Soundness. Long-term Debt as
-a fraction of Total Liabilities.
-
-35. Free Cash Flow/Operating Cash Flow (fcf_ocf ) – Financial Soundness. Free Cash
-Flow as a fraction of Operating Cash Flow, where Free Cash Flow is defined as the difference
-between Operating Cash Flow and Capital Expenditures.
-
-36. Advertising Expenses/Sales (adv_sale) – Other. Advertising Expenses as a fraction of
-Sales.
-
-37. Profit Before Depreciation/Current Liabilities (profit_lct) – Financial Soundness. Operating
-Income before D&A as a fraction of Current Liabilities.
-
-38. Total Debt/EBITDA (debt_ebitda) – Financial Soundness. Gross Debt as a fraction of
-EBITDA.
-
-39. Operating CF/Current Liabilities (ocf_lct) – Financial Soundness. Operating Cash
-Flow as a fraction of Current Liabilities.
-
-40. Total Liabilities/Total Tangible Assets (lt_ppent) – Financial Soundness. Total Liabilities
-to Total Tangible Assets.
-
-41. Long-term Debt/Book Equity (dltt_be) – Financial Soundness. Long-term Debt to Book
-Equity.
-
-42. Total Debt/Total Assets (debt_assets) – Solvency. Total Debt as a fraction of Total
-Assets.
-
-43. Total Debt/Capital (debt_capital) – Solvency. Total Debt as a fraction of Total Capital,
-where Total Debt is defined as the sum of Accounts Payable and Total Debt in Current and
-Long-term Liabilities, and Total Capital is defined as the sum of Total Debt and Total Equity
-(common and preferred).
-
-44. Total Debt/Equity (de_ratio) – Solvency. Total Liabilities to Shareholders’ Equity (common
-and preferred).
-
-45. After-tax Interest Coverage (intcov) – Solvency. Multiple of After-tax Income to Interest
-and Related Expenses.
-
-46. Cash Ratio (cash_ratio) – Liquidity. Cash and Short-term Investments as a fraction of
-Current Liabilities.
-
-47. Quick Ratio (Acid Test) (quick_ratio) – Liquidity. Quick Ratio: Current Assets net of
-Inventories as a fraction of Current Liabilities.
-
-48. Current Ratio (curr_ratio) – Liquidity. Current Assets as a fraction of Current Liabilities.
-
-49. Capitalization Ratio (capital_ratio) – Capitalization. Total Long-term Debt as a fraction
-of the sum of Total Long-term Debt, Common/Ordinary Equity and Preferred Stock.
-
-50. Cash Flow/Total Debt (cash_debt) – Financial Soundness. Operating Cash Flow as a
-fraction of Total Debt.
-
-51. Inventory Turnover (inv_turn) – Efficiency. COGS as a fraction of the average Inventories
-based on the most recent two periods.
-
-52. Asset Turnover (at_turn) – Efficiency. Sales as a fraction of the average Total Assets based
-on the most recent two periods.
-
-53. Receivables Turnover (rect_turn) – Efficiency. Sales as a fraction of the average of Accounts
-Receivables based on the most recent two periods.
-
-54. Payables Turnover (pay_turn) – Efficiency. COGS and change in Inventories as a fraction
-of the average of Accounts Payable based on the most recent two periods.
-
-55. Sales/Invested Capital (sale_invcap) – Efficiency. Sales per dollar of Invested Capital.
-
-56. Sales/Stockholders Equity (sale_equity) – Efficiency. Sales per dollar of total Stockholders’
-Equity.
-
-57. Sales/Working Capital (sale_nwc) – Efficiency. Sales per dollar of Working Capital,
-defined as difference between Current Assets and Current Liabilities.
-
-58. Research and Development/Sales (RD_SALE) – Other. R&D expenses as a fraction of
-Sales.
-
-59. Accruals/Average Assets (Accrual) – Other. Accruals as a fraction of average Total Assets
-based on most recent two periods.
-
-60. Gross Profit/Total Assets (GProf ) – Profitability. Gross Profitability as a fraction of
-Total Assets.
-
-61. Book Equity (be) – Other. Firm size as measured by total book equity.
-
-62. Cash Conversion Cycle (Days) (cash_conversion) – Liquidity. Inventories per daily
-COGS plus Account Receivables per daily Sales minus Account Payables per daily COGS.
-
-63. Effective Tax Rate (efftax) – Profitability. Income Tax as a fraction of Pretax Income.
-
-64. Interest Coverage Ratio (intcov_ratio) – Solvency. Multiple of Earnings Before Interest
-and Taxes to Interest and Related Expenses.
-
-65. Labor Expenses/Sales (staff_sale) – Other. Labor Expenses as a fraction of Sales.
-
-66. Dividend Yield (divyield) – Valuation. Indicated Dividend Rate as a fraction of Price.
-
-67. Price/Book (ptb) – Valuation. Multiple of Market Value of Equity to Book Value of Equity.
-
-68. Trailing P/E to Growth (PEG) ratio (PEG_trailing) – Valuation. Price-to-Earnings,
-excl. Extraordinary Items (diluted) to 3-Year past EPS Growth.
-
-69-80. Return in Month t − i (ret_lagi) – Other. Past one-month returns in months t − i for
-i = {1, ..., 12}.
-
-
-# In[ ]:
-
-
-
 

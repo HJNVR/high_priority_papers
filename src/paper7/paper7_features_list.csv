@@ -1,0 +1,179 @@
+No.,Feature name,Feature definition
+1,RPI,Real Personal Income    
+2,W875RX1,Real personal income ex transfer receipts 
+3,DPCERA3M086SBEA,Real personal consumption expenditures   
+4,CMRMTSPLx,Real Manu. and Trade Industries Sales 
+5,RETAILx,Retail and Food Services Sales  
+6,INDPRO,IP Index     
+7,IPFPNSS,IP: Final Products and Nonindustrial Supplies 
+8,IPFINAL,IP: Final Products (Market Group)  
+9,IPCONGD,IP: Consumer Goods    
+10,IPDCONGD,IP: Durable Consumer Goods   
+11,IPNCONGD,IP: Nondurable Consumer Goods   
+12,IPBUSEQ,IP: Business Equipment    
+13,IPMAT,IP: Materials     
+14,IPDMAT,IP: Durable Materials    
+15,IPNMAT,IP: Nondurable Materials    
+16,IPMANSICS,IP: Manufacturing (SIC)    
+17,IPB51222S,IP: Residential Utilities    
+18,IPFUELS,IP: Fuels     
+19,CUMFNS,Capacity Utilization: Manufacturing    
+20,HWI,Help-Wanted Index for United States  
+21,HWIURATIO,Ratio of Help Wanted/No. Unemployed  
+22,CLF16OV,Civilian Labor Force    
+23,CE16OV,Civilian Employment     
+24,UNRATE,Civilian Unemployment Rate    
+25,UEMPMEAN,Average Duration of Unemployment (Weeks)  
+26,UEMPLT5,Civilians Unemployed - Less Than 5 Weeks
+27,UEMP5TO14,Civilians Unemployed for 41760 Weeks  
+28,UEMP15OV,Civilians Unemployed - 15 Weeks & Over
+29,UEMP15T26,Civilians Unemployed for 15-26 Weeks  
+30,UEMP27OV,Civilians Unemployed for 27 Weeks and Over
+31,CLAIMSx,Initial Claims     
+32,PAYEMS,All Employees: Total nonfarm   
+33,USGOOD,All Employees: Goods-Producing Industries   
+34,CES1021000001,All Employees: Mining and Logging: Mining 
+35,USCONS,All Employees: Construction    
+36,MANEMP,All Employees: Manufacturing    
+37,DMANEMP,All Employees: Durable goods   
+38,NDMANEMP,All Employees: Nondurable goods   
+39,SRVPRD,All Employees: Service-Providing Industries   
+40,USTPU,"All Employees: Trade, Transportation & Utilities "
+41,USWTRADE,All Employees: Wholesale Trade   
+42,USTRADE,All Employees: Retail Trade   
+43,USFIRE,All Employees: Financial Activities   
+44,USGOVT,All Employees: Government    
+45,CES0600000007,Avg Weekly Hours : Goods-Producing  
+46,AWOTMAN,Avg Weekly Overtime Hours : Manufacturing 
+47,AWHMAN,Avg Weekly Hours : Manufacturing  
+48,HOUST,Housing Starts: Total New Privately Owned 
+49,HOUSTNE,"Housing Starts, Northeast    "
+50,HOUSTMW,"Housing Starts, Midwest    "
+51,HOUSTS,"Housing Starts, South    "
+52,HOUSTW,"Housing Starts, West    "
+53,PERMIT,New Private Housing Permits (SAAR)  
+54,PERMITNE,"New Private Housing Permits, Northeast (SAAR) "
+55,PERMITMW,"New Private Housing Permits, Midwest (SAAR) "
+56,PERMITS,"New Private Housing Permits, South (SAAR) "
+57,PERMITW,"New Private Housing Permits, West (SAAR) "
+58,AMDMNOx,New Orders for Durable Goods  
+59,AMDMUOx,Unlled Orders for Durable Goods  
+60,BUSINVx,Total Business Inventories    
+61,ISRATIOx,Total Business: Inventories to Sales Ratio 
+62,M1SL,M1 Money Stock    
+63,M2SL,M2 Money Stock    
+64,M2REAL,Real M2 Money Stock   
+65,AMBSL,St. Louis Adjusted Monetary Base  
+66,TOTRESNS,Total Reserves of Depository Institutions   
+67,NONBORRES,Reserves Of Depository Institutions    
+68,BUSLOANS,Commercial and Industrial Loans    
+69,REALLN,Real Estate Loans at All Commercial Banks 
+70,NONREVSL,Total Nonrevolving Credit     
+71,CONSPI,Nonrevolving consumer credit to Personal Income  
+72,S&P 500,S&P's Common Stock Price Index: Composite  
+73,S&P: indust,S&P's Common Stock Price Index: Industrials  
+74,S&P div yield,S&P's Composite Common Stock: Dividend Yield  
+75,S&P PE ratio,S&P's Composite Common Stock: Price-Earnings Ratio  
+76,FEDFUNDS,Eective Federal Funds Rate    
+77,CP3Mx,3-Month AA Financial Commercial Paper Rate  
+78,TB3MS,3-Month Treasury Bill     
+79,TB6MS,6-Month Treasury Bill     
+80,GS1,1-Year Treasury Rate     
+81,GS5,5-Year Treasury Rate     
+82,GS10,10-Year Treasury Rate     
+83,AAA,Moody's Seasoned Aaa Corporate Bond Yield  
+84,BAA,Moody's Seasoned Baa Corporate Bond Yield  
+85,COMPAPFFx,3-Month Commercial Paper Minus FEDFUNDS   
+86,TB3SMFFM,3-Month Treasury C Minus FEDFUNDS   
+87,TB6SMFFM,6-Month Treasury C Minus FEDFUNDS   
+88,T1YFFM,1-Year Treasury C Minus FEDFUNDS   
+89,T5YFFM,5-Year Treasury C Minus FEDFUNDS   
+90,T10YFFM,10-Year Treasury C Minus FEDFUNDS   
+91,AAAFFM,Moody's Aaa Corporate Bond Minus FEDFUNDS  
+92,BAAFFM,Moody's Baa Corporate Bond Minus FEDFUNDS  
+93,EXSZUSx,Switzerland / U.S. Foreign Exchange Rate  
+94,EXJPUSx,Japan / U.S. Foreign Exchange Rate  
+95,EXUSUKx,U.S. / U.K. Foreign Exchange Rate  
+96,EXCAUSx,Canada / U.S. Foreign Exchange Rate  
+97,WPSFD49207,PPI: Finished Goods     
+98,WPSFD49502,PPI: Finished Consumer Goods    
+99,WPSID61,PPI: Intermediate Materials     
+100,WPSID62,PPI: Crude Materials     
+101,OILPRICEx,"Crude Oil, spliced WTI and Cushing  "
+102,PPICMM,PPI: Metals and metal products   
+103,CPIAUCSL,CPI : All Items    
+104,CPIAPPSL,CPI : Apparel     
+105,CPITRNSL,CPI : Transportation     
+106,CPIMEDSL,CPI : Medical Care    
+107,CUSR0000SAC,CPI : Commodities     
+108,CUSR0000SAD,CPI : Durables     
+109,CUSR0000SAS,CPI : Services     
+110,CPIULFSL,CPI : All Items Less Food  
+111,CUSR0000SA0L2,CPI : All items less shelter  
+112,CUSR0000SA0L5,CPI : All items less medical care 
+113,PCEPI,Personal Cons. Expend.: Chain Index   
+114,DDURRG3M086SBEA,Personal Cons. Exp: Durable goods   
+115,DNDGRG3M086SBEA,Personal Cons. Exp: Nondurable goods   
+116,DSERRG3M086SBEA,Personal Cons. Exp: Services    
+117,CES0600000008,Avg Hourly Earnings : Goods-Producing   
+118,CES2000000008,Avg Hourly Earnings : Construction   
+119,CES3000000008,Avg Hourly Earnings : Manufacturing   
+120,MZMSL,MZM Money Stock     
+121,DTCOLNVHFNM,Consumer Motor Vehicle Loans Outstanding   
+122,DTCTHFNM,Total Consumer Loans and Leases Outstanding  
+123,INVEST,Securities in Bank Credit at All Commercial Banks
+124,VXOCLSx,CBOE S&P 100 Volatility Index: VXO  
+125,A2ME,Cross sectional Median of A2ME
+126,AC,Cross sectional Median of AC
+127,AT,Cross sectional Median of AT
+128,ATO,Cross sectional Median of ATO
+129,BEME,Cross sectional Median of BEME
+130,Beta,Cross sectional Median of Beta
+131,C,Cross sectional Median of C
+132,CF,Cross sectional Median of CF
+133,CF2P,Cross sectional Median of CF2P
+134,CTO,Cross sectional Median of CTO
+135,D2A,Cross sectional Median of D2A
+136,D2P,Cross sectional Median of D2P
+137,DPI2A,Cross sectional Median of DPI2A
+138,E2P,Cross sectional Median of E2P
+139,FC2Y,Cross sectional Median of FC2Y
+140,IdioVol,Cross sectional Median of IdioVol
+141,Investment,Cross sectional Median of Investment
+142,Lev,Cross sectional Median of Lev
+143,LME,Cross sectional Median of LME
+144,LT_Rev,Cross sectional Median of LT_Rev
+145,LTurnover,Cross sectional Median of LTurnover
+146,MktBeta,Cross sectional Median of MktBeta
+147,NI,Cross sectional Median of NI
+148,NOA,Cross sectional Median of NOA
+149,OA,Cross sectional Median of OA
+150,OL,Cross sectional Median of OL
+151,OP,Cross sectional Median of OP
+152,PCM,Cross sectional Median of PCM
+153,PM,Cross sectional Median of PM
+154,PROF,Cross sectional Median of PROF
+155,Q,Cross sectional Median of Q
+156,r2_1,Cross sectional Median of r2_1
+157,r12_2,Cross sectional Median of r12_2
+158,r12_7,Cross sectional Median of r12_7
+159,r36_13,Cross sectional Median of r36_13
+160,Rel2High,Cross sectional Median of Rel2High
+161,Resid,Cross sectional Median of Resid_Var
+162,RNA,Cross sectional Median of RNA
+163,ROA,Cross sectional Median of ROA
+164,ROE,Cross sectional Median of ROE
+165,S2P,Cross sectional Median of S2P
+166,SGA2S,Cross sectional Median of SGA2S
+167,Spread,Cross sectional Median of Spread
+168,ST_REV,Cross sectional Median of ST_REV
+169,SUV,Cross sectional Median of SUV
+170,Variance,Cross sectional Median of Variance
+171,dp,Dividend-price ratio   
+172,ep,Earnings-price ratio   
+173,bm,Book-to-market ratio   
+174,ntis,Net equity expansion  
+175,tbl,Treasury-bill rate   
+176,tms,Term spread   
+177,dfy,Default spread   
+178,svar,Stock variance   

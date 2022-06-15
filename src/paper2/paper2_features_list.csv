@@ -1,0 +1,18 @@
+No.,Feature name,Feature definition
+1,Stock returns,S&P 500 index returns from Center for Research in Security Press (CRSP) month-end values
+2,Risk-free Rate,Treasury-bill rate
+3,Dividend Price Ratio (d/p),the difference between the log of dividends and the log of prices
+4,The Dividend Yield (d/y),the difference between the log of dividends and the log of lagged prices
+5,Earnings,12-month moving sums of earnings on the S&P 500 index
+6,Earnings Price Ratio (e/p),difference between the log of earnings and the log of price
+7,Dividend Payout Ratio (d/e),difference between the log of dividends and the log of earnings
+8,Stock Variance (svar),sum of squared daily returns on the S&P 500.
+9,Cross-Sectional Premium (csp) ,relative valuations of high- and low-beta stocks
+10,Book Value,book value
+11,Book-to- Market Ratio (b/m),book value to market value for the Dow Jones Industrial Average
+12,Net Equity Expansion (ntis),12-month moving sums of net issues by NYSE listed stocks divided by the total end-of-year market capitalization of NYSE stocks
+13,Percent Equity Issuing (equis),ratio of equity issuing activity as a fraction of total issuing activity
+14,Long Term Yield (lty),long-term government bond yield
+15,Corporate Bond Returns,long-term corporate bond returns
+16,Inflation (infl),Consumer price index from bureau of labour statistics
+17,Investment to Capital Ratio (i/k),ratio of aggregate (private nonresidential fixed) investment to aggregate capital for the whole economy

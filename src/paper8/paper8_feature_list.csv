@@ -1,0 +1,95 @@
+No.,Feature name,Feature definition
+1,absacc,Absolute value of acc
+2,acc,Annual income before extraordinary items (ib) minus operating cash flows (oancf) divided by average total assets (at); if oancf is missing then set to change in act - change in che - change in lct + change in dlc + change in txp-dp
+3,aeavol,Average daily trading volume (vol) for 3 days around earnings announcement minus average daily volume for 1-month ending 2 weeks before earnings announcement divided by 1-month average daily volume. Earnings announcement day from Compustat quarterly (rdq)
+4,age,Number of years since first Compustat coverage
+5,agr,Annual percent change in total assets (at)
+6,baspread,Monthly average of daily bid-ask spread divided by average of daily spread
+7,beta,Estimated market beta from weekly returns and equal weighted market returns for 3 years ending month t-1 with at least 52 weeks of returns
+8,betasq,Market beta squared
+9,bm,Book value of equity (ceq) divided by end of fiscal year-end market capitalization
+10,bm_ia,Industry adjusted book-to-market ratio
+11,cash,Cash and cash equivalents divided by average total assets
+12,cashdebt,Earnings before depreciation and extraordinary items (ib+dp) divided by avg. total liabilities (lt)
+13,cashpr,Fiscal year-end market capitalization plus long-term debt (dltt) minus total assets (at) divided by cash and equivalents (che)
+14,cfp,Operating cash flows divided by fiscal-year-end market capitalization
+15,cfp_ia,Industry adjusted cfp
+16,chatoia,2-digit SIC - fiscal-year mean-adjusted change in sales (sale) divided by average total assets (at)
+17,chcsho,Annual percent change in shares outstanding (csho)
+18,chempia,Industry-adjusted change in number of employees
+19,chinv,Change in inventory (inv) scaled by average total assets (at)
+20,chmom,Cumulative returns from months t-6 to t-1 minus months t-12 to t-7
+21,chpmia,2-digit SIC - fiscal-year mean adjusted change in income before extraordinary items (ib) divided by sales (sale)
+22,chtx,Percent change in total taxes (txtq) from quartert-4 to t
+23,cinvest,"Change over one quarter in net PP&E (ppentq) divided by sales (saleq) - average of this variable for prior 3 quarters; if saleq = 0, then scale by 0.01"
+24,convind,An indicator equal to 1 if company has convertible debt obligations
+25,currat,Current assets / current liabilities
+26,depr,Depreciation divided by PP&E
+27,divi,An indicator variable equal to 1 if company pays dividends but did not in prior year
+28,divo,An indicator variable equal to 1 if company does not pay dividend but did in prior year
+29,dolvol,Natural log of trading volume times price per share from month t-2
+30,dy,Total dividends (dvt) divided by market capitalization at fiscal year-end
+31,ear,Sum of daily returns in three days around earnings announcement. Earnings announcement from Compustat quarterly file (rdq)
+32,egr,Annual percent change in book value of equity (ceq)
+33,ep,Annual income before extraordinary items (ib) divided by end of fiscal year market cap
+34,gma,Revenues (revt) minus cost of goods sold (cogs) divided by lagged total assets (at)
+35,grCAPX,Percent change in capital expenditures from yeart-2 to year t
+36,grltnoa,Growth in long-term net operating assets
+37,herf,2-digit SIC - fiscal-year sales concentration (sum of squared percent of sales in industry for each company).
+38,hire,Percent change in number of employees (emp)
+39,idiovol,Standard deviation of residuals of weekly returns on weekly equal weighted market returns for 3 years prior to month end
+40,ill,Average of daily (absolute return / dollar volume).
+41,indmom,Equal weighted average industry 12-month returns
+42,invest,"Annual change in gross property, plant, and equipment (ppegt) + annual change in inventories (invt) all scaled by lagged total assets (at)"
+43,lev,Total liabilities (lt) divided by fiscal year-end market capitalization
+44,lgr,Annual percent change in total liabilities (lt)
+45,maxret,Maximum daily return from returns during calendar month t-1
+46,mom12m,11-month cumulative returns ending one month before month end
+47,mom1m,1-month cumulative return
+48,mom36m,Cumulative returns from monthst-36 to t-13
+49,mom6m,5-month cumulative returns ending one month before month end
+50,ms,Sum of 8 indicator variables for fundamental performance
+51,mve,Natural log of market capitalization at end of month t-1
+52,mve_ia,2-digit SIC industry-adjusted fiscal year-end market capitalization
+53,nincr,Number of consecutive quarters (up to eight quarters) with an increase in earnings (ibq) over same quarter in the prior year
+54,operprof,Revenue minus cost of goods sold - SG&A expense - interest expense divided by lagged common shareholders’ equity
+55,orgcap,Capitalized SG&A expenses
+56,pchcapx_ia,2-digit SIC - fiscal-year mean-adjusted percent change in capital expenditures (capx)
+57,pchcurrat,Percent change in currat.
+58,pchdepr,Percent change in depr
+59,pchgm_pchsale,Percent change in gross margin (sale-cogs) minus percent change in sales (sale)
+60,pchquick,Percent change in quick
+61,pchsale_pchinvt,Annual percent change in sales (sale) minus annual percent change in inventory (invt).
+62,pchsale_pchrect,Annual percent change in sales (sale) minus annual percent change in receivables (rect)
+63,pchsale_pchxsga,Annual percent change in sales (sale) minus annual percent change in SG&A (xsga)
+64,pchsaleinv,Percent change in saleinv
+65,pctacc,Same as acc except that the numerator is divided by the absolute value of ib; if ib = 0 then ib set to 0.01 for denominator
+66,pricedelay,The proportion of variation in weekly returns for 36 months ending in montht explained by 4 lags of weekly market returns incremental to contemporaneous market return
+67,ps,Sum of 9 indicator variables to form fundamental health score
+68,quick,(current assets - inventory) / current liabilities
+69,rd,An indicator variable equal to 1 if R&D expense as a percentage of total assets has an increase greater than 5%.
+70,rd_mve,R&D expense divided by end-of-fiscal-year market capitalization
+71,rd_sale,R&D expense divided by sales (xrd/sale)
+72,realestate,Buildings and capitalized leases divided by gross PP&E
+73,retvol,Standard deviation of daily returns from month t-1
+74,roaq,Income before extraordinary items (ibq) divided by one quarter lagged total assets (atq)
+75,roavol,Standard deviation for 16 quarters of income before extraordinary items (ibq) divided by average total assets (atq)
+76,roeq,Earnings before extraordinary items divided by lagged common shareholders’ equity
+77,roic,Annual earnings before interest and taxes (ebit) minus nonoperating income (nopi) divided by non-cash enterprise value (ceq+lt-che)
+78,rsup,Sales from quarter t minus sales from quarter t-4 (saleq) divided by fiscal-quarter-end market capitalization (cshoq * prccq)
+79,salecash,Annual sales divided by cash and cash equivalents
+80,saleinv,Annual sales divided by total inventory
+81,salerec,Annual sales divided by accounts receivable
+82,secured,Total liability scaled secured debt
+83,securedind,An indicator equal to 1 if company has secured debt obligations
+84,sgr,Annual percent change in sales (sale)
+85,sin,"An indicator variable equal to 1 if a company’s primary industry classification is in smoke or tobacco, beer or alcohol, or gaming"
+86,sp,Annual revenue (sale) divided by fiscal year-end market capitalization
+87,std_dolvol,Monthly standard deviation of daily dollar trading volume
+88,std_turn,Monthly standard deviation of daily share turnover
+89,stdacc,"Standard deviation for 16 quarters of accruals (acc measured with quarterly Compustat) scaled by sales; if saleq = 0, then scale by 0.01"
+90,stdcf,"Standard deviation for 16 quarters of cash flows divided by sales (saleq); if saleq = 0, then scale by 0.01. Cash flows defined as ibq minus quarterly accruals"
+91,tang,Cash holdings + 0.715 × receivables +0.547 × inventory + 0.535 × PPE/ totl assets
+92,tb,"Tax income, calculated from current tax expense divided by maximum federal tax rate, divided by income before extraordinary items"
+93,turn,Average monthly trading volume for most recent 3 months scaled by number of shares outstanding in current month
+94,zerotrade,Turnover weighted number of zero trading days for most recent 1 month

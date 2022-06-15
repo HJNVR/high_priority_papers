@@ -1,0 +1,407 @@
+No.,Feature name,Feature definition
+1,D_log(DIV),"Log difference of the sum of the dividends in
+the last 4 quarters (divs are not reinvested)"
+2,D_log(P),"Log difference of the CRSP portfolio price
+when dividends are not reinvested"
+3,D_DIVreinveste,"Log difference of the sum of the dividends in
+the last 4 quarters (divs are reinvested)"
+4,D_Preinveste,"Log difference of the CRSP portfolio price
+when dividends are reinvested"
+5,d-p,"DIVreinveste - Preinveste ¼ log(DIV) -
+log(P)"
+6,P/E,Price/earnings ratio
+7,RREL,"Difference b/w Risk free and its last 4
+quarters average"
+8,Yield10y,Quarterly yield of bonds with maturity 10 years
+9,TRM10y-3m,"Difference b/w 10yTbonds rate and the risk
+free rate"
+10,Yield1y,"Yield from a t-bond with maturity one year
+(secondary mkt, nominal)"
+11,TRM10y-1y,Term spread b/w 10years and 1 year t-bonds.
+12,AAA,"AAA cor-porate bonds yield (Moody’s
+seasoned)"
+13,BAA,"BAA corporate bonds yield (Moody’s
+seasoned)"
+14,DEF,AAA-BAA yield: risk default spread
+15,RF,"One-month Treasury bill rate from French
+data set"
+16,R15-R11,"Small stock value spread constructed from
+French database"
+17,factor,"Piazzesi-Cochrane risk factor, quarterly
+average (Cochrane and Piazzesi, 2005)"
+18,CAY,"Lettau-Ludvigson risk factor (Lettau and
+Ludvigson, 2001a)"
+19,Mkt-RF,"Fama-French market risk factor (Fama and
+French, 1993)"
+20,SMB,"Fama-French risk factor (Fama and French,
+1993)"
+21,HML,"Fama-French risk factor (Fama and French,
+1993)"
+22,UMD,"Momentum risk factor, French data set"
+23,Agric,"Industry Returns 4 digit SIC codes, French
+data set"
+24,Food,"Industry Returns 4 digit SIC codes, French
+data set"
+25,Soda,"Industry Returns 4 digit SIC codes, French
+data set"
+26,Beer,"Industry Returns 4 digit SIC codes, French
+data set"
+27,Smoke,"Industry Returns 4 digit SIC codes, French
+data set"
+28,Toys,"Industry Returns 4 digit SIC codes, French
+data set"
+29,Fun,"Industry Returns 4 digit SIC codes, French
+data set"
+30,Books,"Industry Returns 4 digit SIC codes, French
+data set"
+31,Hshld,"Industry Returns 4 digit SIC codes, French
+data set"
+32,Clths,"Industry Returns 4 digit SIC codes, French
+data set"
+33,MedEq,"Industry Returns 4 digit SIC codes, French
+data set"
+34,Drugs,"Industry Returns 4 digit SIC codes, French
+data set"
+35,Chems,"Industry Returns 4 digit SIC codes, French
+data set"
+36,Rubbr,"Industry Returns 4 digit SIC codes, French
+data set"
+37,Txtls,"Industry Returns 4 digit SIC codes, French
+data set"
+38,BldMt,"Industry Returns 4 digit SIC codes, French
+data set"
+39,Cnstr,"Industry Returns 4 digit SIC codes, French
+data set"
+40,Steel,"Industry Returns 4 digit SIC codes, French
+data set"
+41,Mach,"Industry Returns 4 digit SIC codes, French
+data set"
+42,ElcEq,"Industry Returns 4 digit SIC codes, French
+data set"
+43,Autos,"Industry Returns 4 digit SIC codes, French
+data set"
+44,Aero,"Industry Returns 4 digit SIC codes, French
+data set"
+45,Ships,"Industry Returns 4 digit SIC codes, French
+data set"
+46,Mines,"Industry Returns 4 digit SIC codes, French
+data set"
+47,Coal,"Industry Returns 4 digit SIC codes, French
+data set"
+48,Oil,"Industry Returns 4 digit SIC codes, French
+data set"
+49,Util,"Industry Returns 4 digit SIC codes, French
+data set"
+50,Telcm,"Industry Returns 4 digit SIC codes, French
+data set"
+51,PerSv,"Industry Returns 4 digit SIC codes, French
+data set"
+52,BusSv,"Industry Returns 4 digit SIC codes, French
+data set"
+53,Comps,"Industry Returns 4 digit SIC codes, French
+data set"
+54,Chips,"Industry Returns 4 digit SIC codes, French
+data set"
+55,LabEq,"Industry Returns 4 digit SIC codes, French
+data set"
+56,Paper,"Industry Returns 4 digit SIC codes, French
+data set"
+57,Boxes,"Industry Returns 4 digit SIC codes, French
+data set"
+58,Trans,"Industry Returns 4 digit SIC codes, French
+data set"
+59,Whlsl,"Industry Returns 4 digit SIC codes, French
+data set"
+60,Rtail,"Industry Returns 4 digit SIC codes, French
+data set"
+61,Meals,"Industry Returns 4 digit SIC codes, French
+data set"
+62,Banks,"Industry Returns 4 digit SIC codes, French
+data set"
+63,Insur,"Industry Returns 4 digit SIC codes, French
+data set"
+64,RlEst,"Industry Returns 4 digit SIC codes, French
+data set"
+65,Fin,"Industry Returns 4 digit SIC codes, French
+data set"
+66,Other,"Industry Returns 4 digit SIC codes, French
+data set"
+67,1_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+68,1_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+69,1_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+70,1_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+71,1_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+72,1_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+73,1_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+74,1_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+75,2_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+76,2_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+77,2_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+78,2_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+79,2_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+80,2_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+81,2_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+82,2_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+83,2_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+84,2_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+85,3_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+86,3_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+87,3_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+88,3_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+89,3_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+90,3_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+91,3_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+92,3_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+93,3_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+94,3_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+95,4_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+96,4_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+97,4_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+98,4_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+99,4_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+100,4_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+101,4_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+102,4_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+103,4_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+104,4_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+105,5_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+106,5_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+107,5_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+108,5_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+109,5_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+110,5_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+111,5_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+112,5_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+113,5_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+114,5_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+115,6_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+116,6_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+117,6_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+118,6_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+119,6_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+120,6_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+121,6_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+122,6_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+123,6_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+124,6_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+125,7_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+126,7_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+127,7_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+128,7_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+129,7_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+130,7_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+131,7_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+132,7_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+133,7_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+134,8_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+135,8_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+136,8_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+137,8_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+138,8_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+139,8_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+140,8_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+141,8_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+142,8_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+143,8_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+144,9_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+145,9_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+146,9_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+147,9_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+148,9_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+149,9_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+150,9_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+151,9_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+152,9_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+153,10_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+154,10_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+155,10_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+156,10_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+157,10_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+158,10_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+159,10_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"

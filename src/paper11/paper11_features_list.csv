@@ -1,0 +1,162 @@
+No.,Feature name,Feature definition
+1,Day,which day of the week
+2,Close,Close price
+3,Vol,Relative change of volume
+4,MOM-1,Return of 2 days before
+5,MOM-2,Return of 3 days before
+6,MOM-3,Return of 4 days before
+7,ROC-5,5 days Rate of Change
+8,ROC-10,10 days Rate of Change
+9,ROC-15,15 days Rate of Change
+10,ROC-20,20 days Rate of Change
+11,EMA-10,10 days Exponential Moving Average
+12,EMA-20,20 days Exponential Moving Average
+13,EMA-50,50 days Exponential Moving Average
+14,EMA-200,200 days Exponential Moving Average
+15,DTB4WK,4-Week Treasury Bill: Secondary Market Rate
+16,DTB3,3-Month Treasury Bill: Secondary Market Rate
+17,DTB6,6-Month Treasury Bill: Secondary Market Rate
+18,DGS5,5-Year Treasury Constant Maturity Rate
+19,DGS10,10-Year Treasury Constant Maturity Rate
+20,DAAA,Moody’s Seasoned Aaa Corporate Bond Yield
+21,DBAA,Moody’s Seasoned Baa Corporate Bond Yield
+22,TE1,DGS10-DTB4WK
+23,TE2,DGS10-DTB3
+24,TE3,DGS10-DTB6
+25,TE5,DTB3-DTB4WK
+26,TE6,DTB6-DTB4WK
+27,DE1,DBAA-BAAA
+28,DE2,DBAA-DGS10
+29,DE4,DBAA-DTB6
+30,DE5,DBAA-DTB3
+31,DE6,DBAA-DTB4WK
+32,CTB3M,"Change in the market yield on U.S. Treasury securities at 3-month constant maturity,
+quoted on investment basis"
+33,CTB6M,"Change in the market yield on U.S. Treasury securities at 6-month constant maturity,
+quoted on investment basis"
+34,CTB1Y,"Change in the market yield on U.S. Treasury securities at 1-year constant maturity, quoted on investment basis"
+35,Oil,"Relative change of oil price (WTI), Oklahoma"
+36,Oil,Relative change of oil price (Brent)
+37,Oil,Relative change of oil price (WTI)
+38,Gold,Relative change of gold price (London market)
+39,Gold-F,Relative change of gold price futures
+40,XAU-USD,Relative change of gold spot U.S. dollar
+41,XAG-USD,Relative change of silver spot U.S. dollar
+42,Gas,Relative change of gas price
+43,Silver,Relative change of silver price
+44,Copper,Relative change of copper future
+45,IXIC,Return of NASDAQ Composite index
+46,GSPC,Return of S&P 500 index
+47,DJI,Return of Dow Jones Industrial Average
+48,NYSE,Return of NY stock exchange index
+49,RUSSELL,Return of RUSSELL 2000 index
+50,HSI,Return of Hang Seng index
+51,SSE,Return of Shang Hai Stock Exchange Composite index
+52,FCHI,Return of CAC 40
+53,FTSE,Return of FTSE 100
+54,GDAXI,Return of DAX
+55,USD-Y,Relative change in US dollar to Japanese yen exchange rate
+56,USD-GBP,Relative change in US dollar to Japanese yen exchange rate
+57,USD-CAD,Relative change in US dollar to Canadian dollar exchange rate
+58,USD-CNY,Relative change in US dollar to Chinese yuan exchange rate
+59,USD-AUD,Relative change in US dollar to Australian dollar exchange rate
+60,USD-NZD,USD-NZD Relative change in US dollar to New Zealand dollar exchange rate
+61,USD-CHF,Relative change in US dollar to Swiss franc exchange rate
+62,USD-EUR,Relative change in US dollar to Euro exchange rate
+63,USDX,Relative change in US dollar index
+64,XOM,Return of Exon Mobil Corporation
+65,JPM,Return of JPMorgan Chase & Co.
+66,AAPL,Return of Apple Inc.
+67,MSFT,Return of Microsoft Corporation
+68,GE,Return of General Electric Company
+69,JNJ,Return of Johnson & Johnson
+70,WFC,Return of Wells Fargo & Company
+71,AMZN,Return of Amazon.com Inc.
+72,FCHI-F,Return of CAC 40 Futures
+73,FTSE-F,Return of FTSE 100 Futures
+74,GDAXI-F,Return of DAX Futures
+75,HSI-F,Return of Hang Seng index Futures
+76,Nikkei-F,Return of Nikkei index Futures
+77,KOSPI-F,Return of Korean stock exchange Futures
+78,IXIC-F,Return of NASDAQ Composite index Futures
+79,DJI-F,Return of Dow Jones Industrial Average Futures
+80,S&P-F,Return of S&P 500 index Futures
+81,RUSSELL-F,Return of RUSSELL Futures
+82,USDX-F,Relative change in US dollar index Futures
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,

@@ -1,0 +1,203 @@
+No.,Feature name,Feature definition
+1,Size (size),"The CRSP end of June price
+times shares outstanding. Rebalanced annually."
+2,Value (annual) (value),"At the end of
+June of each year, we use book equity from the previous fiscal year and market equity from
+December of the previous year."
+3,Gross Profitability (prof),GP is gross profits and AT is total assets.
+4,Value-Profitability (valprof ),"Sum of ranks in univariate sorts on book-to-market and profitability. Annual book-to-market
+and profitability values are used for the entire year."
+5,Piotroski’s F-score (F-score),"IB is income before extraordinary items, ROA is income before extraordinary items
+scaled by lagged total assets, CFO is cash flow from operations, DTA is total long-term
+debt scaled by total assets, DLTT is total long-term debt, ATL is total current assets scaled
+by total current liabilities, EqIss is the difference between sales of of common stock and
+purchases of common stock recorded on the cash flow statement, GM equals one minus the
+ratio of cost of goods sold and total revenues, and ATO equals total revenues, scaled by total
+assets."
+6,Debt Issuance (debtiss),Binary variable equal to one if long-term debt issuance indicated in statement of cash flow.
+7,Share Repurchases (repurch),Bi- nary variable equal to one if repurchase of common or preferred shares indicated in statement of cash flow
+8,Share Issuance (annual) (nissa),"shrout is the number of shares outstanding. Change in real number of shares outstanding from past June to June of the previous year. Excludes changes in shares due to stock dividends and splits, and companies with no changes in shrout."
+9,Accruals (accruals),"?ACT is the annual change in total current assets, ?CHE is the annual change in total cash and short-term investments, ?LCT is the annual change in current liabilities, ?DLC is the annual change in debt in current liabilities, ?TXP is the annual change in income taxes payable, ?DP is the annual change in depreciation and amortization, and (AT + AT 12)/2 is average total assets over the last two years."
+10,Asset Growth (growth),
+11,Asset Turnover (aturnover),Sales to total assets.
+12,Gross Margins (gmargins),GP is gross profits and SALE is total revenues.
+13,Dividend Yield (divp),"Dividend scaled
+by price. Both are measured in December of the year t ? 1 or t ? 2 (for returns in months
+prior to July)."
+14,Earnings/Price (ep),"Net income scaled by market
+value of equity."
+15,Cash Flow / Market Value of Equity (cfp),"Net income plus depreciation and amortization, all scaled by market value of equity measured at the same date. "
+16,Net Operating Assets (noa),"AT is total assets, CHE is cash and short-term investments, DLC is debt in current liabilities, DLTT is long term debt, MIB is non-controlling interest, PSTK is preferred capital stock, and CEQ is common equity. "
+17,Investment (inv),"?PPEGT is the annual change in gross total property, plant, and equipment, ?INVT is the annual change in total inventories, and AT12 is lagged total assets. "
+18,Investment-to-Capital (invcap),"Investment to capital is the ratio of capital expenditure (Compustat item CAPX) over property, plant, and equipment (Compustat item PPENT)."
+19,Investment Growth (growth),Invest- ment growth is the percentage change in capital expenditure (Compustat item CAPX).
+20,Sales Growth (sgrowth),Sales growth is the percent change in net sales over turnover (Compustat item SALE).
+21,Leverage (lev),Market leverage is the ratio of total assets (Compustat item AT) over the market value of equity. Both are measured in December of the same year.
+22,Return on Assets (annual) (roaa),Net income scaled by total assets. 
+23,Return on Equity (annual) (roea),Net income scaled by book value of equity.
+24,Sales-to-Price (sp),Total revenues divided by stock price.
+25,Growth in LTNOA (gltnoa),"RECT = Receivables, INVT = Total Inventory, ACO = Current Assets, AP =Accounts Payable, LCO = Current Liabilities (Other), DP = Depreciation and Amortization, AT = Assets, PPENT = Property, Plant, and Equipment (net), INTAN = Intangible Assets, AO = Assets (Other), LO = Liabilities (Other). "
+26,Momentum  (6m) (mom),Cumulated past performance in the previous 6 months by skipping the most recent month. 
+27,Industry Momentum (indmom),"In each month, the Fama and French 49 industries are ranked on their
+t?l 
+value-weighted past 6-months performance. "
+28,Value-Momentum (valmom),Sum of ranks in univariate sorts on book-to-market and momentum. Annual book-to-market values are used for the entire year. 
+29,Value-Momentum-Profitability (valmomprof),"Sum of ranks in univariate sorts on book-to- market, profitability, and momentum. Annual book-to-market and profitability values are used for the entire year."
+30,Short Interest (shortint),
+31,Momentum (1 year) (mom12),Cumulated past performance in the previous year by skipping the most recent month. Re- balanced monthly.
+32,Momentum-Reversal (momrev),Buy and hold returns from t ? 19 to t ? 14.
+33,Long-term Reversals (lrrev),Cumulative returns from t ? 60 to t ? 13.
+34,Value (monthly) (valuem),Book-to-market ratio using the most up-to-date prices and book equity (appropriately lagged). 
+35,Share Issuance (monthly) (nissm),"Excludes changes in shares due to stock dividends and splits, and companies with no changes in shrout."
+36,PEAD (SUE) (sue),"IBQ is the income before extraordinary items (updated quarterly), and IBQ?24 to IBQ?3 is the deviation of IBQ in the past two years skipping the most recent quarter. Earnings surprises are measured by Standardized Unexpected Earnings (SUE), which is the change in the most recently announced quarterly earnings per share from its value announced four quarters ago divided by the standard deviation of this change in quarterly earnings over the prior eight quarters. Rebalanced monthly."
+37,Return on Book Equity (roe),"IBQ is income before extraordinary items (updated quarterly), and BEQ is book value of equity. "
+38,Return on Market Equity (rome),"IBQ is income before extraordinary items (updated quarterly), and ME is market value of equity."
+39,Return on Assets (roa),Net income scaled by total assets
+40,Short-term Reversal (strev),Return in the previous month.
+41,Idiosyncratic Volatility (ivol),The standard deviation of the residual from firm-level regression of daily stock returns on the daily innovations of the Fama and French three-factor model using the estimation window of three months. Lagged one month.
+42,Beta Arbitrage (beta),Beta with respect to the CRSP equal-weighted return index. Estimated over the past 60 months (minimum 36 months) using daily data and lagged one month. 
+43,Seasonality (season),"Average
+monthly return in the same calendar month over the last 5 years. As an example, the average return from prior Octobers is used to predict returns this October. The firm needs at least one year of data to be included in the sample. "
+44,Industry Relative Reversals (indrrev),r is the return on a stock and rind is return on its industry. Difference between a stocks’ prior month’s return and the prior month’s return of its industry (based on the Fama and French 49 industries). 
+45,Industry Relative Reversals (Low Volatility) (indrrevlv),r is the return on a stock and rind is return on its industry. Difference between a stocks’ prior month’s return and the prior month’s return of its industry (based on the Fama and French 49 industries). Only stocks with idiosyncratic volatility lower than the NYSE median for month are included in the sorts.
+46,Industry Momentum-Reversal (indmomrev),Sum of Fama and French 49 industries ranks on industry momentum and industry relative reversals (low vol). 
+47,Composite Issuance (ciss),r is the log return on the stock and ME is total market equity
+48,Price (price),"ME is
+market equity and shrout is the number of shares outstanding. Log of stock price."
+49,Firm Age (age),The number of months that a firm has been listed in the CRSP database.
+50,Share Volume (shvol),Average number of shares traded over the previous three months scaled by shares outstanding.
+51,"P/E (Diluted, Excl. EI) (pe_exi)","Price-to-Earnings, excl. Extraordinary
+Items (diluted)."
+52,"P/E (Diluted, Incl. EI) (pe_inc)","Price-to-Earnings, incl. Extraordinary
+Items (diluted)."
+53,Price/Sales (ps),Multiple of Market Value of Equity to Sales.
+54,Price/Cash flow (pcf),"Multiple of Market Value of Equity to Net Cash Flow
+from Operating Activities."
+55,Enterprise Value Multiple (evm),Multiple of Enterprise Value to EBITDA.
+56,Book/Market (bm),"Book Value of Equity as a fraction of Market Value of
+Equity."
+57,Shiller’s Cyclically Adjusted P/E Ratio (capei),"Multiple of Market Value
+of Equity to 5-year moving average of Net Income."
+58,Dividend Payout Ratio (dpr),"Dividends as a fraction of Income Before Extra.
+Items."
+59,Net Profit Margin (npm),Net Income as a fraction of Sales.
+60,Operating Profit Margin Before Depreciation (opmbd),"Operating Income
+Before Depreciation as a fraction of Sales."
+61,Operating Profit Margin After Depreciation (opmad),"Operating Income
+After Depreciation as a fraction of Sales."
+62,Gross Profit Margin (gpm),Gross Profit as a fraction of Sales.
+63,Pre-tax Profit Margin (ptpm),Pretax Income as a fraction of Sales.
+64,Cash Flow Margin (cfm),"Income before Extraordinary Items and
+Depreciation as a fraction of Sales."
+65,Return on Assets (roa),"Operating Income Before Depreciation as a fraction
+of average Total Assets based on most recent two periods."
+66,Return on Equity (roe),"Net Income as a fraction of average Book Equity
+based on most recent two periods, where Book Equity is defined as the sum of Total Parent
+Stockholders’ Equity and Deferred Taxes and Investment Tax Credit."
+67,Return on Capital Employed (roce),"Earnings Before Interest and Taxes
+as a fraction of average Capital Employed based on most recent two periods, where Capital
+Employed is the sum of Debt in Long-term and Current Liabilities and Common/Ordinary
+Equity."
+68,After-tax Return on Average Common Equity (aftret_eq),"Net Income
+as a fraction of average of Common Equity based on most recent two periods."
+69,After-tax Return on Invested Capital (aftret_invcapx),"Net Income plus
+Interest Expenses as a fraction of Invested Capital."
+70,After-tax Return on Total Stockholders’ Equity (aftret_equity),"Net
+Income as a fraction of average of Total Shareholders’ Equity based on most recent two
+periods."
+71,Pre-tax return on Net Operating Assets (pretret_noa),"Operating Income
+After Depreciation as a fraction of average Net Operating Assets (NOA) based on most
+recent two periods, where NOA is defined as the sum of Property Plant and Equipment and
+Current Assets minus Current Liabilities."
+72,Pre-tax Return on Total Earning Assets (pretret_earnat),"Operating
+Income After Depreciation as a fraction of average Total Earnings Assets (TEA) based on
+most recent two periods, where TEA is defined as the sum of Property Plant and Equipment
+and Current Assets."
+73,Common Equity/Invested Capital (equity_invcap),"Common Equity
+as a fraction of Invested Capital."
+74,Long-term Debt/Invested Capital (debt_invcap),"Long-term Debt as
+a fraction of Invested Capital."
+75,Total Debt/Invested Capital (totdebt_invcap),"Total Debt (Long-term
+and Current) as a fraction of Invested Capital."
+76,Interest/Average Long-term Debt (int_debt),"Interest as a fraction
+of average Long-term debt based on most recent two periods."
+77,Interest/Average Total Debt (int_totdebt),"Interest as a fraction
+of average Total Debt based on most recent two periods."
+78,Cash Balance/Total Liabilities (cash_lt),"Cash Balance as a
+fraction of Total Liabilities."
+79,Inventory/Current Assets (invt_act),"Inventories as a fraction of
+Current Assets."
+80,Receivables/Current Assets (rect_act),"Accounts Receivables as
+a fraction of Current Assets."
+81,Total Debt/Total Assets (debt_at),"Total Liabilities as a fraction of Total
+Assets."
+82,Short-Term Debt/Total Debt (short_debt),"Short-term Debt as
+a fraction of Total Debt."
+83,Current Liabilities/Total Liabilities (curr_debt),"Current Liabilities
+as a fraction of Total Liabilities."
+84,Long-term Debt/Total Liabilities (lt_debt),"Long-term Debt as
+a fraction of Total Liabilities."
+85,Free Cash Flow/Operating Cash Flow (fcf_ocf ),"Free Cash
+Flow as a fraction of Operating Cash Flow, where Free Cash Flow is defined as the difference
+between Operating Cash Flow and Capital Expenditures."
+86,Advertising Expenses/Sales (adv_sale) – Other.,"Advertising Expenses as a fraction of
+Sales."
+87,"Operating
+Income before D&A as a fraction of Current Liabilities.",Profit Before Depreciation/Current Liabilities (profit_lct)
+88,Total Debt/EBITDA (debt_ebitda),"Gross Debt as a fraction of
+EBITDA."
+89,Operating CF/Current Liabilities (ocf_lct),"Operating Cash
+Flow as a fraction of Current Liabilities."
+90,Total Liabilities/Total Tangible Assets (lt_ppent),"Liabilities
+to Total Tangible Assets."
+91,Long-term Debt/Book Equity (dltt_be),"Long-term Debt to Book
+Equity."
+92,Total Debt/Total Assets (debt_assets),Total Debt as a fraction of Total Assets.
+93,Total Debt/Capital (debt_capital),"Total Debt as a fraction of Total Capital,
+where Total Debt is defined as the sum of Accounts Payable and Total Debt in Current and
+Long-term Liabilities, and Total Capital is defined as the sum of Total Debt and Total Equity
+(common and preferred)."
+94,Total Debt/Equity (de_ratio),"Total Liabilities to Shareholders’ Equity (common
+and preferred)."
+95,After-tax Interest Coverage (intcov),"Multiple of After-tax Income to Interest
+and Related Expenses."
+96,Cash Ratio (cash_ratio),"Cash and Short-term Investments as a fraction of
+Current Liabilities."
+97,Quick Ratio (Acid Test) (quick_ratio),"Current Assets net of
+Inventories as a fraction of Current Liabilities."
+98,Current Ratio (curr_ratio),Current Assets as a fraction of Current Liabilities.
+99,Capitalization Ratio (capital_ratio),"Total Long-term Debt as a fraction
+of the sum of Total Long-term Debt, Common/Ordinary Equity and Preferred Stock."
+100,Cash Flow/Total Debt (cash_debt),"Operating Cash Flow as a
+fraction of Total Debt."
+101,Inventory Turnover (inv_turn),"COGS as a fraction of the average Inventories
+based on the most recent two periods."
+102,Asset Turnover (at_turn),"Sales as a fraction of the average Total Assets based
+on the most recent two periods."
+103,Receivables Turnover (rect_turn),"Sales as a fraction of the average of Accounts
+Receivables based on the most recent two periods"
+104,Payables Turnover (pay_turn),"COGS and change in Inventories as a fraction
+of the average of Accounts Payable based on the most recent two periods."
+105,Sales/Invested Capital (sale_invcap),Sales per dollar of Invested Capital.
+106,Sales/Stockholders Equity (sale_equity),"Sales per dollar of total Stockholders’
+Equity."
+107,Sales/Working Capital (sale_nwc),"Sales per dollar of Working Capital,
+defined as difference between Current Assets and Current Liabilities."
+108,Research and Development/Sales (RD_SALE),R&D expenses as a fraction of Sales.
+109,Accruals/Average Assets (Accrual),"Accruals as a fraction of average Total Assets
+based on most recent two periods."
+110,Gross Profit/Total Assets (GProf ),"Gross Profitability as a fraction of
+Total Assets."
+111,Book Equity (be),Firm size as measured by total book equity.
+112,Cash Conversion Cycle (Days) (cash_conversion),"Inventories per daily
+COGS plus Account Receivables per daily Sales minus Account Payables per daily COGS."
+113,Effective Tax Rate (efftax),Income Tax as a fraction of Pretax Income.
+114,Interest Coverage Ratio (intcov_ratio),"Multiple of Earnings Before Interest
+and Taxes to Interest and Related Expenses."
+115,Labor Expenses/Sales (staff_sale),Labor Expenses as a fraction of Sales.
+116,Dividend Yield (divyield),Indicated Dividend Rate as a fraction of Price.
+117,Price/Book (ptb),Multiple of Market Value of Equity to Book Value of Equity.
+118,Trailing P/E to Growth (PEG) ratio (PEG_trailing),"Price-to-Earnings,
+excl. Extraordinary Items (diluted) to 3-Year past EPS Growth."
+119,Return in Month t ? i (ret_lagi),"Past one-month returns in months t ? i for
+i = {1, ..., 12}."

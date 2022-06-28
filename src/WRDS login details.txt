@@ -1,0 +1,4 @@
+WRDS login details are as follows:
+    
+user: muhdnoor
+password: WRDSaccess_135@

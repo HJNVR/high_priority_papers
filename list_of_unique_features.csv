@@ -1,0 +1,1089 @@
+No.,Paper no.,Feature name,Feature definition
+1,1,absacc,Absolute value of acc
+2,1,acc,Annual income before extraordinary items (ib) minus operating cash flows (oancf) divided by average total assets (at); if oancf is missing then set to change in act - change in che - change in lct + change in dlc + change in txp-dp
+3,1,aeavol,Average daily trading volume (vol) for 3 days around earnings announcement minus average daily volume for 1-month ending 2 weeks before earnings announcement divided by 1-month average daily volume. Earnings announcement day from Compustat quarterly (rdq)
+4,1,age,Number of years since first Compustat coverage
+5,1,agr,Annual percent change in total assets (at)
+6,1,baspread,Monthly average of daily bid-ask spread divided by average of daily spread
+7,1,beta,Estimated market beta from weekly returns and equal weighted market returns for 3 years ending month t-1 with at least 52 weeks of returns
+8,1,betasq,Market beta squared
+9,1,bm,Book value of equity (ceq) divided by end of fiscal year-end market capitalization
+10,1,bm_ia,Industry adjusted book-to-market ratio
+11,1,cash,Cash and cash equivalents divided by average total assets
+12,1,cashdebt,Earnings before depreciation and extraordinary items (ib+dp) divided by avg. total liabilities (lt)
+13,1,cashpr,Fiscal year-end market capitalization plus long-term debt (dltt) minus total assets (at) divided by cash and equivalents (che)
+14,1,cfp,Operating cash flows divided by fiscal-year-end market capitalization
+15,1,cfp_ia,Industry adjusted cfp
+16,1,chatoia,2-digit SIC - fiscal-year mean-adjusted change in sales (sale) divided by average total assets (at)
+17,1,chcsho,Annual percent change in shares outstanding (csho)
+18,1,chempia,Industry-adjusted change in number of employees
+19,1,chinv,Change in inventory (inv) scaled by average total assets (at)
+20,1,chmom,Cumulative returns from months t-6 to t-1 minus months t-12 to t-7
+21,1,chpmia,2-digit SIC - fiscal-year mean adjusted change in income before extraordinary items (ib) divided by sales (sale)
+22,1,chtx,Percent change in total taxes (txtq) from quartert-4 to t
+23,1,cinvest,"Change over one quarter in net PP&E (ppentq) divided by sales (saleq) - average of this variable for prior 3 quarters; if saleq = 0, then scale by 0.01"
+24,1,convind,An indicator equal to 1 if company has convertible debt obligations
+25,1,currat,Current assets / current liabilities
+26,1,depr,Depreciation divided by PP&E
+27,1,divi,An indicator variable equal to 1 if company pays dividends but did not in prior year
+28,1,divo,An indicator variable equal to 1 if company does not pay dividend but did in prior year
+29,1,dolvol,Natural log of trading volume times price per share from month t-2
+30,1,dy,Total dividends (dvt) divided by market capitalization at fiscal year-end
+31,1,ear,Sum of daily returns in three days around earnings announcement. Earnings announcement from Compustat quarterly file (rdq)
+32,1,egr,Annual percent change in book value of equity (ceq)
+33,1,ep,Annual income before extraordinary items (ib) divided by end of fiscal year market cap
+34,1,gma,Revenues (revt) minus cost of goods sold (cogs) divided by lagged total assets (at)
+35,1,grCAPX,Percent change in capital expenditures from yeart-2 to year t
+36,1,grltnoa,Growth in long-term net operating assets
+37,1,herf,2-digit SIC - fiscal-year sales concentration (sum of squared percent of sales in industry for each company).
+38,1,hire,Percent change in number of employees (emp)
+39,1,idiovol,Standard deviation of residuals of weekly returns on weekly equal weighted market returns for 3 years prior to month end
+40,1,ill,Average of daily (absolute return / dollar volume).
+41,1,indmom,Equal weighted average industry 12-month returns
+42,1,invest,"Annual change in gross property, plant, and equipment (ppegt) + annual change in inventories (invt) all scaled by lagged total assets (at)"
+43,1,lev,Total liabilities (lt) divided by fiscal year-end market capitalization
+44,1,lgr,Annual percent change in total liabilities (lt)
+45,1,maxret,Maximum daily return from returns during calendar month t-1
+46,1,mom12m,11-month cumulative returns ending one month before month end
+47,1,mom1m,1-month cumulative return
+48,1,mom36m,Cumulative returns from monthst-36 to t-13
+49,1,mom6m,5-month cumulative returns ending one month before month end
+50,1,ms,Sum of 8 indicator variables for fundamental performance
+51,1,mve,Natural log of market capitalization at end of month t-1
+52,1,mve_ia,2-digit SIC industry-adjusted fiscal year-end market capitalization
+53,1,nincr,Number of consecutive quarters (up to eight quarters) with an increase in earnings (ibq) over same quarter in the prior year
+54,1,operprof,Revenue minus cost of goods sold - SG&A expense - interest expense divided by lagged common shareholders’ equity
+55,1,orgcap,Capitalized SG&A expenses
+56,1,pchcapx_ia,2-digit SIC - fiscal-year mean-adjusted percent change in capital expenditures (capx)
+57,1,pchcurrat,Percent change in currat.
+58,1,pchdepr,Percent change in depr
+59,1,pchgm_pchsale,Percent change in gross margin (sale-cogs) minus percent change in sales (sale)
+60,1,pchquick,Percent change in quick
+61,1,pchsale_pchinvt,Annual percent change in sales (sale) minus annual percent change in inventory (invt).
+62,1,pchsale_pchrect,Annual percent change in sales (sale) minus annual percent change in receivables (rect)
+63,1,pchsale_pchxsga,Annual percent change in sales (sale) minus annual percent change in SG&A (xsga)
+64,1,pchsaleinv,Percent change in saleinv
+65,1,pctacc,Same as acc except that the numerator is divided by the absolute value of ib; if ib = 0 then ib set to 0.01 for denominator
+66,1,pricedelay,The proportion of variation in weekly returns for 36 months ending in montht explained by 4 lags of weekly market returns incremental to contemporaneous market return
+67,1,ps,Sum of 9 indicator variables to form fundamental health score
+68,1,quick,(current assets - inventory) / current liabilities
+69,1,rd,An indicator variable equal to 1 if R&D expense as a percentage of total assets has an increase greater than 5%.
+70,1,rd_mve,R&D expense divided by end-of-fiscal-year market capitalization
+71,1,rd_sale,R&D expense divided by sales (xrd/sale)
+72,1,realestate,Buildings and capitalized leases divided by gross PP&E
+73,1,retvol,Standard deviation of daily returns from month t-1
+74,1,roaq,Income before extraordinary items (ibq) divided by one quarter lagged total assets (atq)
+75,1,roavol,Standard deviation for 16 quarters of income before extraordinary items (ibq) divided by average total assets (atq)
+76,1,roeq,Earnings before extraordinary items divided by lagged common shareholders’ equity
+77,1,roic,Annual earnings before interest and taxes (ebit) minus nonoperating income (nopi) divided by non-cash enterprise value (ceq+lt-che)
+78,1,rsup,Sales from quarter t minus sales from quarter t-4 (saleq) divided by fiscal-quarter-end market capitalization (cshoq * prccq)
+79,1,salecash,Annual sales divided by cash and cash equivalents
+80,1,saleinv,Annual sales divided by total inventory
+81,1,salerec,Annual sales divided by accounts receivable
+82,1,secured,Total liability scaled secured debt
+83,1,securedind,An indicator equal to 1 if company has secured debt obligations
+84,1,sgr,Annual percent change in sales (sale)
+85,1,sin,"An indicator variable equal to 1 if a company’s primary industry classification is in smoke or tobacco, beer or alcohol, or gaming"
+86,1,sp,Annual revenue (sale) divided by fiscal year-end market capitalization
+87,1,std_dolvol,Monthly standard deviation of daily dollar trading volume
+88,1,std_turn,Monthly standard deviation of daily share turnover
+89,1,stdacc,"Standard deviation for 16 quarters of accruals (acc measured with quarterly Compustat) scaled by sales; if saleq = 0, then scale by 0.01"
+90,1,stdcf,"Standard deviation for 16 quarters of cash flows divided by sales (saleq); if saleq = 0, then scale by 0.01. Cash flows defined as ibq minus quarterly accruals"
+91,1,tang,Cash holdings + 0.715 × receivables +0.547 × inventory + 0.535 × PPE/ totl assets
+92,1,tb,"Tax income, calculated from current tax expense divided by maximum federal tax rate, divided by income before extraordinary items"
+93,1,turn,Average monthly trading volume for most recent 3 months scaled by number of shares outstanding in current month
+94,1,zerotrade,Turnover weighted number of zero trading days for most recent 1 month
+95,2,Stock returns,S&P 500 index returns from Center for Research in Security Press (CRSP) month-end values
+96,2,Risk-free Rate,Treasury-bill rate
+97,2,Dividend Price Ratio (d/p),the difference between the log of dividends and the log of prices
+98,2,The Dividend Yield (d/y),the difference between the log of dividends and the log of lagged prices
+99,2,Earnings,12-month moving sums of earnings on the S&P 500 index
+100,2,Earnings Price Ratio (e/p),difference between the log of earnings and the log of price
+101,2,Dividend Payout Ratio (d/e),difference between the log of dividends and the log of earnings
+102,2,Stock Variance (svar),sum of squared daily returns on the S&P 500.
+103,2,Cross-Sectional Premium (csp) ,relative valuations of high- and low-beta stocks
+104,2,Book Value,book value
+105,2,Book-to- Market Ratio (b/m),book value to market value for the Dow Jones Industrial Average
+106,2,Net Equity Expansion (ntis),12-month moving sums of net issues by NYSE listed stocks divided by the total end-of-year market capitalization of NYSE stocks
+107,2,Percent Equity Issuing (equis),ratio of equity issuing activity as a fraction of total issuing activity
+108,2,Long Term Yield (lty),long-term government bond yield
+109,2,Corporate Bond Returns,long-term corporate bond returns
+110,2,Inflation (infl),Consumer price index from bureau of labour statistics
+111,2,Investment to Capital Ratio (i/k),ratio of aggregate (private nonresidential fixed) investment to aggregate capital for the whole economy
+112,3,A2ME,Total assets to Size
+113,3,AOA,Absolute value of operating accruals
+114,3,AT,Total assets
+115,3,ATO,Sales to lagged net operating assets
+116,3,BEME,Book to market ratio
+117,3,BEMEadj,BEME - mean BEME in Fama-French 48 industry
+118,3,Beta,Correlation × ratio of vols
+119,3,Beta daily,CAPM beta using daily returns
+120,3,C,Cash to AT
+121,3,C2D,Cash flow to total liabilities
+122,3,Change in (Change in GM - Change in Sales), (% change in gross margin and % change in sales)
+123,3,Change in CEQ,% change in BE
+124,3,Change in PI2A,Change in PP&E and inventory over lagged AT
+125,3,Change in Shrout,% change in shares outstanding
+126,3,Change in SO,Log change in split-adjusted shares outstanding
+127,3,CTO,Sales to lagged total assets
+128,3,Debt2P,Total debt to Size
+129,3,DTO,De-trended Turnover - market Turnover
+130,3,E2P,Income before extraordinary items to Size
+131,3,EPS,Earnings per share
+132,3,Free CF,Free cash flow to BE
+133,3,Idio vol,Idio vol of Fama-French 3 factor model
+134,3,Investment,% change in AT
+135,3,IPM,Pretax income over sales
+136,3,IVC,Change in inventory over average AT
+137,3,LDP,Trailing 12-months dividends to price
+138,3,LME,Price times shares outstanding
+139,3,LME_adj,Size - mean size in Fama-French 48 industry
+140,3,Lturnover,Last month’s volume to shares outstanding
+141,3,NOA,Net-operating assets over lagged AT
+142,3,NOP,Net payouts to Size
+143,3,O2P,Operating payouts to market cap
+144,3,OA,Operating accruals
+145,3,OL,Costs of goods solds + SG&A to total assets
+146,3,PCM,Sales minus costs of goods sold to sales
+147,3,PM,OI after depreciation over sales
+148,3,PM_adj,Profit margin - mean PM in Fama-French 48 industry
+149,3,Prof,Gross profitability over BE
+150,3,Q,Tobin’s Q
+151,3,r12?2,Return from 12 to 2 months before prediction
+152,3,r12?7,Return from 12 to 7 months before prediction
+153,3,r2?1,Return 1 month before prediction
+154,3,r36?13,Return from 36 to 13 months before prediction
+155,3,r6?2,Return from 6 to 2 months before prediction
+156,3,Rel_to_high_price,Price to 52 week high price
+157,3,Ret_max,Maximum daily return
+158,3,RNA,OI after depreciation to lagged net operating assets
+159,3,ROA,Income before extraordinary items to lagged AT
+160,3,ROC,Size + longterm debt - total assets to cash
+161,3,ROE,Income before extraordinary items to lagged BE
+162,3,ROIC,Return on invested capital
+163,3,S2C,Sales to cash
+164,3,S2P,Sales to price
+165,3,Sales_g,Sales growth
+166,3,SAT,Sales to total assets
+167,3,SAT_adj,SAT - mean SAT in Fama-French 48 industry
+168,3,Spread,Average daily bid-ask spread
+169,3,Std turnover,Standard deviation of daily turnover
+170,3,Std volume,Standard deviation of daily volume
+171,3,SUV,Standard unexplained volume
+172,3,Tan,Tangibility
+173,3,Total vol,Standard deviation of daily returns
+174,3,Lev,"Leverage is the ratio of long-term debt (DLTT) and debt in current liabilities
+(DLC) to the sum of long-term debt, debt in current liabilities, and stockholders' equity
+(SEQ) following Lewellen (2015)."
+175,3,SGA2S,"SG&A to sales is the ratio of selling, general and administrative expenses
+(XSGA) to net sales (SALE)"
+176,4,Size (size),"The CRSP end of June price
+times shares outstanding. Rebalanced annually."
+177,4,Value (annual) (value),"At the end of
+June of each year, we use book equity from the previous fiscal year and market equity from
+December of the previous year."
+178,4,Gross Profitability (prof),GP is gross profits and AT is total assets.
+179,4,Value-Profitability (valprof ),"Sum of ranks in univariate sorts on book-to-market and profitability. Annual book-to-market
+and profitability values are used for the entire year."
+180,4,Piotroski’s F-score (F-score),"IB is income before extraordinary items, ROA is income before extraordinary items
+scaled by lagged total assets, CFO is cash flow from operations, DTA is total long-term
+debt scaled by total assets, DLTT is total long-term debt, ATL is total current assets scaled
+by total current liabilities, EqIss is the difference between sales of of common stock and
+purchases of common stock recorded on the cash flow statement, GM equals one minus the
+ratio of cost of goods sold and total revenues, and ATO equals total revenues, scaled by total
+assets."
+181,4,Debt Issuance (debtiss),Binary variable equal to one if long-term debt issuance indicated in statement of cash flow.
+182,4,Share Repurchases (repurch),Bi- nary variable equal to one if repurchase of common or preferred shares indicated in statement of cash flow
+183,4,Share Issuance (annual) (nissa),"shrout is the number of shares outstanding. Change in real number of shares outstanding from past June to June of the previous year. Excludes changes in shares due to stock dividends and splits, and companies with no changes in shrout."
+184,4,Accruals (accruals),"?ACT is the annual change in total current assets, ?CHE is the annual change in total cash and short-term investments, ?LCT is the annual change in current liabilities, ?DLC is the annual change in debt in current liabilities, ?TXP is the annual change in income taxes payable, ?DP is the annual change in depreciation and amortization, and (AT + AT 12)/2 is average total assets over the last two years."
+185,4,Asset Growth (growth),
+186,4,Asset Turnover (aturnover),Sales to total assets.
+187,4,Gross Margins (gmargins),GP is gross profits and SALE is total revenues.
+188,4,Dividend Yield (divp),"Dividend scaled
+by price. Both are measured in December of the year t ? 1 or t ? 2 (for returns in months
+prior to July)."
+189,4,Earnings/Price (ep),"Net income scaled by market
+value of equity."
+190,4,Cash Flow / Market Value of Equity (cfp),"Net income plus depreciation and amortization, all scaled by market value of equity measured at the same date. "
+191,4,Net Operating Assets (noa),"AT is total assets, CHE is cash and short-term investments, DLC is debt in current liabilities, DLTT is long term debt, MIB is non-controlling interest, PSTK is preferred capital stock, and CEQ is common equity. "
+192,4,Investment (inv),"?PPEGT is the annual change in gross total property, plant, and equipment, ?INVT is the annual change in total inventories, and AT12 is lagged total assets. "
+193,4,Investment-to-Capital (invcap),"Investment to capital is the ratio of capital expenditure (Compustat item CAPX) over property, plant, and equipment (Compustat item PPENT)."
+194,4,Investment Growth (growth),Invest- ment growth is the percentage change in capital expenditure (Compustat item CAPX).
+195,4,Sales Growth (sgrowth),Sales growth is the percent change in net sales over turnover (Compustat item SALE).
+196,4,Leverage (lev),Market leverage is the ratio of total assets (Compustat item AT) over the market value of equity. Both are measured in December of the same year.
+197,4,Return on Assets (annual) (roaa),Net income scaled by total assets. 
+198,4,Return on Equity (annual) (roea),Net income scaled by book value of equity.
+199,4,Sales-to-Price (sp),Total revenues divided by stock price.
+200,4,Growth in LTNOA (gltnoa),"RECT = Receivables, INVT = Total Inventory, ACO = Current Assets, AP =Accounts Payable, LCO = Current Liabilities (Other), DP = Depreciation and Amortization, AT = Assets, PPENT = Property, Plant, and Equipment (net), INTAN = Intangible Assets, AO = Assets (Other), LO = Liabilities (Other). "
+201,4,Momentum  (6m) (mom),Cumulated past performance in the previous 6 months by skipping the most recent month. 
+202,4,Industry Momentum (indmom),"In each month, the Fama and French 49 industries are ranked on their
+t?l 
+value-weighted past 6-months performance. "
+203,4,Value-Momentum (valmom),Sum of ranks in univariate sorts on book-to-market and momentum. Annual book-to-market values are used for the entire year. 
+204,4,Value-Momentum-Profitability (valmomprof),"Sum of ranks in univariate sorts on book-to- market, profitability, and momentum. Annual book-to-market and profitability values are used for the entire year."
+205,4,Short Interest (shortint),
+206,4,Momentum (1 year) (mom12),Cumulated past performance in the previous year by skipping the most recent month. Re- balanced monthly.
+207,4,Momentum-Reversal (momrev),Buy and hold returns from t ? 19 to t ? 14.
+208,4,Long-term Reversals (lrrev),Cumulative returns from t ? 60 to t ? 13.
+209,4,Value (monthly) (valuem),Book-to-market ratio using the most up-to-date prices and book equity (appropriately lagged). 
+210,4,Share Issuance (monthly) (nissm),"Excludes changes in shares due to stock dividends and splits, and companies with no changes in shrout."
+211,4,PEAD (SUE) (sue),"IBQ is the income before extraordinary items (updated quarterly), and IBQ?24 to IBQ?3 is the deviation of IBQ in the past two years skipping the most recent quarter. Earnings surprises are measured by Standardized Unexpected Earnings (SUE), which is the change in the most recently announced quarterly earnings per share from its value announced four quarters ago divided by the standard deviation of this change in quarterly earnings over the prior eight quarters. Rebalanced monthly."
+212,4,Return on Book Equity (roe),"IBQ is income before extraordinary items (updated quarterly), and BEQ is book value of equity. "
+213,4,Return on Market Equity (rome),"IBQ is income before extraordinary items (updated quarterly), and ME is market value of equity."
+214,4,Return on Assets (roa),Net income scaled by total assets
+215,4,Short-term Reversal (strev),Return in the previous month.
+216,4,Idiosyncratic Volatility (ivol),The standard deviation of the residual from firm-level regression of daily stock returns on the daily innovations of the Fama and French three-factor model using the estimation window of three months. Lagged one month.
+217,4,Beta Arbitrage (beta),Beta with respect to the CRSP equal-weighted return index. Estimated over the past 60 months (minimum 36 months) using daily data and lagged one month. 
+218,4,Seasonality (season),"Average
+monthly return in the same calendar month over the last 5 years. As an example, the average return from prior Octobers is used to predict returns this October. The firm needs at least one year of data to be included in the sample. "
+219,4,Industry Relative Reversals (indrrev),r is the return on a stock and rind is return on its industry. Difference between a stocks’ prior month’s return and the prior month’s return of its industry (based on the Fama and French 49 industries). 
+220,4,Industry Relative Reversals (Low Volatility) (indrrevlv),r is the return on a stock and rind is return on its industry. Difference between a stocks’ prior month’s return and the prior month’s return of its industry (based on the Fama and French 49 industries). Only stocks with idiosyncratic volatility lower than the NYSE median for month are included in the sorts.
+221,4,Industry Momentum-Reversal (indmomrev),Sum of Fama and French 49 industries ranks on industry momentum and industry relative reversals (low vol). 
+222,4,Composite Issuance (ciss),r is the log return on the stock and ME is total market equity
+223,4,Price (price),"ME is
+market equity and shrout is the number of shares outstanding. Log of stock price."
+224,4,Firm Age (age),The number of months that a firm has been listed in the CRSP database.
+225,4,Share Volume (shvol),Average number of shares traded over the previous three months scaled by shares outstanding.
+226,4,"P/E (Diluted, Excl. EI) (pe_exi)","Price-to-Earnings, excl. Extraordinary
+Items (diluted)."
+227,4,"P/E (Diluted, Incl. EI) (pe_inc)","Price-to-Earnings, incl. Extraordinary
+Items (diluted)."
+228,4,Price/Sales (ps),Multiple of Market Value of Equity to Sales.
+229,4,Price/Cash flow (pcf),"Multiple of Market Value of Equity to Net Cash Flow
+from Operating Activities."
+230,4,Enterprise Value Multiple (evm),Multiple of Enterprise Value to EBITDA.
+231,4,Book/Market (bm),"Book Value of Equity as a fraction of Market Value of
+Equity."
+232,4,Shiller’s Cyclically Adjusted P/E Ratio (capei),"Multiple of Market Value
+of Equity to 5-year moving average of Net Income."
+233,4,Dividend Payout Ratio (dpr),"Dividends as a fraction of Income Before Extra.
+Items."
+234,4,Net Profit Margin (npm),Net Income as a fraction of Sales.
+235,4,Operating Profit Margin Before Depreciation (opmbd),"Operating Income
+Before Depreciation as a fraction of Sales."
+236,4,Operating Profit Margin After Depreciation (opmad),"Operating Income
+After Depreciation as a fraction of Sales."
+237,4,Gross Profit Margin (gpm),Gross Profit as a fraction of Sales.
+238,4,Pre-tax Profit Margin (ptpm),Pretax Income as a fraction of Sales.
+239,4,Cash Flow Margin (cfm),"Income before Extraordinary Items and
+Depreciation as a fraction of Sales."
+240,4,Return on Assets (roa),"Operating Income Before Depreciation as a fraction
+of average Total Assets based on most recent two periods."
+241,4,Return on Equity (roe),"Net Income as a fraction of average Book Equity
+based on most recent two periods, where Book Equity is defined as the sum of Total Parent
+Stockholders’ Equity and Deferred Taxes and Investment Tax Credit."
+242,4,Return on Capital Employed (roce),"Earnings Before Interest and Taxes
+as a fraction of average Capital Employed based on most recent two periods, where Capital
+Employed is the sum of Debt in Long-term and Current Liabilities and Common/Ordinary
+Equity."
+243,4,After-tax Return on Average Common Equity (aftret_eq),"Net Income
+as a fraction of average of Common Equity based on most recent two periods."
+244,4,After-tax Return on Invested Capital (aftret_invcapx),"Net Income plus
+Interest Expenses as a fraction of Invested Capital."
+245,4,After-tax Return on Total Stockholders’ Equity (aftret_equity),"Net
+Income as a fraction of average of Total Shareholders’ Equity based on most recent two
+periods."
+246,4,Pre-tax return on Net Operating Assets (pretret_noa),"Operating Income
+After Depreciation as a fraction of average Net Operating Assets (NOA) based on most
+recent two periods, where NOA is defined as the sum of Property Plant and Equipment and
+Current Assets minus Current Liabilities."
+247,4,Pre-tax Return on Total Earning Assets (pretret_earnat),"Operating
+Income After Depreciation as a fraction of average Total Earnings Assets (TEA) based on
+most recent two periods, where TEA is defined as the sum of Property Plant and Equipment
+and Current Assets."
+248,4,Common Equity/Invested Capital (equity_invcap),"Common Equity
+as a fraction of Invested Capital."
+249,4,Long-term Debt/Invested Capital (debt_invcap),"Long-term Debt as
+a fraction of Invested Capital."
+250,4,Total Debt/Invested Capital (totdebt_invcap),"Total Debt (Long-term
+and Current) as a fraction of Invested Capital."
+251,4,Interest/Average Long-term Debt (int_debt),"Interest as a fraction
+of average Long-term debt based on most recent two periods."
+252,4,Interest/Average Total Debt (int_totdebt),"Interest as a fraction
+of average Total Debt based on most recent two periods."
+253,4,Cash Balance/Total Liabilities (cash_lt),"Cash Balance as a
+fraction of Total Liabilities."
+254,4,Inventory/Current Assets (invt_act),"Inventories as a fraction of
+Current Assets."
+255,4,Receivables/Current Assets (rect_act),"Accounts Receivables as
+a fraction of Current Assets."
+256,4,Total Debt/Total Assets (debt_at),"Total Liabilities as a fraction of Total
+Assets."
+257,4,Short-Term Debt/Total Debt (short_debt),"Short-term Debt as
+a fraction of Total Debt."
+258,4,Current Liabilities/Total Liabilities (curr_debt),"Current Liabilities
+as a fraction of Total Liabilities."
+259,4,Long-term Debt/Total Liabilities (lt_debt),"Long-term Debt as
+a fraction of Total Liabilities."
+260,4,Free Cash Flow/Operating Cash Flow (fcf_ocf ),"Free Cash
+Flow as a fraction of Operating Cash Flow, where Free Cash Flow is defined as the difference
+between Operating Cash Flow and Capital Expenditures."
+261,4,Advertising Expenses/Sales (adv_sale) – Other.,"Advertising Expenses as a fraction of
+Sales."
+262,4,"Operating
+Income before D&A as a fraction of Current Liabilities.",Profit Before Depreciation/Current Liabilities (profit_lct)
+263,4,Total Debt/EBITDA (debt_ebitda),"Gross Debt as a fraction of
+EBITDA."
+264,4,Operating CF/Current Liabilities (ocf_lct),"Operating Cash
+Flow as a fraction of Current Liabilities."
+265,4,Total Liabilities/Total Tangible Assets (lt_ppent),"Liabilities
+to Total Tangible Assets."
+266,4,Long-term Debt/Book Equity (dltt_be),"Long-term Debt to Book
+Equity."
+267,4,Total Debt/Total Assets (debt_assets),Total Debt as a fraction of Total Assets.
+268,4,Total Debt/Capital (debt_capital),"Total Debt as a fraction of Total Capital,
+where Total Debt is defined as the sum of Accounts Payable and Total Debt in Current and
+Long-term Liabilities, and Total Capital is defined as the sum of Total Debt and Total Equity
+(common and preferred)."
+269,4,Total Debt/Equity (de_ratio),"Total Liabilities to Shareholders’ Equity (common
+and preferred)."
+270,4,After-tax Interest Coverage (intcov),"Multiple of After-tax Income to Interest
+and Related Expenses."
+271,4,Cash Ratio (cash_ratio),"Cash and Short-term Investments as a fraction of
+Current Liabilities."
+272,4,Quick Ratio (Acid Test) (quick_ratio),"Current Assets net of
+Inventories as a fraction of Current Liabilities."
+273,4,Current Ratio (curr_ratio),Current Assets as a fraction of Current Liabilities.
+274,4,Capitalization Ratio (capital_ratio),"Total Long-term Debt as a fraction
+of the sum of Total Long-term Debt, Common/Ordinary Equity and Preferred Stock."
+275,4,Cash Flow/Total Debt (cash_debt),"Operating Cash Flow as a
+fraction of Total Debt."
+276,4,Inventory Turnover (inv_turn),"COGS as a fraction of the average Inventories
+based on the most recent two periods."
+277,4,Asset Turnover (at_turn),"Sales as a fraction of the average Total Assets based
+on the most recent two periods."
+278,4,Receivables Turnover (rect_turn),"Sales as a fraction of the average of Accounts
+Receivables based on the most recent two periods"
+279,4,Payables Turnover (pay_turn),"COGS and change in Inventories as a fraction
+of the average of Accounts Payable based on the most recent two periods."
+280,4,Sales/Invested Capital (sale_invcap),Sales per dollar of Invested Capital.
+281,4,Sales/Stockholders Equity (sale_equity),"Sales per dollar of total Stockholders’
+Equity."
+282,4,Sales/Working Capital (sale_nwc),"Sales per dollar of Working Capital,
+defined as difference between Current Assets and Current Liabilities."
+283,4,Research and Development/Sales (RD_SALE),R&D expenses as a fraction of Sales.
+284,4,Accruals/Average Assets (Accrual),"Accruals as a fraction of average Total Assets
+based on most recent two periods."
+285,4,Gross Profit/Total Assets (GProf ),"Gross Profitability as a fraction of
+Total Assets."
+286,4,Book Equity (be),Firm size as measured by total book equity.
+287,4,Cash Conversion Cycle (Days) (cash_conversion),"Inventories per daily
+COGS plus Account Receivables per daily Sales minus Account Payables per daily COGS."
+288,4,Effective Tax Rate (efftax),Income Tax as a fraction of Pretax Income.
+289,4,Interest Coverage Ratio (intcov_ratio),"Multiple of Earnings Before Interest
+and Taxes to Interest and Related Expenses."
+290,4,Labor Expenses/Sales (staff_sale),Labor Expenses as a fraction of Sales.
+291,4,Dividend Yield (divyield),Indicated Dividend Rate as a fraction of Price.
+292,4,Price/Book (ptb),Multiple of Market Value of Equity to Book Value of Equity.
+293,4,Trailing P/E to Growth (PEG) ratio (PEG_trailing),"Price-to-Earnings,
+excl. Extraordinary Items (diluted) to 3-Year past EPS Growth."
+294,4,Return in Month t ? i (ret_lagi),"Past one-month returns in months t ? i for
+i = {1, ..., 12}."
+295,5,RPI,Real Personal Income
+296,5,W875RX1,Real personal income ex transfer receipts
+297,5,INDPRO,IP Index
+298,5,IPFPNSS,IP: Final Products and Nonindustrial Supplies
+299,5,IPFINAL,IP: Final Products (Market Group)
+300,5,IPCONGD,IP: Consumer Goods
+301,5,IPDCONGD,IP: Durable Consumer Goods
+302,5,IPNCONGD,IP: Nondurable Consumer Goods
+303,5,IPBUSEQ,IP: Business Equipment
+304,5,IPMAT,IP: Materials
+305,5,IPDMAT,IP: Durable Materials
+306,5,IPNMAT,IP: Nondurable Materials
+307,5,IPMANSICS,IP: Manufacturing (SIC)
+308,5,IPB51222s,IP: Residential Utilities
+309,5,IPFUELS,IP: Fuels
+310,5,NAPMPI,ISM Manufacturing: Production Index
+311,5,CUMFNS,Capacity Utilization: Manufacturing
+312,5,HWI,Help-Wanted Index for United States
+313,5,HWIURATIO,Ratio of Help Wanted/No. Unemployed
+314,5,CLF16OV,Civilian Labor Force
+315,5,CE16OV,Civilian Employment
+316,5,UNRATE,Civilian Unemployment Rate
+317,5,UEMPMEAN,Average Duration of Unemployment (Weeks)
+318,5,UEMPLT5,Civilians Unemployed - Less Than 5 Weeks
+319,5,UEMP5TO14,Civilians Unemployed for 5–14 Weeks
+320,5,UEMP15OV,Civilians Unemployed - 15 Weeks & Over
+321,5,UEMP15T26,Civilians Unemployed for 15–26 Weeks
+322,5,UEMP27OV,Civilians Unemployed for 27 Weeks and Over
+323,5,CLAIMSx,Initial Claims
+324,5,PAYEMS,All Employees: Total nonfarm
+325,5,USGOOD,All Employees: Goods-Producing Industries
+326,5,CES1021000001,All Employees: Mining and Logging: Mining
+327,5,USCONS,All Employees: Construction
+328,5,MANEMP,All Employees: Manufacturing
+329,5,DMANEMP,All Employees: Durable goods
+330,5,NDMANEMP,All Employees: Nondurable goods
+331,5,SRVPRD,All Employees: Service-Providing Industries
+332,5,USTPU,"All Employees: Trade, Transportation & Utilities"
+333,5,USWTRADE,All Employees: Wholesale Trade
+334,5,USTRADE,All Employees: Retail Trade
+335,5,USFIRE,All Employees: Financial Activities
+336,5,USGOVT,All Employees: Government
+337,5,CES0600000007,Avg Weekly Hours: Goods-Producing
+338,5,AWOTMAN,Avg Weekly Overtime Hours: Manufacturing
+339,5,AWHMAN,Avg Weekly Hours: Manufacturing
+340,5,NAPMEI,ISM Manufacturing: Employment Index
+341,5,CES0600000008,Avg Hourly Earnings: Goods-Producing
+342,5,CES2000000008,Avg Hourly Earnings: Construction
+343,5,CES3000000008,Avg Hourly Earnings: Manufacturing
+344,5,HOUST,Housing Starts: Total New Privately Owned
+345,5,HOUSTNE,"Housing Starts, Northeast"
+346,5,HOUSTMW,"Housing Starts, Midwest"
+347,5,HOUSTS,"Housing Starts, South"
+348,5,HOUSTW,"Housing Starts, West"
+349,5,PERMIT,New Private Housing Permits (SAAR)
+350,5,PERMITNE,"New Private Housing Permits, Northeast (SAAR)"
+351,5,PERMITMW,"New Private Housing Permits, Midwest (SAAR)"
+352,5,PERMITS,"New Private Housing Permits, South (SAAR)"
+353,5,PERMITW,"New Private Housing Permits, West (SAAR)"
+354,5,DPCERA3M086SBEA,Real personal consumption expenditures
+355,5,CMRMTSPLx,Real Manu. and Trade Industries Sales
+356,5,RETAILx,Retail and Food Services Sales
+357,5,NAPM,ISM: PMI Composite Index
+358,5,NAPMNOI,ISM: New Orders Index
+359,5,NAPMSDI,ISM: Supplier Deliveries Index
+360,5,NAPMII,ISM: Inventories Index
+361,5,ACOGNO,New Orders for Consumer Goods
+362,5,AMDMNOx,New Orders for Durable Goods
+363,5,ANDENOx,New Orders for Nondefense Capital Goods
+364,5,AMDMUOx,Unfilled Orders for Durable Goods
+365,5,BUSINVx,Total Business Inventories
+366,5,ISRATIOx,Total Business: Inventories to Sales Ratio
+367,5,UMCSENTx,Consumer Sentiment Index
+368,5,M1SL,M1 Money Stock
+369,5,M2SL,M2 Money Stock
+370,5,M2REAL,Real M2 Money Stock
+371,5,AMBSL,St. Louis Adjusted Monetary Base
+372,5,TOTRESNS,Total Reserves of Depository Institutions
+373,5,NONBORRES,Reserves Of Depository Institutions
+374,5,BUSLOANS,Commercial and Industrial Loans
+375,5,REALLN,Real Estate Loans at All Commercial Banks
+376,5,NONREVSL,Total Nonrevolving Credit
+377,5,CONSPI,Nonrevolving consumer credit to Personal Income
+378,5,MZMSL,MZM Money Stock
+379,5,DTCOLNVHFNM,Consumer Motor Vehicle Loans Outstanding
+380,5,DTCTHFNM,Total Consumer Loans and Leases Outstanding
+381,5,INVEST,Securities in Bank Credit at All Commercial Banks
+382,5,FEDFUNDS,Effective Federal Funds Rate
+383,5,CP3Mx,3-Month AA Financial Commercial Paper Rate
+384,5,TB3MS,3-Month Treasury Bill
+385,5,TB6MS,6-Month Treasury Bill
+386,5,GS1,1-Year Treasury Rate
+387,5,GS5,5-Year Treasury Rate
+388,5,GS10,10-Year Treasury Rate
+389,5,AAA,Moody’s Seasoned Aaa Corporate Bond Yield
+390,5,BAA,Moody’s Seasoned Baa Corporate Bond Yield
+391,5,COMPAPFFx,3-Month Commercial Paper Minus FEDFUNDS
+392,5,TB3SMFFM,3-Month Treasury C Minus FEDFUNDS
+393,5,TB6SMFFM,6-Month Treasury C Minus FEDFUNDS
+394,5,T1YFFM,1-Year Treasury C Minus FEDFUNDS
+395,5,T5YFFM,5-Year Treasury C Minus FEDFUNDS
+396,5,T10YFFM,10-Year Treasury C Minus FEDFUNDS
+397,5,AAAFFM,Moody’s Aaa Corporate Bond Minus FEDFUNDS
+398,5,BAAFFM,Moody’s Baa Corporate Bond Minus FEDFUNDS
+399,5,TWEXMMTH,Trade Weighted U.S. Dollar Index: Major Currencies
+400,5,EXSZUSx,Switzerland/U.S. Foreign Exchange Rate
+401,5,EXJPUSx,Japan/U.S. Foreign Exchange Rate
+402,5,EXUSUKx,U.S./U.K. Foreign Exchange Rate
+403,5,EXCAUSx,Canada/U.S. Foreign Exchange Rate
+404,5,PPIFGS,PPI: Finished Goods
+405,5,PPIFCG,PPI: Finished Consumer Goods
+406,5,PPIITM,PPI: Intermediate Materials
+407,5,PPICRM,PPI: Crude Materials
+408,5,OILPRICEx,"Crude Oil, spliced WTI and Cushing"
+409,5,PPICMM,PPI: Metals and metal products:
+410,5,NAPMPRI,ISM Manufacturing: Prices Index
+411,5,CPIAUCSL,CPI: All Items
+412,5,CPIAPPSL,CPI: Apparel
+413,5,CPITRNSL,CPI: Transportation
+414,5,CPIMEDSL,CPI: Medical Care
+415,5,CUSR0000SAC,CPI: Commodities
+416,5,CUUR0000SAD,CPI: Durables
+417,5,CUSR0000SAS,CPI: Services
+418,5,CPIULFSL,CPI: All Items Less Food
+419,5,CUUR0000SA0L2,CPI: All items less shelter
+420,5,CUSR0000SA0L5,CPI: All items less medical care
+421,5,PCEPI,Personal Cons. Expend.: Chain Index
+422,5,DDURRG3M086SBEA,Personal Cons. Exp: Durable goods
+423,5,DNDGRG3M086SBEA,Personal Cons. Exp: Nondurable goods
+424,5,DSERRG3M086SBEA,Personal Cons. Exp: Services
+425,5,S&P 500,S&P’s Common Stock Price Index: Composite
+426,5,S&P: indust,S&P’s Common Stock Price Index: Industrials
+427,5,S&P div yield,S&P’s Composite Common Stock: Dividend Yield
+428,5,S&P PE ratio,S&P’s Composite Common Stock: Price-Earnings Ratio
+429,6,"MA(1,9)","Moving average signal (1,9)"
+430,6,"MA(1, 12)","Moving average signal (1,12)"
+431,6,"MA(2,9)","Moving average signal (2,9)"
+432,6,"MA(2, 12)","Moving average signal (2,12)"
+433,6,"MA(3,9)","Moving average signal (3,9)"
+434,6,"MA(3, 12)","Moving average signal (3,12)"
+435,6,MOM(9),9-month momentum
+436,6,MOM(12),12-month momentum
+437,6,"VOL(1, 9)","On-balance volume signal (1,9)"
+438,6,"VOL(1, 12)","On-balance volume signal (1,12)"
+439,6,"VOL(2, 9)","On-balance volume signal (2,9)"
+440,6,"VOL(2, 12)","On-balance volume signal (2,12)"
+441,6,"VOL(3, 9)","On-balance volume signal (3,9)"
+442,6,"VOL(3, 12)","On-balance volume signal (3,12)"
+443,7,VXOCLSx,CBOE S&P 100 Volatility Index: VXO  
+444,7,A2ME,Cross sectional Median of A2ME
+445,7,AC,Cross sectional Median of AC
+446,7,AT,Cross sectional Median of AT
+447,7,ATO,Cross sectional Median of ATO
+448,7,BEME,Cross sectional Median of BEME
+449,7,Beta,Cross sectional Median of Beta
+450,7,C,Cross sectional Median of C
+451,7,CF,Cross sectional Median of CF
+452,7,CF2P,Cross sectional Median of CF2P
+453,7,CTO,Cross sectional Median of CTO
+454,7,D2A,Cross sectional Median of D2A
+455,7,D2P,Cross sectional Median of D2P
+456,7,DPI2A,Cross sectional Median of DPI2A
+457,7,E2P,Cross sectional Median of E2P
+458,7,FC2Y,Cross sectional Median of FC2Y
+459,7,IdioVol,Cross sectional Median of IdioVol
+460,7,Investment,Cross sectional Median of Investment
+461,7,Lev,Cross sectional Median of Lev
+462,7,LME,Cross sectional Median of LME
+463,7,LT_Rev,Cross sectional Median of LT_Rev
+464,7,LTurnover,Cross sectional Median of LTurnover
+465,7,MktBeta,Cross sectional Median of MktBeta
+466,7,NI,Cross sectional Median of NI
+467,7,NOA,Cross sectional Median of NOA
+468,7,OA,Cross sectional Median of OA
+469,7,OL,Cross sectional Median of OL
+470,7,OP,Cross sectional Median of OP
+471,7,PCM,Cross sectional Median of PCM
+472,7,PM,Cross sectional Median of PM
+473,7,PROF,Cross sectional Median of PROF
+474,7,Q,Cross sectional Median of Q
+475,7,r2_1,Cross sectional Median of r2_1
+476,7,r12_2,Cross sectional Median of r12_2
+477,7,r12_7,Cross sectional Median of r12_7
+478,7,r36_13,Cross sectional Median of r36_13
+479,7,Rel2High,Cross sectional Median of Rel2High
+480,7,Resid,Cross sectional Median of Resid_Var
+481,7,RNA,Cross sectional Median of RNA
+482,7,ROA,Cross sectional Median of ROA
+483,7,ROE,Cross sectional Median of ROE
+484,7,S2P,Cross sectional Median of S2P
+485,7,SGA2S,Cross sectional Median of SGA2S
+486,7,Spread,Cross sectional Median of Spread
+487,7,ST_REV,Cross sectional Median of ST_REV
+488,7,SUV,Cross sectional Median of SUV
+489,7,Variance,Cross sectional Median of Variance
+490,9,Date_SPY,trading dates considered
+491,9,Close_SPY,closing prices of SPY on the trading days
+492,9,SPYt,The return of the SPDR S&P 500 ETF (SPY) in day t.
+493,9,SPYt1,The return of the SPY in day t-1.
+494,9,SPYt2,The return of the SPY in day t-2.
+495,9,SPYt3,The return of the SPY in day t-3.
+496,9,RDP5,The 5-day relative difference in percentage of the SPY.
+497,9,RDP10,The 10-day relative difference in percentage of the SPY.
+498,9,RDP15,The 15-day relative difference in percentage of the SPY.
+499,9,RDP20,The 20-day relative difference in percentage of the SPY.
+500,9,EMA10,The 10-day exponential moving average of the SPY.
+501,9,EMA20,The 20-day exponential moving average of the SPY.
+502,9,EMA50,The 50-day exponential moving average of the SPY.
+503,9,EMA200,The 200-day exponential moving average of the SPY.
+504,9,T1,"1-month T-bill rate (in percentage), secondary market, business days, discount basis."
+505,9,T3,"3-month T-bill rate, secondary market, business days, discount basis."
+506,9,T6,"6-month T-bill rate, secondary market, business days, discount basis."
+507,9,T60,"5-year T-bill constant maturity rate, secondary market, business days."
+508,9,T120,"10-year T-bill constant maturity rate, secondary market, business days."
+509,9,CD1,"Average rate on 1-month neogtiable certificates of deposit (secondary market), quoted on an investment basis."
+510,9,CD3,"Average rate on 3-month neogtiable certificates of deposit (secondary market), quoted on an investment basis."
+511,9,CD6,"Average rate on 6-month neogtiable certificates of deposit (secondary market), quoted on an investment basis."
+512,9,Oil,"Relative change in the price of the crude oil (Cushing, OK WTI Spot Price FOB (dollars per barrel))."
+513,9,Gold,Relative change in the gold price
+514,9,CTB3M,"Change in the market yield on US Treasury securities at 3-month constant maturity, quoted on investment basis."
+515,9,CTB6M,"Change in the market yield on US treasury securities at 6-month constant maturity, quoted on investment basis."
+516,9,CTB1Y,"Change in the market yield on US Treasury securities at 1-year constant maturity, quoted on investment
+basis."
+517,9,CTB5Y,"Change in the market yield on US Treasury securities at 5-year constant maturity, quoted on investment
+basis."
+518,9,CTB10Y,"Change in the market yield on US Treasury securities at 10-year constant maturity, quoted on investment
+basis."
+519,9,AAA,"Change in the Moody’s yield on seasoned corporate bonds - all industries, Aaa."
+520,9,BAA,"Change in the Moody’s yield on seasoned corporate
+bonds - all industries, Baa."
+521,9,TE1,Term spread between T120 and T1.
+522,9,TE2,Term spread between T120 and T3.
+523,9,TE3,Term spread between T120 and T6.
+524,9,TE5,Term spread between T3 and T1.
+525,9,TE6,Term spread between T6 and T1.
+526,9,DE1,Default spread between BAA and AAA.
+527,9,DE2,Default spread between BAA and T120.
+528,9,DE4,Default spread between BAA and T6.
+529,9,DE5,Default spread between BAA and T3.
+530,9,DE6,Default spread between BAA and T1.
+531,9,DE7,Default spread between CD6 and T6.
+532,9,USD_Y,Relative change in the exchange rate between US dollar and Japanese yen.
+533,9,USD_GBP,Relative change in the exchange rate between US dollar and British pound.
+534,9,USD_CAD,Relative change in the exchange rate between US dollar and Canadian dollar.
+535,9,USD_CNY,Relative change in the exchange rate between US dollar and Chinese Yuan (Renminbi).
+536,9,HSI,Hang Seng index return.
+537,9,SSE Composite,Shang Hai Stock Exchange Composite index return.
+538,9,FCHI,CAC 40 index return.
+539,9,FTSE,FTSE 100 index return.
+540,9,GDAXI,DAX index return.
+541,9,DJI,Dow Jones Industrial Average index return.
+542,9,IXIC,NASDAQ Composite index return.
+543,9,V,Relative change in the trading volume of S&P 500 index (SPY)
+544,9,AAPL,Apple Inc stock return.
+545,9,MSFT,Microsoft stock return.
+546,9,XOM,Exxon Mobil stock return.
+547,9,GE,General Electric stock return.
+548,9,JNJ,Johnson and Johnson stock return.
+549,9,WFC,Wells Fargo stock return.
+550,9,AMZN,Amazon.com Inc stock return.
+551,9,JPM,JPMorgan Chase & Co stock return.
+552,10,D_log(DIV),"Log difference of the sum of the dividends in
+the last 4 quarters (divs are not reinvested)"
+553,10,D_log(P),"Log difference of the CRSP portfolio price
+when dividends are not reinvested"
+554,10,D_DIVreinveste,"Log difference of the sum of the dividends in
+the last 4 quarters (divs are reinvested)"
+555,10,D_Preinveste,"Log difference of the CRSP portfolio price
+when dividends are reinvested"
+556,10,d-p,"DIVreinveste - Preinveste ¼ log(DIV) -
+log(P)"
+557,10,RREL,"Difference b/w Risk free and its last 4
+quarters average"
+558,10,Yield10y,Quarterly yield of bonds with maturity 10 years
+559,10,TRM10y-3m,"Difference b/w 10yTbonds rate and the risk
+free rate"
+560,10,Yield1y,"Yield from a t-bond with maturity one year
+(secondary mkt, nominal)"
+561,10,TRM10y-1y,Term spread b/w 10years and 1 year t-bonds.
+562,10,AAA,"AAA cor-porate bonds yield (Moody’s
+seasoned)"
+563,10,BAA,"BAA corporate bonds yield (Moody’s
+seasoned)"
+564,10,DEF,AAA-BAA yield: risk default spread
+565,10,RF,"One-month Treasury bill rate from French
+data set"
+566,10,R15-R11,"Small stock value spread constructed from
+French database"
+567,10,factor,"Piazzesi-Cochrane risk factor, quarterly
+average (Cochrane and Piazzesi, 2005)"
+568,10,CAY,"Lettau-Ludvigson risk factor (Lettau and
+Ludvigson, 2001a)"
+569,10,Mkt-RF,"Fama-French market risk factor (Fama and
+French, 1993)"
+570,10,SMB,"Fama-French risk factor (Fama and French,
+1993)"
+571,10,HML,"Fama-French risk factor (Fama and French,
+1993)"
+572,10,UMD,"Momentum risk factor, French data set"
+573,10,Agric,"Industry Returns 4 digit SIC codes, French
+data set"
+574,10,Food,"Industry Returns 4 digit SIC codes, French
+data set"
+575,10,Soda,"Industry Returns 4 digit SIC codes, French
+data set"
+576,10,Beer,"Industry Returns 4 digit SIC codes, French
+data set"
+577,10,Smoke,"Industry Returns 4 digit SIC codes, French
+data set"
+578,10,Toys,"Industry Returns 4 digit SIC codes, French
+data set"
+579,10,Fun,"Industry Returns 4 digit SIC codes, French
+data set"
+580,10,Books,"Industry Returns 4 digit SIC codes, French
+data set"
+581,10,Hshld,"Industry Returns 4 digit SIC codes, French
+data set"
+582,10,Clths,"Industry Returns 4 digit SIC codes, French
+data set"
+583,10,MedEq,"Industry Returns 4 digit SIC codes, French
+data set"
+584,10,Drugs,"Industry Returns 4 digit SIC codes, French
+data set"
+585,10,Chems,"Industry Returns 4 digit SIC codes, French
+data set"
+586,10,Rubbr,"Industry Returns 4 digit SIC codes, French
+data set"
+587,10,Txtls,"Industry Returns 4 digit SIC codes, French
+data set"
+588,10,BldMt,"Industry Returns 4 digit SIC codes, French
+data set"
+589,10,Cnstr,"Industry Returns 4 digit SIC codes, French
+data set"
+590,10,Steel,"Industry Returns 4 digit SIC codes, French
+data set"
+591,10,Mach,"Industry Returns 4 digit SIC codes, French
+data set"
+592,10,ElcEq,"Industry Returns 4 digit SIC codes, French
+data set"
+593,10,Autos,"Industry Returns 4 digit SIC codes, French
+data set"
+594,10,Aero,"Industry Returns 4 digit SIC codes, French
+data set"
+595,10,Ships,"Industry Returns 4 digit SIC codes, French
+data set"
+596,10,Mines,"Industry Returns 4 digit SIC codes, French
+data set"
+597,10,Coal,"Industry Returns 4 digit SIC codes, French
+data set"
+598,10,Oil,"Industry Returns 4 digit SIC codes, French
+data set"
+599,10,Util,"Industry Returns 4 digit SIC codes, French
+data set"
+600,10,Telcm,"Industry Returns 4 digit SIC codes, French
+data set"
+601,10,PerSv,"Industry Returns 4 digit SIC codes, French
+data set"
+602,10,BusSv,"Industry Returns 4 digit SIC codes, French
+data set"
+603,10,Comps,"Industry Returns 4 digit SIC codes, French
+data set"
+604,10,Chips,"Industry Returns 4 digit SIC codes, French
+data set"
+605,10,LabEq,"Industry Returns 4 digit SIC codes, French
+data set"
+606,10,Paper,"Industry Returns 4 digit SIC codes, French
+data set"
+607,10,Boxes,"Industry Returns 4 digit SIC codes, French
+data set"
+608,10,Trans,"Industry Returns 4 digit SIC codes, French
+data set"
+609,10,Whlsl,"Industry Returns 4 digit SIC codes, French
+data set"
+610,10,Rtail,"Industry Returns 4 digit SIC codes, French
+data set"
+611,10,Meals,"Industry Returns 4 digit SIC codes, French
+data set"
+612,10,Banks,"Industry Returns 4 digit SIC codes, French
+data set"
+613,10,Insur,"Industry Returns 4 digit SIC codes, French
+data set"
+614,10,RlEst,"Industry Returns 4 digit SIC codes, French
+data set"
+615,10,Fin,"Industry Returns 4 digit SIC codes, French
+data set"
+616,10,Other,"Industry Returns 4 digit SIC codes, French
+data set"
+617,10,1_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+618,10,1_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+619,10,1_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+620,10,1_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+621,10,1_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+622,10,1_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+623,10,1_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+624,10,1_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+625,10,2_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+626,10,2_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+627,10,2_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+628,10,2_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+629,10,2_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+630,10,2_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+631,10,2_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+632,10,2_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+633,10,2_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+634,10,2_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+635,10,3_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+636,10,3_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+637,10,3_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+638,10,3_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+639,10,3_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+640,10,3_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+641,10,3_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+642,10,3_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+643,10,3_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+644,10,3_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+645,10,4_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+646,10,4_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+647,10,4_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+648,10,4_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+649,10,4_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+650,10,4_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+651,10,4_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+652,10,4_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+653,10,4_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+654,10,4_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+655,10,5_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+656,10,5_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+657,10,5_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+658,10,5_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+659,10,5_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+660,10,5_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+661,10,5_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+662,10,5_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+663,10,5_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+664,10,5_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+665,10,6_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+666,10,6_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+667,10,6_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+668,10,6_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+669,10,6_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+670,10,6_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+671,10,6_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+672,10,6_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+673,10,6_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+674,10,6_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+675,10,7_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+676,10,7_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+677,10,7_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+678,10,7_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+679,10,7_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+680,10,7_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+681,10,7_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+682,10,7_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+683,10,7_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+684,10,8_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+685,10,8_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+686,10,8_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+687,10,8_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+688,10,8_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+689,10,8_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+690,10,8_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+691,10,8_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+692,10,8_9,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+693,10,8_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+694,10,9_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+695,10,9_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+696,10,9_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+697,10,9_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+698,10,9_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+699,10,9_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+700,10,9_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+701,10,9_8,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+702,10,9_High,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+703,10,10_Low,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+704,10,10_2,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+705,10,10_3,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+706,10,10_4,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+707,10,10_5,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+708,10,10_6,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+709,10,10_7,"Returnson stock portfolios sorted by size
+and book-to-market ratio, French data set
+data set"
+710,11,Day,which day of the week
+711,11,Close,Close price
+712,11,Vol,Relative change of volume
+713,11,MOM-1,Return of 2 days before
+714,11,MOM-2,Return of 3 days before
+715,11,MOM-3,Return of 4 days before
+716,11,ROC-5,5 days Rate of Change
+717,11,ROC-10,10 days Rate of Change
+718,11,ROC-15,15 days Rate of Change
+719,11,ROC-20,20 days Rate of Change
+720,11,EMA-10,10 days Exponential Moving Average
+721,11,EMA-20,20 days Exponential Moving Average
+722,11,EMA-50,50 days Exponential Moving Average
+723,11,EMA-200,200 days Exponential Moving Average
+724,11,Oil,"Relative change of oil price (WTI), Oklahoma"
+725,11,Oil,Relative change of oil price (Brent)
+726,11,Oil,Relative change of oil price (WTI)
+727,11,Gold-F,Relative change of gold price futures
+728,11,XAU-USD,Relative change of gold spot U.S. dollar
+729,11,XAG-USD,Relative change of silver spot U.S. dollar
+730,11,Gas,Relative change of gas price
+731,11,Silver,Relative change of silver price
+732,11,Copper,Relative change of copper future
+733,11,GSPC,Return of S&P 500 index
+734,11,NYSE,Return of NY stock exchange index
+735,11,RUSSELL,Return of RUSSELL 2000 index
+736,11,USD-AUD,Relative change in US dollar to Australian dollar exchange rate
+737,11,USD-NZD,USD-NZD Relative change in US dollar to New Zealand dollar exchange rate
+738,11,USD-CHF,Relative change in US dollar to Swiss franc exchange rate
+739,11,USD-EUR,Relative change in US dollar to Euro exchange rate
+740,11,USDX,Relative change in US dollar index
+741,11,FCHI-F,Return of CAC 40 Futures
+742,11,FTSE-F,Return of FTSE 100 Futures
+743,11,GDAXI-F,Return of DAX Futures
+744,11,HSI-F,Return of Hang Seng index Futures
+745,11,Nikkei-F,Return of Nikkei index Futures
+746,11,KOSPI-F,Return of Korean stock exchange Futures
+747,11,IXIC-F,Return of NASDAQ Composite index Futures
+748,11,DJI-F,Return of Dow Jones Industrial Average Futures
+749,11,S&P-F,Return of S&P 500 index Futures
+750,11,RUSSELL-F,Return of RUSSELL Futures
+751,11,USDX-F,Relative change in US dollar index Futures

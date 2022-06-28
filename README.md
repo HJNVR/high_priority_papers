@@ -61,9 +61,10 @@ E Hoseinzade, S Haratizadeh
 
 # Structure of repository folders/files
 
-- src (11 py files to generate features for each of the 11 papers with config files)
-- result folder (output files in csv format)
+- src (13 py files including feature generation and update py files)
+- result folder (3 output files in csv format)
 - test folder (codes for testing src codes)
+- 3 csv files (full list of features, list of unique features and user-selected list of features)
 - reference_papers folder (pdf of all the 11 papers including supplementary online appendix, if applicable)
 
 # Requirements and dependencies

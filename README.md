@@ -96,7 +96,7 @@ $ pip install investpy
 
 # How to run
 - Input user-defined parameters into config.json. See the `Configuration settings` section below for more details.
-- Input selected list of features in `list_of_selected_features` csv (user to choose which features to generate based on the full list provided in the `list_of_all_features` csv).
+- Input selected list of features in `list_of_selected_features` csv (user to choose which features to generate based on the full list provided in the `list_of_unique_features` csv).
 - Run generate_all_features.py (to generate all unique features - 01/2000 to 05/2022).
 - Run update_merge_select_features.py (to generate new data, merge all unique features and filter selected list of features - 01/2000 to 06/2022).
 - Result/output file (csv) can be found in the `result` folder.

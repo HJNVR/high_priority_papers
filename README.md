@@ -95,18 +95,24 @@ $ pip install investpy
 
 # How to run
 - Input user-defined parameters into config.json. See the `Configuration settings` section below for more details.
-- Run the specific research paper's `py` file to download raw data and generate features for the paper.
+- Input selected list of features in `list_of_selected_features` csv (user to choose which features to generate based on the full list provided in the `list_of_all_features` csv).
+- Run generate_all_features.py (to generate all unique features - 01/2000 to 05/2022).
+- Run update_merge_select_features.py (to generate new data, merge all unique features and filter selected list of features - 01/2000 to 06/2022).
 - Result/output file (csv) can be found in the `result` folder.
 
-# Configuration settings
+# Configuration settings         
 
 The following configuration settings are available within the config.json file:
 
 - wrds_username: Enter the WRDS username. This allows for a pgpass file to be created such that usernames and passwords do not need to be typed in repeatedly.
-- start_year and end_year: Start and end year of raw data query for Yahoo Finance, Compustat and CRSP databases.
+- data parameters for `generate_all_features.py` and `update_merge_select_features.py.
 
 # Outputs
-The output of each `py` file will be saved in the `result` folder in csv format.
+The outputs of `generate_all_features.py` and `update_merge_select_features.py` will be saved in the `result` folder in csv format:
+
+- all_features (01/2000 to 05/2022)
+- all_features_updated_merged (06/2022 to latest month)
+- selected_features (01/2000 to latest month)
 
 # Python code standard and best practices
 All the python code in this repository will follow the best practices as stated in the following guide/documentation in terms of formatting, code layout and styling -

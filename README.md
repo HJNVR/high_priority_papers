@@ -106,7 +106,7 @@ $ pip install investpy
 The following configuration settings are available within the config.json file:
 
 - wrds_username: Enter the WRDS username. This allows for a pgpass file to be created such that usernames and passwords do not need to be typed in repeatedly.
-- data parameters for `generate_all_features.py` and `update_merge_select_features.py.
+- data parameters for `generate_all_features.py` and `update_merge_select_features.py`.
 
 # Outputs
 The outputs of `generate_all_features.py` and `update_merge_select_features.py` will be saved in the `result` folder in csv format:

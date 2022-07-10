@@ -18,6 +18,20 @@ warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper11():
+    def __init__(self):
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
+
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.wrds_username = self.data['wrds_username']
+        self.features_df = pd.DataFrame()
+        self.fred = Fred(api_key=self.data['fred_api_key'])
+        self.fred_start_date = self.data['fred_start_date']
+        self.fred_end_date = self.data['fred_end_date']
+        self.investpy_start_date = self.data['investpy_start_date']
+        self.investpy_end_date = self.data['investpy_end_date']
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
 
     
     def cal_export(self, df):
@@ -159,17 +173,8 @@ class Paper11():
     def generate_ticker_files(self):
 
         csv_files = {}
-        with open('config.json') as config_file:
-            data = json.load(config_file)
-
-        start_year = data['start_year']
-        end_year = data['end_year']
-        wrds_username = data['wrds_username']
-
-        parm = {"start_year": start_year, "end_year": end_year}
-
         # query data from WRDS
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_msf = conn.raw_sql("""
                               select a.date, a.permno, a.prc, a.vol
@@ -178,10 +183,10 @@ class Paper11():
                               on a.permno=b.permno
                               where b.namedt<=a.date
                               and a.date<=b.nameendt
-                              and a.date >= '01/01/%(start_year)s'
-                              and a.date <= '12/31/%(end_year)s'
+                              and a.date >= %(start_date)s
+                              and a.date <= %(end_date)s
                               and b.exchcd between 1 and 3
-                              """, params=parm)
+                              """, params=self.parm)
 
         conn.close()
 
@@ -191,7 +196,7 @@ class Paper11():
         crsp_msf['prc'] = crsp_msf['prc'].astype(float)
 
         # import list of S&P500 company tickers/permnos
-        stocks = pd.read_csv('paper6/S&P500 companies list (2000 to 2020).csv')
+        stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
         permnos = stocks['permno'].values
         tickers = stocks['ticker'].values
 
@@ -223,8 +228,8 @@ class Paper11():
         return csv_files
 
     def generate_common_features(self):
-        start_date = "2000-01-01"
-        end_date = "2020-12-31"
+        start_date = self.fred_start_date
+        end_date = self.fred_end_date
 
         df = yf.download("WMT", start=start_date, end=end_date)
 
@@ -388,7 +393,7 @@ class Paper11():
                  'MSFT', 'GE', 'JNJ', 'WFC', 'AMZN']]
 
         start_date = '30/12/1999'
-        end_date = '31/12/2020'
+        end_date = self.investpy_end_date
 
         oil_brent = investpy.search.search_quotes(
             text='LCO', n_results=1).retrieve_historical_data(from_date=start_date, to_date=end_date)
@@ -686,21 +691,8 @@ class Paper11():
         return df
     
     def generate(self):
-        # load config file
-        with open('config.json') as config_file:
-            data = json.load(config_file)
-
-        start_year = data['start_year']
-        end_year = data['end_year']
-        wrds_username = data['wrds_username']
-
-        parm = {"start_year": start_year, "end_year": end_year}
-
-        # import list of S&P500 company tickers
-        # query data from WRDS
-        #user: muhdnoor
         # password: WRDSaccess_135@
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_msf = conn.raw_sql("""
                               select a.date, a.permno, a.prc, a.vol
@@ -709,10 +701,10 @@ class Paper11():
                               on a.permno=b.permno
                               where b.namedt<=a.date
                               and a.date<=b.nameendt
-                              and a.date >= '01/01/%(start_year)s'
-                              and a.date <= '12/31/%(end_year)s'
+                              and a.date >= %(start_date)s
+                              and a.date <= %(end_date)s
                               and b.exchcd between 1 and 3
-                              """, params=parm)
+                              """, params=self.parm)
 
         conn.close()
 
@@ -722,7 +714,7 @@ class Paper11():
         crsp_msf['prc'] = crsp_msf['prc'].astype(float)
 
         # import list of S&P500 company tickers/permnos
-        stocks = pd.read_csv('paper11/S&P500 companies list (2000 to 2020).csv')
+        stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
         permnos = stocks['permno'].values
         tickers = stocks['ticker'].values
 
@@ -743,11 +735,14 @@ class Paper11():
             else:
                 count += 1
 
-        daily_prc = pd.read_csv('sp500_daily_prc.csv')
+        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df.reset_index(inplace=True)
+        df.columns = df.columns.str.lower()
+        daily_prc = df
         daily_prc['date'] = pd.to_datetime(daily_prc['date'])
         daily_prc['year'] = daily_prc['date'].dt.year
         daily_prc['month'] = daily_prc['date'].dt.month
-        daily_prc = daily_prc.sort_values(['ticker', 'date']).reset_index(drop=True)
+        daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
         lvlm_dt_ref #purpose is to find the last trading day of the month
         date_dic = {}
@@ -794,54 +789,6 @@ class Paper11():
             count += 1
         paper11_final.to_csv('../result/paper11/paper11_features.csv')
         return ticker_files
-        '''
-        paper11_final = pd.read_csv('../result/paper11/paper11_features.csv', index_col = 0)
-        df = paper11_final
-        stocks = pd.read_csv('paper1/S&P500 companies list (2000 to 2020).csv')
-        permnos = stocks['permno'].values
-        tickers = stocks['ticker'].values
-
-        dic_map = {}  # permno: tickers
-        for i in range(len(permnos)):
-          dic_map[permnos[i]] = tickers[i]
-
-        # create dictionary with key as stock permno and value as dataframe downloaded from yahoo finance
-        dic = {}
-        for p in permnos:
-          dic[p] = df[df['permno'] == p]
-
-        # check number of empty dataframes
-        delisted = []
-        count = 0
-        for k, v in dic.items():
-          if v.shape[0] == 0:
-            delisted.append(k)
-          else:
-            count += 1
-
-        paper11_final = pd.DataFrame()
-        ticker_files = {}
-        count = 1
-        # calculate features and export as csv file
-        for k, v in dic.items():
-          if v.shape[0] > 1:
-            # cal_export(v).to_csv('../result/consolidated_papers/'+file_name+'.csv')
-            csv_file = v
-            if count == 1:
-              paper11_final = csv_file
-            else:
-              try:
-                paper11_final = pd.concat([paper11_final, csv_file], ignore_index=True)
-              except:
-                # delisted companies
-                pass
-            ticker_files[dic_map[k]] = csv_file
-            print("\rPaper11 completed {}/{}.".format(count, 833), end='') # total 813 existing stocks
-            sys.stdout.flush()
-            count += 1
-        paper11_final.to_csv('../result/paper11/paper11_features.csv')
-        return ticker_files
-        '''
 
 if __name__ == "__main__":
     Paper11().generate()

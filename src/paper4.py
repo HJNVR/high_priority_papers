@@ -15,25 +15,23 @@ warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper4:
+    def __init__(self):
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
+
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.wrds_username = self.data['wrds_username']
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+        self.features_df = pd.DataFrame()
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+
     def generate(self):
-        # Load config file
-        with open('paper4_config.json') as config_file:
-            data = json.load(config_file)
-
-        start_year = data['start_year']
-        end_year = data['end_year']
-        wrds_username = data['wrds_username']
-
-        parm = {"start_year": start_year, "end_year": end_year}
-
-        parm_sp500 = {"start_year": start_year, "end_year": end_year}
-
-
         # In[3]:
 
 
         # Query data from WRDS
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_msf = conn.raw_sql("""
                               select a.ret, a.retx, a.prc, a.shrout, a.vol, a.date, a.permno
@@ -42,15 +40,15 @@ class Paper4:
                               on a.permno=b.permno
                               where b.namedt<=a.date
                               and a.date<=b.nameendt
-                              and a.date >= '01/01/%(start_year)s'
-                              and a.date <= '12/31/%(end_year)s'
+                              and a.date >= %(start_date)s
+                              and a.date <= %(end_date)s
                               and b.exchcd between 1 and 3
-                              """, params=parm)
+                              """, params=self.parm)
 
         conn.close()
 
         # Query data from WRDS
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         comp_annual = conn.raw_sql("""
                             /*header info*/
@@ -86,9 +84,9 @@ class Paper4:
                             and f.datafmt = 'STD'
                             and f.popsrc = 'D'
                             and f.consol = 'C'
-                            and f.datadate >= '01/01/%(start_year)s'
-                            and f.datadate <= '12/31/%(end_year)s'
-                            """, params=parm)
+                            and f.datadate >= %(start_date)s
+                            and f.datadate <= %(end_date)s
+                            """, params=self.parm)
 
         comp_crsp_link = conn.raw_sql("""
                           select gvkey, lpermno as permno, linktype, linkprim, 
@@ -380,7 +378,7 @@ class Paper4:
 
 
         # Add ticker name
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_stocknames = conn.raw_sql("""
                             select * from crsp.stocknames 
@@ -396,9 +394,9 @@ class Paper4:
         sp500 = conn.raw_sql("""
                                 select *
                                 from crsp.msp500list
-                                where ending >='01/01/%(start_year)s'
-        						and start <= '12/31/%(end_year)s';
-                                """, params=parm_sp500)
+                                where ending >= %(start_date)s
+        						and start <= %(end_date)s;
+                                """, params=self.parm)
 
         conn.close()
 
@@ -423,7 +421,7 @@ class Paper4:
         df = paper_4_features
         df['date'] = pd.to_datetime(df['date'])
 
-        stocks = pd.read_csv('paper1/S&P500 companies list (2000 to 2020).csv')
+        stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
         permnos = stocks['permno'].values
         tickers = stocks['ticker'].values
 

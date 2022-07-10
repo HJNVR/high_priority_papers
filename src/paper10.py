@@ -6,16 +6,31 @@
 import numpy as np
 import pandas as pd
 import time
+import json
+import yfinance as yf
 from fredapi import Fred
 import warnings
 warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper10:
+    def __init__(self):
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
+
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.wrds_username = self.data['wrds_username']
+        self.features_df = pd.DataFrame()
+        self.fred = Fred(api_key=self.data['fred_api_key'])
+        self.fred_start_date = self.data['fred_start_date']
+        self.fred_end_date = self.data['fred_end_date']
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+
     def generate_common_features(self):
         # define start and end date
-        start_date = "2000-01-01"
-        end_date = "2020-12-31"
+        start_date = self.fred_start_date
+        end_date = self.fred_end_date
 
         # Mkt-RF, SMB, HML, RF
         df = pd.read_csv('paper10/F-F_Research_Data_Factors.csv')
@@ -150,16 +165,14 @@ class Paper10:
         df['10_7'] = df4['ME10 BM7']
         df.index = df.index.to_period('M')
 
-        fred = Fred(api_key='ab766afb0df13dba8492403a7865f852')
-
-        yield10y = fred.get_series(
+        yield10y = self.fred.get_series(
             'GS10', observation_start=start_date, observation_end=end_date)
         yield10y.index.name = 'Date'
         yield10y.rename('yield10y', inplace=True)
         yield10y = yield10y[2::3]
         yield10y.index = yield10y.index.to_period('M')
 
-        yield1y = fred.get_series(
+        yield1y = self.fred.get_series(
             'GS1', observation_start=start_date, observation_end=end_date)
         yield1y.index.name = 'Date'
         yield1y.rename('yield1y', inplace=True)
@@ -170,13 +183,13 @@ class Paper10:
         trm10y_1y.index.name = 'Date'
         trm10y_1y.rename('trm10y_1y', inplace=True)
 
-        aaa = fred.get_series('AAA', observation_start=start_date,
+        aaa = self.fred.get_series('AAA', observation_start=start_date,
                               observation_end=end_date)
         aaa.index.name = 'Date'
         aaa.rename('aaa', inplace=True)
         aaa.index = aaa.index.to_period('M')
 
-        baa = fred.get_series('BAA', observation_start=start_date,
+        baa = self.fred.get_series('BAA', observation_start=start_date,
                               observation_end=end_date)
         baa.index.name = 'Date'
         baa.rename('baa', inplace=True)
@@ -187,7 +200,7 @@ class Paper10:
         DEF.index.name = 'Date'
         DEF.rename('DEF', inplace=True)
 
-        riskfree = fred.get_series(
+        riskfree = self.fred.get_series(
             'TB3MS', observation_start='1999-01-01', observation_end=end_date)
         rrel = riskfree[2::3]
         for i in range(4, len(rrel)):
@@ -197,7 +210,7 @@ class Paper10:
         rrel.rename('rrel', inplace=True)
         rrel.index = rrel.index.to_period('M')
 
-        riskfree = fred.get_series(
+        riskfree = self.fred.get_series(
             'TB3MS', observation_start=start_date, observation_end=end_date)
         riskfree.index = riskfree.index.to_period('M')
         trm10y_3m = yield10y - riskfree[2::3]
@@ -225,11 +238,14 @@ class Paper10:
         common_features = self.generate_common_features()
         common_features.columns = common_features.columns.str.lower()
 
-        daily_prc = pd.read_csv('sp500_daily_prc.csv')
+        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df.reset_index(inplace=True)
+        df.columns = df.columns.str.lower()
+        daily_prc = df
         daily_prc['date'] = pd.to_datetime(daily_prc['date'])
         daily_prc['year'] = daily_prc['date'].dt.year
         daily_prc['month'] = daily_prc['date'].dt.month
-        daily_prc = daily_prc.sort_values(['ticker', 'date']).reset_index(drop=True)
+        daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
         lvlm_dt_ref #purpose is to find the last trading day of the month
         date_dic = {}

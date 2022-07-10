@@ -17,6 +17,19 @@ warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper6:
+    def __init__(self):
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
+
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.wrds_username = self.data['wrds_username']
+        self.features_df = pd.DataFrame()
+        self.fred = Fred(api_key=self.data['fred_api_key'])
+        self.fred_start_date = self.data['fred_start_date']
+        self.fred_end_date = self.data['fred_end_date']
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+
     # function to calculate all features
     def cal_export(self, df):
         df = self.calculate_ma(df)
@@ -276,17 +289,8 @@ class Paper6:
                        'd', 'obv', 'maobv1', 'maobv2', 'maobv3', 'maobv9', 'maobv12'], axis=1)
 
     def generate(self):
-        with open('config.json') as config_file:
-            data = json.load(config_file)
-
-        start_year = data['start_year']
-        end_year = data['end_year']
-        wrds_username = data['wrds_username']
-
-        parm = {"start_year": start_year, "end_year": end_year}
-
         # query data from WRDS
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_msf = conn.raw_sql("""
                               select a.date, a.permno, a.prc, a.vol
@@ -295,10 +299,10 @@ class Paper6:
                               on a.permno=b.permno
                               where b.namedt<=a.date
                               and a.date<=b.nameendt
-                              and a.date >= '01/01/%(start_year)s'
-                              and a.date <= '12/31/%(end_year)s'
+                              and a.date >= %(start_date)s
+                              and a.date <= %(end_date)s
                               and b.exchcd between 1 and 3
-                              """, params=parm)
+                              """, params=self.parm)
 
         conn.close()
 
@@ -307,7 +311,7 @@ class Paper6:
         crsp_msf.set_index('date', inplace=True)
         crsp_msf['prc'] = crsp_msf['prc'].astype(float)
         # import list of S&P500 company tickers/permnos
-        stocks = pd.read_csv('paper6/S&P500 companies list (2000 to 2020).csv')
+        stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
         permnos = stocks['permno'].values
         tickers = stocks['ticker'].values
 
@@ -331,11 +335,14 @@ class Paper6:
             else:
                 count += 1
 
-        daily_prc = pd.read_csv('sp500_daily_prc.csv')
+        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df.reset_index(inplace=True)
+        df.columns = df.columns.str.lower()
+        daily_prc = df
         daily_prc['date'] = pd.to_datetime(daily_prc['date'])
         daily_prc['year'] = daily_prc['date'].dt.year
         daily_prc['month'] = daily_prc['date'].dt.month
-        daily_prc = daily_prc.sort_values(['ticker', 'date']).reset_index(drop=True)
+        daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
         lvlm_dt_ref #purpose is to find the last trading day of the month
         date_dic = {}

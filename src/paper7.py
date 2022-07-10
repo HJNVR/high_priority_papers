@@ -18,22 +18,21 @@ warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper7:
+    def __init__(self):
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
+
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.wrds_username = self.data['wrds_username']
+        self.features_df = pd.DataFrame()
+        self.fred = Fred(api_key=self.data['fred_api_key'])
+        self.fred_start_date = self.data['fred_start_date']
+        self.fred_end_date = self.data['fred_end_date']
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+
     def generate(self):
         # Load config file
-        
-        with open('paper7_config.json') as config_file:
-            data = json.load(config_file)
-
-        start_date = data['start_date']
-        end_date = data['end_date']
-        start_year = data['start_year']
-        end_year = data['end_year']
-        wrds_username = data['wrds_username']
-        fred = data['fred_api_key']
-
-        parm = {"start_year": start_year, "end_year": end_year}
-
-        parm_sp500 = {"start_year": start_year, "end_year": end_year}
 
         df_fred_md = pd.read_csv(
             "https://files.stlouisfed.org/files/htdocs/fred-md/monthly/current.csv")
@@ -51,30 +50,28 @@ class Paper7:
                                               "USGOOD", "USGOVT", "USTPU", "USTRADE", "USWTRADE", "W875RX1", "WPSFD49207", "WPSFD49502", "WPSID61", "WPSID62"]]
 
         paper_7_fredmd_features = paper_7_fredmd_features.query(
-            '20000101 <= sasdate < 20210131')
+            '20000101 <= sasdate')
         paper_7_fredmd_features = paper_7_fredmd_features.reset_index(
             drop=True)
-
-        fred = Fred(api_key=fred)
-
+        '''
         df7 = {}
-        df7['AMBSL'] = fred.get_series(
-            'AMBSL', observation_start=start_date, observation_end=end_date)
-        df7['MZMSL'] = fred.get_series(
-            'MZMSL', observation_start=start_date, observation_end=end_date)
+        df7['AMBSL'] = self.fred.get_series(
+            'AMBSL', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df7['MZMSL'] = self.fred.get_series(
+            'MZMSL', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
         df7 = pd.DataFrame(df7)
         df7.index = df7.index + MonthEnd(0)
         df7.reset_index(inplace=True)
-
         paper_7_fredmd_features = pd.merge(
             left=paper_7_fredmd_features, right=df7, left_on='sasdate', right_on='index')
+        '''
         paper_7_fredmd_features.set_index('sasdate', inplace=True)
         paper_7_fredmd_features.index = paper_7_fredmd_features.index.to_period(
             'M')
         paper_7_fredmd_features.reset_index(inplace=True)
 
         # Query data from WRDS
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_msf = conn.raw_sql("""
                               select a.ret, a.retx, a.prc, a.shrout, a.vol, a.date, a.permno
@@ -83,15 +80,15 @@ class Paper7:
                               on a.permno=b.permno
                               where b.namedt<=a.date
                               and a.date<=b.nameendt
-                              and a.date >= '01/01/%(start_year)s'
-                              and a.date <= '12/31/%(end_year)s'
+                              and a.date >= %(start_date)s
+                              and a.date <= %(end_date)s
                               and b.exchcd between 1 and 3
-                              """, params=parm)
+                              """, params=self.parm)
 
         conn.close()
 
         # Query data from WRDS
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         comp_annual = conn.raw_sql("""
                             /*header info*/
@@ -127,9 +124,9 @@ class Paper7:
                             and f.datafmt = 'STD'
                             and f.popsrc = 'D'
                             and f.consol = 'C'
-                            and f.datadate >= '01/01/%(start_year)s'
-                            and f.datadate <= '12/31/%(end_year)s'
-                            """, params=parm)
+                            and f.datadate >= %(start_date)s
+                            and f.datadate <= %(end_date)s
+                            """, params=self.parm)
 
         comp_crsp_link = conn.raw_sql("""
                           select gvkey, lpermno as permno, linktype, linkprim, 
@@ -404,7 +401,7 @@ class Paper7:
         # In[47]:
 
         # Add ticker name
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
         crsp_stocknames = conn.raw_sql("""
                             select * from crsp.stocknames 
@@ -422,9 +419,9 @@ class Paper7:
         sp500 = conn.raw_sql("""
                                 select *
                                 from crsp.msp500list
-                                where ending >='01/01/%(start_year)s'
-                                and start <= '12/31/%(end_year)s';
-                                """, params=parm_sp500)
+                                where ending >= %(start_date)s
+                                and start <= %(end_date)s;
+                                """, params=self.parm)
 
         conn.close()
 
@@ -447,10 +444,8 @@ class Paper7:
 
         paper_7_WRDS_features['date'] = pd.to_datetime(
             paper_7_WRDS_features['date'])
-        
 
-
-        stocks = pd.read_csv('paper7/S&P500 companies list (2000 to 2020).csv')
+        stocks = pd.read_csv('S&P500 companies list (2000 to 2020).csv')
         permnos = stocks['permno'].values
         tickers = stocks['ticker'].values
 
@@ -472,11 +467,14 @@ class Paper7:
             else:
                 count += 1
 
-        daily_prc = pd.read_csv('sp500_daily_prc.csv')
+        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df.reset_index(inplace=True)
+        df.columns = df.columns.str.lower()
+        daily_prc = df
         daily_prc['date'] = pd.to_datetime(daily_prc['date'])
         daily_prc['year'] = daily_prc['date'].dt.year
         daily_prc['month'] = daily_prc['date'].dt.month
-        daily_prc = daily_prc.sort_values(['ticker', 'date']).reset_index(drop=True)
+        daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
         lvlm_dt_ref #purpose is to find the last trading day of the month
         date_dic = {}
@@ -485,7 +483,6 @@ class Paper7:
         df_date['YYMMDD']=df_date.index.astype(str)
         df_date.index=df_date.index.to_period('M')
         df_date.index=df_date.index.astype(str)
-
 
         # calculate features and export as csv file
         #final_csv = pd.DataFrame()
@@ -523,10 +520,10 @@ class Paper7:
             print("\rPaper7 completed {}/{}.".format(count, 835), end='')
             sys.stdout.flush()
             count += 1
-        paper7_final = paper7_final.iloc[:, 1:] # get rid of level_0
+        #paper7_final = paper7_final.iloc[:, 1:] # get rid of level_0
         paper7_final.to_csv('../result/paper7/paper7_features.csv')
         return ticker_files
-
+        
 if __name__ == "__main__":
     Paper7().generate()
     #features.to_csv('../result/paper7/paper7_features.csv')

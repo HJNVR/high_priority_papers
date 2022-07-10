@@ -19,13 +19,20 @@ warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper5:
-    def generate_common_features(self):
-        with open('paper5_config.json') as config_file:
-            data = json.load(config_file)
+    def __init__(self):
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
 
-        start_date = data['start_date']
-        end_date = data['end_date']
-        wrds_username = data['wrds_username']
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.wrds_username = self.data['wrds_username']
+        self.features_df = pd.DataFrame()
+        self.fred = Fred(api_key=self.data['fred_api_key'])
+        self.fred_start_date = self.data['fred_start_date']
+        self.fred_end_date = self.data['fred_end_date']
+        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+
+    def generate_common_features(self):
 
         # In[18]:
 
@@ -44,36 +51,38 @@ class Paper5:
                                        "PERMITMW", "PERMITNE", "PERMITS", "PERMITW", "PPICMM", "REALLN", "RETAILx", "RPI", "S&P 500", "S&P div yield", "S&P PE ratio", "S&P: indust", "SRVPRD", "T10YFFM", "T1YFFM",
                                        "T5YFFM", "TB3MS", "TB3SMFFM", "TB6MS", "TB6SMFFM", "TOTRESNS", "UEMP15OV", "UEMP15T26", "UEMP27OV", "UEMP5TO14", "UEMPLT5", "UEMPMEAN", "UMCSENTx", "UNRATE", "USCONS", "USFIRE",
                                        "USGOOD", "USGOVT", "USTPU", "USTRADE", "USWTRADE", "W875RX1"]]
-
+        
+        
         # In[22]:
 
         paper_5_features = paper_5_features.query(
-            '20000101 <= sasdate < 20210131')
+            '20000101 <= sasdate')
         paper_5_features = paper_5_features.reset_index(drop=True)
-
+        
+        
         # In[23]:
 
         # start_date = '2000-01-01'
         # end_date = '2020-12-31'
 
         # Fred API key: ab766afb0df13dba8492403a7865f852
-        fred = Fred(api_key='ab766afb0df13dba8492403a7865f852')
+        #fred = Fred(api_key='ab766afb0df13dba8492403a7865f852')
 
         df5 = {}
-        df5['AMBSL'] = fred.get_series(
-            'AMBSL', observation_start=start_date, observation_end=end_date)
-        df5['MZMSL'] = fred.get_series(
-            'MZMSL', observation_start=start_date, observation_end=end_date)
-        df5['PPICRM'] = fred.get_series(
-            'PPICRM', observation_start=start_date, observation_end=end_date)
-        df5['PPIFCG'] = fred.get_series(
-            'PPIFCG', observation_start=start_date, observation_end=end_date)
-        df5['PPIFGS'] = fred.get_series(
-            'PPIFGS', observation_start=start_date, observation_end=end_date)
-        df5['PPIITM'] = fred.get_series(
-            'PPIITM', observation_start=start_date, observation_end=end_date)
-        df5['TWEXMMTH'] = fred.get_series(
-            'TWEXMMTH', observation_start=start_date, observation_end=end_date)
+        df5['AMBSL'] = self.fred.get_series(
+            'AMBSL', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df5['MZMSL'] = self.fred.get_series(
+            'MZMSL', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df5['PPICRM'] = self.fred.get_series(
+            'PPICRM', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df5['PPIFCG'] = self.fred.get_series(
+            'PPIFCG', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df5['PPIFGS'] = self.fred.get_series(
+            'PPIFGS', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df5['PPIITM'] = self.fred.get_series(
+            'PPIITM', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
+        df5['TWEXMMTH'] = self.fred.get_series(
+            'TWEXMMTH', observation_start=self.fred_start_date, observation_end=self.fred_end_date)
         df5 = pd.DataFrame(df5)
 
         # In[24]:
@@ -94,11 +103,14 @@ class Paper5:
         common_features = self.generate_common_features()
         common_features.columns = common_features.columns.str.lower()
 
-        daily_prc = pd.read_csv('sp500_daily_prc.csv')
+        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df.reset_index(inplace=True)
+        df.columns = df.columns.str.lower()
+        daily_prc = df
         daily_prc['date'] = pd.to_datetime(daily_prc['date'])
         daily_prc['year'] = daily_prc['date'].dt.year
         daily_prc['month'] = daily_prc['date'].dt.month
-        daily_prc = daily_prc.sort_values(['ticker', 'date']).reset_index(drop=True)
+        daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
         lvlm_dt_ref #purpose is to find the last trading day of the month
         date_dic = {}
@@ -107,6 +119,7 @@ class Paper5:
         df_date['YYMMDD']=df_date.index.astype(str)
         df_date.index=df_date.index.to_period('M')
         df_date.index=df_date.index.astype(str)
+
 
         common_features = common_features.rename(columns={'sasdate': 'date'})
         common_features['date'] = common_features['date'].astype(str)
@@ -118,7 +131,7 @@ class Paper5:
         common_features.to_csv('../result/paper5/paper5_features.csv')
         print('Paper5 completed 1/1')
         return common_features
-
+        
 if __name__ == "__main__":
     Paper5().generate()
     end = time.time()

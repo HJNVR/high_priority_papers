@@ -21,8 +21,24 @@ warnings.filterwarnings("ignore")
 
 start = time.time()
 class Paper2:
-    # Load config file
+    def __init__(self):
+        # Load config file
+        with open('config.json') as config_file:
+            self.data = json.load(config_file)
+        
+        self.wrds_start_date = self.data['wrds_start_date']
+        self.wrds_end_date = self.data['wrds_end_date']
+        self.fred_start_date = self.data['fred_start_date']
+        self.fred_end_date = self.data['fred_end_date']
+        #start_date = data['start_date']
+        #start_year = data['start_year']
+        #end_year = data['end_year']
+        self.fred = Fred('paper2/fred-api.txt') 
+        self.wrds_username = self.data['wrds_username']
+
+
     def generate(self):
+        '''
         with open('paper2_config.json') as config_file:
             data = json.load(config_file)
             
@@ -35,23 +51,22 @@ class Paper2:
         db = wrds.Connection(wrds_username=wrds_username)
         db.create_pgpass_file()
         db.close()
-
+        '''
 
         # In[9]:
 
 
         # Generate macro variables
 
-        conn = wrds.Connection(wrds_username=wrds_username)
+        conn = wrds.Connection(wrds_username=self.wrds_username)
 
-        fred = Fred('paper2/fred-api.txt')
         raw_monthly = pd.read_csv('paper2/raw_monthly.csv', index_col = 'date')
         raw_quarterly = pd.read_csv('paper2/raw_quarterly.csv', index_col = 'date')
         raw_annual = pd.read_csv('paper2/raw_annual.csv', index_col = 'date')
-
+        
         # Query S&P500 data
 
-        start_date = data['start_date']
+        #start_date = data['start_date']
         ticker = yf.Ticker("^GSPC")
         sp500_d = ticker.history(period="max")
         sp500_d = sp500_d[['Close']]
@@ -61,8 +76,8 @@ class Paper2:
         # Query DJIA data (historical data not available before 1992)
 
         ticker = '^DJI'
-        start_date = data['start_date']
-        djia_d = yf.download(ticker, start_date)
+        #start_date = data['start_date']
+        djia_d = yf.download(ticker, self.fred_start_date)
         djia_d = djia_d[['Close']]
         djia_m = djia_d.loc[djia_d.groupby(djia_d.index.to_period('M')).apply(lambda x: x.index.max())]
         djia_m['yyyy-mm'] = djia_m.index.to_period('M')
@@ -70,12 +85,13 @@ class Paper2:
 
         # Query monthly data from FRED
 
-        tbl = fred.get_series_df('TB3MS')
-        lty = fred.get_series_df('GS10')
-        aaa = fred.get_series_df('AAA') 
-        baa = fred.get_series_df('BAA') 
-        cpi = fred.get_series_df('CPIAUCNS') 
+        tbl = self.fred.get_series_df('TB3MS')
+        lty = self.fred.get_series_df('GS10')
+        aaa = self.fred.get_series_df('AAA') 
+        baa = self.fred.get_series_df('BAA') 
+        cpi = self.fred.get_series_df('CPIAUCNS') 
 
+        
         def clean_datasets(dataset):
             dataset['date'] = pd.to_datetime(dataset['date'])
             dataset = dataset[dataset['date'].dt.year >= 1955][['date', 'value']]
@@ -189,8 +205,8 @@ class Paper2:
         monthly = pd.merge(monthly, calc_bm[['yyyy-mm', 'b/m']], on=['yyyy-mm'], how='left')
 
         # Query quarterly data
-        pnfi = fred.get_series_df('PNFI') 
-        deflator = fred.get_series_df('A008RD3Q086SBEA') 
+        pnfi = self.fred.get_series_df('PNFI') 
+        deflator = self.fred.get_series_df('A008RD3Q086SBEA') 
 
         # Ensure pnfi and deflator data start at 1947
         pnfi['date'] = pd.to_datetime(pnfi['date'])
@@ -235,6 +251,7 @@ class Paper2:
         monthly = monthly.drop(["year"], axis=1)
 
 
+        
         # In[12]:
 
 
@@ -269,14 +286,17 @@ class Paper2:
         features['dfr'] = raw['corpr'] - raw['ltr']
 
         # Start at chosen start date
-        features = features[features['date'] >= start_date]
-        features = features.iloc[::2,:]
-
-        daily_prc = pd.read_csv('sp500_daily_prc.csv')
+        features = features[features['date'] >= self.wrds_start_date]
+        #features = features.iloc[::2,:]
+        
+        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df.reset_index(inplace=True)
+        df.columns = df.columns.str.lower()
+        daily_prc = df
         daily_prc['date'] = pd.to_datetime(daily_prc['date'])
         daily_prc['year'] = daily_prc['date'].dt.year
         daily_prc['month'] = daily_prc['date'].dt.month
-        daily_prc = daily_prc.sort_values(['ticker', 'date']).reset_index(drop=True)
+        daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
         lvlm_dt_ref #purpose is to find the last trading day of the month
         date_dic = {}
@@ -311,7 +331,8 @@ class Paper2:
         features.to_csv("../result/paper2/paper2_features.csv", index=False)
         print('Paper2 completed 1/1')
         return features
-
+        
+        
 if __name__ == "__main__":
     Paper2().generate()
     end = time.time()

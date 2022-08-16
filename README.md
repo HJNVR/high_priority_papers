@@ -61,59 +61,58 @@ E Hoseinzade, S Haratizadeh
 
 # Structure of repository folders/files
 
-- src (13 py files including feature generation and update py files)
-- result folder (3 output files in csv format)
-- test folder (codes for testing src codes)
-- 3 csv files (full list of features, list of unique features and user-selected list of features)
-- reference_papers folder (pdf of all the 11 papers including supplementary online appendix, if applicable)
+- README.md 
+- env.yml (virtual environment settings)
+- requirements.txt (necessary packages)
+- src (paper1-11.py, config.json, stock_pool_list.txt, generate_all_features.py, select_features.py)
+- reference_papers (pdf of all the 11 papers including supplementary online appendix)
+- test (unittest)
+- result (separate folders for stock pools, features_documentation.txt which contains defintion of all features)
 
 # Requirements and dependencies
+```
+fredapi==0.5.0
+full_fred==0.0.9a3
+investpy==1.0.8
+numpy==1.22.4
+pandas==1.4.2
+wrds==3.1.1
+yfinance==0.1.70
+```
 
-## Databases
+# How to run & outputs
 
-- `Wharton Research Data Sevices (WRDS)` account with access to Compustat, CRSP and IBES. WRDS is typically available to faculty, students, and researchers at subscribing universities.
+- Step 1 : Set up virtual environment
+   - create virtual environment `mas_env` with all necessary dependencies
+      - command: `conda env create -f env.yml`
+   - activate 'mas_env'
+      - command: `conda activate mas_env`
+   - check location of 'mas_env'
+      - command: `conda env list`
+  
+- Step 2 : Inspect config.json 
+   - wrds_username: check this webiste(https://wrds-www.wharton.upenn.edu/) to create your own username and passward if needed
+   - wrds_password: need to type in password if the first time accessing wrds
+   - start_date: follow the format of %year-%month-%day
+   - end_date: follow the format of %year-%month-%day. end_date should be after start_date
+   - stock_pool: check src/stock_pool_list.txt for all available stock pools
+   - fred_api_key: check this website(https://fred.stlouisfed.org/docs/api/api_key.html) to generate your own API key if needed
+   - selected_feature_columns: based on the selected stock pool, check the corresponding consolidated_feature_names.txt in src folder
 
-- `Federal Reserve Economic Data (FRED)` API key to query macroeconomic data. Requesting an API key is free of charge.
+- Step 3 : Generate all features 
+   - command: `python generate_all_features.py`
+      - wait and check result folders for the correspoing stok_pool results
+      - paper1 - 11: each paper has its own output csv file
+      - consolidate: combined csv files of all 11 papers
+      - selected_features: csv file with selected feature columns
 
-## Libraries
+- Step 4 : Select your own features
+   - command: `python select_features.py`
+      - data, permno, ticker are default columns that users do not need to select again
+      - check result/correspoing stok_pool_selected_features
 
-- Install the `WRDS-Py` library  
-$ pip install wrds
-
-- Install `Yahoo Finance` library  
-$ pip install yahoo-finance
-
-- Install `unittest` library (for code testing)   
-$ pip install unittest
-
-## APIs
-
-- `fredapi`  
-$ pip install fredapi
-
-- `investpy`  
-$ pip install investpy
-
-# How to run
-- Input user-defined parameters into config.json. See the `Configuration settings` section below for more details.
-- Input selected list of features in `list_of_selected_features` csv (user to choose which features to generate based on the full list provided in the `list_of_unique_features` csv).
-- Run `generate_all_features.py` (to generate all unique features - 01/2000 to 05/2022).
-- Run `update_merge_select_features.py` (to generate new data, merge all unique features and filter selected list of features - 01/2000 to 06/2022).
-- Result/output files (csv) can be found in the `result` folder (`all_features`, `all_features_updated_merged` and `selected_features`)
-
-# Configuration settings         
-
-The following configuration settings are available within the config.json file:
-
-- wrds_username: Enter the WRDS username. This allows for a pgpass file to be created such that usernames and passwords do not need to be typed in repeatedly.
-- data parameters for `generate_all_features.py` and `update_merge_select_features.py`.
-
-# Outputs
-The outputs of `generate_all_features.py` and `update_merge_select_features.py` will be saved in the `result` folder in csv format:
-
-- all_features (01/2000 to 05/2022)
-- all_features_updated_merged (06/2022 to latest month)
-- selected_features (01/2000 to latest month)
+- Step 5 : Exit virtual environment 
+   - command: `conda deactivate`
 
 # Python code standard and best practices
 All the python code in this repository will follow the best practices as stated in the following guide/documentation in terms of formatting, code layout and styling -
@@ -123,10 +122,4 @@ All the python code in this repository will follow the best practices as stated 
 # References
 - Original reference paper (with supplementary appendix, if applicable) can be accessed from the reference_papers folder
 
-# Contact information
-
-Please feel free to contact this repo's owner at the email below for clarifications, further information or collaboration - 
-
-Repo owner: Noor  
-Repo owner email: muhammadnag.2021@mitb.smu.edu.sg
 

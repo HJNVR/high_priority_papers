@@ -10,27 +10,57 @@ import time
 import wrds
 import json
 import investpy
+import datetime
 import yfinance as yf
 from fredapi import Fred
 import warnings
 warnings.filterwarnings("ignore")
 
 start = time.time()
+
+
 class Paper9:
     def __init__(self):
         with open('config.json') as config_file:
             self.data = json.load(config_file)
 
-        self.wrds_start_date = self.data['wrds_start_date']
-        self.wrds_end_date = self.data['wrds_end_date']
+        # logic check #1. check stock pool
+        self.stock_pool = self.data['stock_pool']
+        with open('stock_pool_list.txt') as f:
+            self.stock_pool_list = [line.rstrip() for line in f]
+        if self.stock_pool not in self.stock_pool_list:
+            raise Exception('Please pick valid stock_pool: ',
+                            self.stock_pool_list)
+
+        # logic check #2. check date
+        if bool(datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d')):
+            self.fred_start_date = self.data['start_date']
+        if bool(datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d')):
+            self.fred_end_date = self.data['end_date']
+        if datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d') > \
+           datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d'):
+            raise Exception('Start_date should be earlier than end_date')
+
+        start_year = self.data['start_date'][:self.data['start_date'].find(
+            '-')]
+        start_month = self.data['start_date'][self.data['start_date'].find(
+            '-')+1:self.data['start_date'].rfind('-')]
+        start_day = self.data['start_date'][self.data['start_date'].rfind(
+            '-')+1:]
+        end_year = self.data['end_date'][:self.data['end_date'].find('-')]
+        end_month = self.data['end_date'][self.data['end_date'].find(
+            '-')+1:self.data['end_date'].rfind('-')]
+        end_day = self.data['end_date'][self.data['end_date'].rfind('-')+1:]
+
+        self.wrds_start_date = start_month+'/'+start_day+'/'+start_year
+        self.wrds_end_date = end_month+'/'+end_day+'/'+end_year
+        self.investpy_start_date = start_day+'/'+start_month+'/'+start_year
+        self.investpy_end_date = end_day+'/'+end_month+'/'+end_year
         self.wrds_username = self.data['wrds_username']
-        self.features_df = pd.DataFrame()
         self.fred = Fred(api_key=self.data['fred_api_key'])
-        self.fred_start_date = self.data['fred_start_date']
-        self.fred_end_date = self.data['fred_end_date']
-        self.investpy_start_date = self.data['investpy_start_date']
-        self.investpy_end_date = self.data['investpy_end_date']
-        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+        self.features_df = pd.DataFrame()
+        self.parm = {"start_date": self.wrds_start_date,
+                     "end_date": self.wrds_end_date}
     # function to calculate all features
 
     def cal_export(self, df):
@@ -58,11 +88,11 @@ class Paper9:
         return df.drop(['vol'], axis=1)
 
     def fut_ret1(self, df):
-        df['fut_ret1']=(df['close'].shift(-1)-df['close'])/df['close']
+        df['fut_ret1'] = (df['close'].shift(-1)-df['close'])/df['close']
         return df
-    
+
     def fut_ret2(self, df):
-        df['fut_ret2']=(df['close'].shift(-2)-df['close'])/df['close']
+        df['fut_ret2'] = (df['close'].shift(-2)-df['close'])/df['close']
         return df
 
     # 3 SPYt
@@ -157,9 +187,10 @@ class Paper9:
         df['ema200'] = self.calculate_ema(df['close'], 200)
         return df
 
-    def generate_common_features(self):
+    def sp500_generate_common_features(self):
 
-        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df = yf.download("SPY", start=self.fred_start_date,
+                         end=self.fred_end_date)
 
         df['SPYt'] = df['Adj Close'].pct_change()
         # df_SPY['SPYt']=df_SPY['Adj Close'].resample('M').ffill().pct_change()
@@ -209,66 +240,81 @@ class Paper9:
         df['EMA200'] = self.calculate_ema(df['Adj Close'], 200)
 
         # 15 HSI
-        df_HSI = yf.download("HSI", start=self.fred_start_date, end=self.fred_end_date)
+        df_HSI = yf.download(
+            "HSI", start=self.fred_start_date, end=self.fred_end_date)
         df['HSI'] = df_HSI['Adj Close'].pct_change()
 
         # 16 SSE*
-        df_SSE = yf.download("000001.SS", start=self.fred_start_date, end=self.fred_end_date)
+        df_SSE = yf.download(
+            "000001.SS", start=self.fred_start_date, end=self.fred_end_date)
         df['SSE'] = df_SSE['Adj Close'].pct_change()
 
         # 17 FCHI*
-        df_FCHI = yf.download("^FCHI", start=self.fred_start_date, end=self.fred_end_date)
+        df_FCHI = yf.download(
+            "^FCHI", start=self.fred_start_date, end=self.fred_end_date)
         df['FCHI'] = df_FCHI['Adj Close'].pct_change()
 
         # 18 FTSE*
-        df_FTSE = yf.download("^FTSE", start=self.fred_start_date, end=self.fred_end_date)
+        df_FTSE = yf.download(
+            "^FTSE", start=self.fred_start_date, end=self.fred_end_date)
         df['FTSE'] = df_FTSE['Adj Close'].pct_change()
 
         # 19 GDAXI*
-        df_GDAXI = yf.download("^GDAXI", start=self.fred_start_date, end=self.fred_end_date)
+        df_GDAXI = yf.download(
+            "^GDAXI", start=self.fred_start_date, end=self.fred_end_date)
         df['GDAXI'] = df_GDAXI['Adj Close'].pct_change()
 
         # 20 DJI
-        df_DJI = yf.download("DJI", start=self.fred_start_date, end=self.fred_end_date)
+        df_DJI = yf.download(
+            "DJI", start=self.fred_start_date, end=self.fred_end_date)
         df['DJI'] = df_DJI['Adj Close'].pct_change()
 
         # 21 IXIC*
-        df_IXIC = yf.download("^IXIC", start=self.fred_start_date, end=self.fred_end_date)
+        df_IXIC = yf.download(
+            "^IXIC", start=self.fred_start_date, end=self.fred_end_date)
         df['IXIC'] = df_IXIC['Adj Close'].pct_change()
 
         # 22 V
         df['V'] = df['Volume'].pct_change()
 
         # 23 AAPL
-        df_AAPL = yf.download("AAPL", start=self.fred_start_date, end=self.fred_end_date)
+        df_AAPL = yf.download(
+            "AAPL", start=self.fred_start_date, end=self.fred_end_date)
         df['AAPL'] = df_AAPL['Adj Close'].pct_change()
 
         # 24 MSFT
-        df_MSFT = yf.download("MSFT", start=self.fred_start_date, end=self.fred_end_date)
+        df_MSFT = yf.download(
+            "MSFT", start=self.fred_start_date, end=self.fred_end_date)
         df['MSFT'] = df_MSFT['Adj Close'].pct_change()
 
         # 25 XOM
-        df_XOM = yf.download("XOM", start=self.fred_start_date, end=self.fred_end_date)
+        df_XOM = yf.download(
+            "XOM", start=self.fred_start_date, end=self.fred_end_date)
         df['XOM'] = df_XOM['Adj Close'].pct_change()
 
         # 26 GE
-        df_GE = yf.download("GE", start=self.fred_start_date, end=self.fred_end_date)
+        df_GE = yf.download("GE", start=self.fred_start_date,
+                            end=self.fred_end_date)
         df['GE'] = df_GE['Adj Close'].pct_change()
 
         # 27 JNJ
-        df_JNJ = yf.download("JNJ", start=self.fred_start_date, end=self.fred_end_date)
+        df_JNJ = yf.download(
+            "JNJ", start=self.fred_start_date, end=self.fred_end_date)
         df['JNJ'] = df_JNJ['Adj Close'].pct_change()
 
         # 28 WFC
-        df_WFC = yf.download("WFC", start=self.fred_start_date, end=self.fred_end_date)
+        df_WFC = yf.download(
+            "WFC", start=self.fred_start_date, end=self.fred_end_date)
         df['WFC'] = df_WFC['Adj Close'].pct_change()
 
         # 29 AMZN
-        df_AMZN = yf.download("AMZN", start=self.fred_start_date, end=self.fred_end_date)
+        df_AMZN = yf.download(
+            "AMZN", start=self.fred_start_date, end=self.fred_end_date)
         df['AMZN'] = df_AMZN['Adj Close'].pct_change()
 
         # 30 JPM
-        df_JPM = yf.download("JPM", start=self.fred_start_date, end=self.fred_end_date)
+        df_JPM = yf.download(
+            "JPM", start=self.fred_start_date, end=self.fred_end_date)
         df['JPM'] = df_JPM['Adj Close'].pct_change()
 
         t1 = self.fred.get_series(
@@ -312,7 +358,7 @@ class Paper9:
         cd6.rename('CD6', inplace=True)
 
         # https://www.federalreserve.gov/datadownload/Download.aspx?rel=H15&series=bf17364827e38702b42a58cf8eaa3f78&lastobs=&from=&to=&filetype=csv&label=include&layout=seriescolumn&type=package
-        data = pd.read_csv('paper9/FRB_H15.csv') 
+        data = pd.read_csv('paper9/FRB_H15.csv')
         data = data.iloc[5:, :]
         data['Series Description'] = pd.to_datetime(data['Series Description'])
 
@@ -323,7 +369,8 @@ class Paper9:
         ctb3m = ctb3m.dropna()
         ctb3m = ctb3m[ctb3m.values != 'ND'].astype(float)
         ctb3m = ctb3m - ctb3m.shift()
-        ctb3m = ctb3m[(ctb3m.index >= self.fred_start_date) & (ctb3m.index <= self.fred_end_date)]
+        ctb3m = ctb3m[(ctb3m.index >= self.fred_start_date)
+                      & (ctb3m.index <= self.fred_end_date)]
         ctb3m.index.name = 'Date'
         ctb3m.rename('CTB3M', inplace=True)
 
@@ -334,7 +381,8 @@ class Paper9:
         ctb6m = ctb6m.dropna()
         ctb6m = ctb6m[ctb6m.values != 'ND'].astype(float)
         ctb6m = ctb6m - ctb6m.shift()
-        ctb6m = ctb6m[(ctb6m.index >= self.fred_start_date) & (ctb6m.index <= self.fred_end_date)]
+        ctb6m = ctb6m[(ctb6m.index >= self.fred_start_date)
+                      & (ctb6m.index <= self.fred_end_date)]
         ctb6m.index.name = 'Date'
         ctb6m.rename('CTB6M', inplace=True)
 
@@ -345,7 +393,8 @@ class Paper9:
         ctb1y = ctb1y.dropna()
         ctb1y = ctb1y[ctb1y.values != 'ND'].astype(float)
         ctb1y = ctb1y - ctb1y.shift()
-        ctb1y = ctb1y[(ctb1y.index >= self.fred_start_date) & (ctb1y.index <= self.fred_end_date)]
+        ctb1y = ctb1y[(ctb1y.index >= self.fred_start_date)
+                      & (ctb1y.index <= self.fred_end_date)]
         ctb1y.index.name = 'Date'
         ctb1y.rename('CTB1Y', inplace=True)
 
@@ -356,7 +405,8 @@ class Paper9:
         ctb5y = ctb5y.dropna()
         ctb5y = ctb5y[ctb5y.values != 'ND'].astype(float)
         ctb5y = ctb5y - ctb5y.shift()
-        ctb5y = ctb5y[(ctb5y.index >= self.fred_start_date) & (ctb5y.index <= self.fred_end_date)]
+        ctb5y = ctb5y[(ctb5y.index >= self.fred_start_date)
+                      & (ctb5y.index <= self.fred_end_date)]
         ctb5y.index.name = 'Date'
         ctb5y.rename('CTB5Y', inplace=True)
 
@@ -431,7 +481,8 @@ class Paper9:
         data = data.set_index('Date')
 
         oil = (data - data.shift()) / data.shift()  # need SPY dates as control
-        oil = oil[(oil.index >= self.fred_start_date) & (oil.index <= self.fred_end_date)]
+        oil = oil[(oil.index >= self.fred_start_date)
+                  & (oil.index <= self.fred_end_date)]
         oil.rename(columns={
                    'Cushing, OK WTI Spot Price FOB (Dollars per Barrel)': 'Oil'}, inplace=True)
 
@@ -465,8 +516,8 @@ class Paper9:
             gold['Close'].shift()
         gold = gold['Gold']
 
-        df = df[['Close', 'SPYt', 'SPYt1', 'SPYt2', 'SPYt3', 'RDP5', 'RDP10', 'RDP15', 'RDP20', 'EMA10', 'EMA20', 'EMA50',
-                 'EMA200', 'HSI', 'SSE', 'FCHI', 'FTSE', 'GDAXI', 'DJI', 'IXIC', 'V', 'AAPL', 'MSFT', 'XOM', 'GE', 'JNJ', 'WFC', 'AMZN', 'JPM']]
+        df = df[['HSI', 'SSE', 'FCHI', 'FTSE', 'GDAXI', 'DJI', 'IXIC',
+                 'V', 'AAPL', 'MSFT', 'XOM', 'GE', 'JNJ', 'WFC', 'AMZN', 'JPM']]
 
         df = df.join(t1)
         df = df.join(t3)
@@ -517,7 +568,7 @@ class Paper9:
 
         return df
 
-    def generate(self):
+    def sp500_generate(self):
         # import list of S&P500 company tickers
         # query data from WRDS
         #user: muhdnoor
@@ -565,7 +616,8 @@ class Paper9:
             else:
                 count += 1
 
-        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df = yf.download("SPY", start=self.fred_start_date,
+                         end=self.fred_end_date)
         df.reset_index(inplace=True)
         df.columns = df.columns.str.lower()
         daily_prc = df
@@ -574,52 +626,59 @@ class Paper9:
         daily_prc['month'] = daily_prc['date'].dt.month
         daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
-        lvlm_dt_ref #purpose is to find the last trading day of the month
+        lvlm_dt_ref  # purpose is to find the last trading day of the month
         date_dic = {}
-        df_date = lvlm_dt_ref.reset_index(level=['year','month'])
-        df_date.set_index('date',inplace=True)
-        df_date['YYMMDD']=df_date.index.astype(str)
-        df_date.index=df_date.index.to_period('M')
-        df_date.index=df_date.index.astype(str)
+        df_date = lvlm_dt_ref.reset_index(level=['year', 'month'])
+        df_date.set_index('date', inplace=True)
+        df_date['YYMMDD'] = df_date.index.astype(str)
+        df_date.index = df_date.index.to_period('M')
+        df_date.index = df_date.index.astype(str)
 
-        #df.to_csv('../result/paper9/common_features.csv')
+        # df.to_csv('../result/paper9/common_features.csv')
 
         # calculate features and export as csv file
         #final_csv = pd.DataFrame()
-        common_features = self.generate_common_features()
+        common_features = self.sp500_generate_common_features()
         paper9_final = pd.DataFrame()
         ticker_files = {}
         count = 1
         for k, v in dic.items():
-            csv_file = self.cal_export(v).merge(common_features, left_on=['date'], right_on=['date'])
+            csv_file = self.cal_export(v).merge(
+                common_features, left_on=['date'], right_on=['date'])
             csv_file['ticker'] = dic_map[k]
             csv_file.insert(2, 'ticker', csv_file.pop('ticker'))
-            csv_file.columns= csv_file.columns.str.lower()
+            csv_file.columns = csv_file.columns.str.lower()
             csv_file = csv_file.sort_values(by='date')
             csv_file.reset_index(inplace=True)
             csv_file = csv_file.drop(columns=['index'])
             csv_file['date'] = csv_file['date'].astype(str)
             dates = []
             for i in csv_file.index:
-                dates.append(df_date[df_date.index == csv_file['date'][i]]['YYMMDD'][0])
+                dates.append(
+                    df_date[df_date.index == csv_file['date'][i]]['YYMMDD'][0])
             csv_file['date'] = dates
             csv_file['date'] = pd.to_datetime(csv_file['date'])
             if count == 1:
                 paper9_final = csv_file
             else:
                 try:
-                    paper9_final = pd.concat([paper9_final, csv_file], ignore_index=True)
+                    paper9_final = pd.concat(
+                        [paper9_final, csv_file], ignore_index=True)
                 except:
                     # delisted companies
                     pass
             ticker_files[dic_map[k]] = csv_file
-            #csv_file.to_csv('../result/paper9/'+dic_map[k]+'.csv')
+            # csv_file.to_csv('../result/paper9/'+dic_map[k]+'.csv')
             print("\rPaper9 completed {}/{}.".format(count, 835), end='')
             sys.stdout.flush()
             count += 1
-        paper9_final.to_csv('../result/paper9/paper9_features.csv')
-        
+        paper9_final.to_csv('../result/sp500/paper9/paper9_features.csv')
+
         return ticker_files
+
+    def generate(self):
+        if self.stock_pool == 'sp500':
+            return self.sp500_generate()
 
 
 if __name__ == "__main__":
@@ -627,4 +686,7 @@ if __name__ == "__main__":
     end = time.time()
     hours, rem = divmod(end-start, 3600)
     minutes, seconds = divmod(rem, 60)
-    print("\nExecution completed in {:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+    print("\nExecution completed in {:0>2}:{:0>2}:{:05.2f}".format(
+        int(hours), int(minutes), seconds))
+    print('Please check /result/' + Paper9().stock_pool +
+          '/paper9/paper9_features.csv')

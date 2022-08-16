@@ -1,10 +1,21 @@
 {
 	"wrds_username": "muhdnoor",
-	"start_year": 2000,
-	"start_year_daily_data": 1995,
-	"start_year_sp500_companies": 2000,
-	"end_year": 2020,
-	"annual_lag": 6,
-	"quarterly_lag": 6,
-	"S&P500_companies_only": "Yes"
+	"wrds_password": "WRDSaccess_135@",
+	"start_date" : "2000-01-01",
+	"end_date" : "2022-07-31",
+	"stock_pool": "sp500",
+	"fred_api_key" : "ab766afb0df13dba8492403a7865f852",
+	"selected_feature_columns": ["ma_1_9",
+								"ma_2_9",
+								"ma_3_9",
+								"ma_1_12",
+								"ma_2_12",
+								"ma_3_12",
+								"mom9",
+								"mom12_x",
+								"vol_1_9", 
+								"spyt",
+								"spyt1",
+								"spyt2",
+								"spyt3" ]
 }

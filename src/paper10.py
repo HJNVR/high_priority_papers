@@ -1,5 +1,5 @@
 # Feature generation and pre-processing of paper 10
-# common_features only 
+# common_features only
 # Execution complete in 6 seconds
 # ============================================================================
 
@@ -7,27 +7,57 @@ import numpy as np
 import pandas as pd
 import time
 import json
+import datetime
 import yfinance as yf
 from fredapi import Fred
 import warnings
 warnings.filterwarnings("ignore")
 
 start = time.time()
+
+
 class Paper10:
     def __init__(self):
         with open('config.json') as config_file:
             self.data = json.load(config_file)
 
-        self.wrds_start_date = self.data['wrds_start_date']
-        self.wrds_end_date = self.data['wrds_end_date']
+        # logic check #1. check stock pool
+        self.stock_pool = self.data['stock_pool']
+        with open('stock_pool_list.txt') as f:
+            self.stock_pool_list = [line.rstrip() for line in f]
+        if self.stock_pool not in self.stock_pool_list:
+            raise Exception('Please pick valid stock_pool: ',
+                            self.stock_pool_list)
+
+        # logic check #2. check date
+        if bool(datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d')):
+            self.fred_start_date = self.data['start_date']
+        if bool(datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d')):
+            self.fred_end_date = self.data['end_date']
+        if datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d') > \
+           datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d'):
+            raise Exception('Start_date should be earlier than end_date')
+
+        start_year = self.data['start_date'][:self.data['start_date'].find(
+            '-')]
+        start_month = self.data['start_date'][self.data['start_date'].find(
+            '-')+1:self.data['start_date'].rfind('-')]
+        start_day = self.data['start_date'][self.data['start_date'].rfind(
+            '-')+1:]
+        end_year = self.data['end_date'][:self.data['end_date'].find('-')]
+        end_month = self.data['end_date'][self.data['end_date'].find(
+            '-')+1:self.data['end_date'].rfind('-')]
+        end_day = self.data['end_date'][self.data['end_date'].rfind('-')+1:]
+
+        self.wrds_start_date = start_month+'/'+start_day+'/'+start_year
+        self.wrds_end_date = end_month+'/'+end_day+'/'+end_year
         self.wrds_username = self.data['wrds_username']
         self.features_df = pd.DataFrame()
         self.fred = Fred(api_key=self.data['fred_api_key'])
-        self.fred_start_date = self.data['fred_start_date']
-        self.fred_end_date = self.data['fred_end_date']
-        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+        self.parm = {"start_date": self.wrds_start_date,
+                     "end_date": self.wrds_end_date}
 
-    def generate_common_features(self):
+    def sp500_generate_common_features(self):
         # define start and end date
         start_date = self.fred_start_date
         end_date = self.fred_end_date
@@ -184,13 +214,13 @@ class Paper10:
         trm10y_1y.rename('trm10y_1y', inplace=True)
 
         aaa = self.fred.get_series('AAA', observation_start=start_date,
-                              observation_end=end_date)
+                                   observation_end=end_date)
         aaa.index.name = 'Date'
         aaa.rename('aaa', inplace=True)
         aaa.index = aaa.index.to_period('M')
 
         baa = self.fred.get_series('BAA', observation_start=start_date,
-                              observation_end=end_date)
+                                   observation_end=end_date)
         baa.index.name = 'Date'
         baa.rename('baa', inplace=True)
         baa.index = baa.index.to_period('M')
@@ -234,11 +264,12 @@ class Paper10:
         df.reset_index(inplace=True)
         return df
 
-    def generate(self):
-        common_features = self.generate_common_features()
+    def sp500_generate(self):
+        common_features = self.sp500_generate_common_features()
         common_features.columns = common_features.columns.str.lower()
 
-        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df = yf.download("SPY", start=self.fred_start_date,
+                         end=self.fred_end_date)
         df.reset_index(inplace=True)
         df.columns = df.columns.str.lower()
         daily_prc = df
@@ -247,27 +278,36 @@ class Paper10:
         daily_prc['month'] = daily_prc['date'].dt.month
         daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
-        lvlm_dt_ref #purpose is to find the last trading day of the month
+        lvlm_dt_ref  # purpose is to find the last trading day of the month
         date_dic = {}
-        df_date = lvlm_dt_ref.reset_index(level=['year','month'])
-        df_date.set_index('date',inplace=True)
-        df_date['YYMMDD']=df_date.index.astype(str)
-        df_date.index=df_date.index.to_period('M')
-        df_date.index=df_date.index.astype(str)
+        df_date = lvlm_dt_ref.reset_index(level=['year', 'month'])
+        df_date.set_index('date', inplace=True)
+        df_date['YYMMDD'] = df_date.index.astype(str)
+        df_date.index = df_date.index.to_period('M')
+        df_date.index = df_date.index.astype(str)
 
         common_features['date'] = common_features['date'].astype(str)
         dates = []
         for i in common_features.index:
-            dates.append(df_date[df_date.index == common_features['date'][i]]['YYMMDD'][0])
+            dates.append(
+                df_date[df_date.index == common_features['date'][i]]['YYMMDD'][0])
         common_features['date'] = dates
         common_features['date'] = pd.to_datetime(common_features['date'])
-        common_features.to_csv('../result/paper10/paper10_features.csv')
+        common_features.to_csv('../result/sp500/paper10/paper10_features.csv')
         print('Paper10 completed 1/1')
         return common_features
+
+    def generate(self):
+        if self.stock_pool == 'sp500':
+            return self.sp500_generate()
+
 
 if __name__ == "__main__":
     Paper10().generate()
     end = time.time()
     hours, rem = divmod(end-start, 3600)
     minutes, seconds = divmod(rem, 60)
-    print("\nExecution complete in {:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+    print("\nExecution complete in {:0>2}:{:0>2}:{:05.2f}".format(
+        int(hours), int(minutes), seconds))
+    print('Please check /result/' + Paper10().stock_pool +
+          '/paper10/paper10_features.csv')

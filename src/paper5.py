@@ -1,5 +1,5 @@
 # Feature generation and pre-processing of paper 5
-# common_features only 
+# common_features only
 # Execution complete in 7 seconds
 # ============================================================================
 
@@ -18,23 +18,48 @@ from pandas.tseries.offsets import MonthEnd
 warnings.filterwarnings("ignore")
 
 start = time.time()
+
+
 class Paper5:
     def __init__(self):
         with open('config.json') as config_file:
             self.data = json.load(config_file)
 
-        self.wrds_start_date = self.data['wrds_start_date']
-        self.wrds_end_date = self.data['wrds_end_date']
-        self.wrds_username = self.data['wrds_username']
-        self.features_df = pd.DataFrame()
+        # logic check #1. check stock pool
+        self.stock_pool = self.data['stock_pool']
+        with open('stock_pool_list.txt') as f:
+            self.stock_pool_list = [line.rstrip() for line in f]
+        if self.stock_pool not in self.stock_pool_list:
+            raise Exception('Please pick valid stock_pool: ',
+                            self.stock_pool_list)
+        # logic check #2. check date
+        if bool(datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d')):
+            self.fred_start_date = self.data['start_date']
+        if bool(datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d')):
+            self.fred_end_date = self.data['end_date']
+        if datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d') > \
+           datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d'):
+            raise Exception('Start_date should be earlier than end_date')
+
+        start_year = self.data['start_date'][:self.data['start_date'].find(
+            '-')]
+        start_month = self.data['start_date'][self.data['start_date'].find(
+            '-')+1:self.data['start_date'].rfind('-')]
+        start_day = self.data['start_date'][self.data['start_date'].rfind(
+            '-')+1:]
+        end_year = self.data['end_date'][:self.data['end_date'].find('-')]
+        end_month = self.data['end_date'][self.data['end_date'].find(
+            '-')+1:self.data['end_date'].rfind('-')]
+        end_day = self.data['end_date'][self.data['end_date'].rfind('-')+1:]
+
+        self.wrds_start_date = start_month+'/'+start_day+'/'+start_year
+        self.wrds_end_date = end_month+'/'+end_day+'/'+end_year
         self.fred = Fred(api_key=self.data['fred_api_key'])
-        self.fred_start_date = self.data['fred_start_date']
-        self.fred_end_date = self.data['fred_end_date']
-        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+        self.features_df = pd.DataFrame()
+        self.parm = {"start_date": self.wrds_start_date,
+                     "end_date": self.wrds_end_date}
 
-    def generate_common_features(self):
-
-        # In[18]:
+    def sp500_generate_common_features(self):
 
         df_fred_md = pd.read_csv(
             "https://files.stlouisfed.org/files/htdocs/fred-md/monthly/current.csv")
@@ -51,15 +76,13 @@ class Paper5:
                                        "PERMITMW", "PERMITNE", "PERMITS", "PERMITW", "PPICMM", "REALLN", "RETAILx", "RPI", "S&P 500", "S&P div yield", "S&P PE ratio", "S&P: indust", "SRVPRD", "T10YFFM", "T1YFFM",
                                        "T5YFFM", "TB3MS", "TB3SMFFM", "TB6MS", "TB6SMFFM", "TOTRESNS", "UEMP15OV", "UEMP15T26", "UEMP27OV", "UEMP5TO14", "UEMPLT5", "UEMPMEAN", "UMCSENTx", "UNRATE", "USCONS", "USFIRE",
                                        "USGOOD", "USGOVT", "USTPU", "USTRADE", "USWTRADE", "W875RX1"]]
-        
-        
+
         # In[22]:
 
         paper_5_features = paper_5_features.query(
             '20000101 <= sasdate')
         paper_5_features = paper_5_features.reset_index(drop=True)
-        
-        
+
         # In[23]:
 
         # start_date = '2000-01-01'
@@ -99,11 +122,12 @@ class Paper5:
         # paper_5_features.to_csv('../result/paper5/paper5_features.csv')
         return paper_5_features
 
-    def generate(self):
-        common_features = self.generate_common_features()
+    def sp500_generate(self):
+        common_features = self.sp500_generate_common_features()
         common_features.columns = common_features.columns.str.lower()
 
-        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df = yf.download("SPY", start=self.fred_start_date,
+                         end=self.fred_end_date)
         df.reset_index(inplace=True)
         df.columns = df.columns.str.lower()
         daily_prc = df
@@ -112,29 +136,37 @@ class Paper5:
         daily_prc['month'] = daily_prc['date'].dt.month
         daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
-        lvlm_dt_ref #purpose is to find the last trading day of the month
+        lvlm_dt_ref  # purpose is to find the last trading day of the month
         date_dic = {}
-        df_date = lvlm_dt_ref.reset_index(level=['year','month'])
-        df_date.set_index('date',inplace=True)
-        df_date['YYMMDD']=df_date.index.astype(str)
-        df_date.index=df_date.index.to_period('M')
-        df_date.index=df_date.index.astype(str)
-
+        df_date = lvlm_dt_ref.reset_index(level=['year', 'month'])
+        df_date.set_index('date', inplace=True)
+        df_date['YYMMDD'] = df_date.index.astype(str)
+        df_date.index = df_date.index.to_period('M')
+        df_date.index = df_date.index.astype(str)
 
         common_features = common_features.rename(columns={'sasdate': 'date'})
         common_features['date'] = common_features['date'].astype(str)
         dates = []
         for i in common_features.index:
-            dates.append(df_date[df_date.index == common_features['date'][i]]['YYMMDD'][0])
+            dates.append(
+                df_date[df_date.index == common_features['date'][i]]['YYMMDD'][0])
         common_features['date'] = dates
         common_features['date'] = pd.to_datetime(common_features['date'])
-        common_features.to_csv('../result/paper5/paper5_features.csv')
+        common_features.to_csv('../result/sp500/paper5/paper5_features.csv')
         print('Paper5 completed 1/1')
         return common_features
-        
+
+    def generate(self):
+        if self.stock_pool == 'sp500':
+            return self.sp500_generate()
+
+
 if __name__ == "__main__":
     Paper5().generate()
     end = time.time()
     hours, rem = divmod(end-start, 3600)
     minutes, seconds = divmod(rem, 60)
-    print("\nExecution complete in {:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+    print("\nExecution complete in {:0>2}:{:0>2}:{:05.2f}".format(
+        int(hours), int(minutes), seconds))
+    print('Please check /result/' + Paper5().stock_pool +
+          '/paper5/paper5_features.csv')

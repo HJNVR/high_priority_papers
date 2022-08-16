@@ -9,6 +9,7 @@ import sys
 import time
 import wrds
 import json
+import datetime
 import investpy
 import yfinance as yf
 from fredapi import Fred
@@ -17,23 +18,51 @@ warnings.filterwarnings("ignore")
 # function to calculate all features
 
 start = time.time()
+
+
 class Paper11():
     def __init__(self):
         with open('config.json') as config_file:
             self.data = json.load(config_file)
 
-        self.wrds_start_date = self.data['wrds_start_date']
-        self.wrds_end_date = self.data['wrds_end_date']
-        self.wrds_username = self.data['wrds_username']
-        self.features_df = pd.DataFrame()
-        self.fred = Fred(api_key=self.data['fred_api_key'])
-        self.fred_start_date = self.data['fred_start_date']
-        self.fred_end_date = self.data['fred_end_date']
-        self.investpy_start_date = self.data['investpy_start_date']
-        self.investpy_end_date = self.data['investpy_end_date']
-        self.parm = {"start_date": self.wrds_start_date, "end_date": self.wrds_end_date}
+        # logic check #1. check stock pool
+        self.stock_pool = self.data['stock_pool']
+        with open('stock_pool_list.txt') as f:
+            self.stock_pool_list = [line.rstrip() for line in f]
+        if self.stock_pool not in self.stock_pool_list:
+            raise Exception('Please pick valid stock_pool: ',
+                            self.stock_pool_list)
 
-    
+        # logic check #2. check date
+        if bool(datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d')):
+            self.fred_start_date = self.data['start_date']
+        if bool(datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d')):
+            self.fred_end_date = self.data['end_date']
+        if datetime.datetime.strptime(self.data['start_date'], '%Y-%m-%d') > \
+           datetime.datetime.strptime(self.data['end_date'], '%Y-%m-%d'):
+            raise Exception('Start_date should be earlier than end_date')
+
+        start_year = self.data['start_date'][:self.data['start_date'].find(
+            '-')]
+        start_month = self.data['start_date'][self.data['start_date'].find(
+            '-')+1:self.data['start_date'].rfind('-')]
+        start_day = self.data['start_date'][self.data['start_date'].rfind(
+            '-')+1:]
+        end_year = self.data['end_date'][:self.data['end_date'].find('-')]
+        end_month = self.data['end_date'][self.data['end_date'].find(
+            '-')+1:self.data['end_date'].rfind('-')]
+        end_day = self.data['end_date'][self.data['end_date'].rfind('-')+1:]
+
+        self.wrds_start_date = start_month+'/'+start_day+'/'+start_year
+        self.wrds_end_date = end_month+'/'+end_day+'/'+end_year
+        self.investpy_start_date = start_day+'/'+start_month+'/'+start_year
+        self.investpy_end_date = end_day+'/'+end_month+'/'+end_year
+        self.features_df = pd.DataFrame()
+        self.wrds_username = self.data['wrds_username']
+        self.fred = Fred(api_key=self.data['fred_api_key'])
+        self.parm = {"start_date": self.wrds_start_date,
+                     "end_date": self.wrds_end_date}
+
     def cal_export(self, df):
         df = self.day(df)
         df = self.close(df)
@@ -227,7 +256,7 @@ class Paper11():
 
         return csv_files
 
-    def generate_common_features(self):
+    def sp500_generate_common_features(self):
         start_date = self.fred_start_date
         end_date = self.fred_end_date
 
@@ -689,8 +718,8 @@ class Paper11():
         df.drop(columns=['year', 'month'], inplace=True)
 
         return df
-    
-    def generate(self):
+
+    def sp500_generate(self):
         # password: WRDSaccess_135@
         conn = wrds.Connection(wrds_username=self.wrds_username)
 
@@ -735,7 +764,8 @@ class Paper11():
             else:
                 count += 1
 
-        df = yf.download("SPY", start=self.fred_start_date, end=self.fred_end_date)
+        df = yf.download("SPY", start=self.fred_start_date,
+                         end=self.fred_end_date)
         df.reset_index(inplace=True)
         df.columns = df.columns.str.lower()
         daily_prc = df
@@ -744,56 +774,66 @@ class Paper11():
         daily_prc['month'] = daily_prc['date'].dt.month
         daily_prc = daily_prc.sort_values(['date']).reset_index(drop=True)
         lvlm_dt_ref = daily_prc.groupby(['year', 'month'])['date'].max()
-        lvlm_dt_ref #purpose is to find the last trading day of the month
+        lvlm_dt_ref  # purpose is to find the last trading day of the month
         date_dic = {}
-        df_date = lvlm_dt_ref.reset_index(level=['year','month'])
-        df_date.set_index('date',inplace=True)
-        df_date['YYMMDD']=df_date.index.astype(str)
-        df_date.index=df_date.index.to_period('M')
-        df_date.index=df_date.index.astype(str)
+        df_date = lvlm_dt_ref.reset_index(level=['year', 'month'])
+        df_date.set_index('date', inplace=True)
+        df_date['YYMMDD'] = df_date.index.astype(str)
+        df_date.index = df_date.index.to_period('M')
+        df_date.index = df_date.index.astype(str)
 
-        #df.to_csv('../result/paper9/common_features.csv')
+        # df.to_csv('../result/paper9/common_features.csv')
 
         # calculate features and export as csv file
         #final_csv = pd.DataFrame()
-        common_features = self.generate_common_features()
+        common_features = self.sp500_generate_common_features()
         paper11_final = pd.DataFrame()
         ticker_files = {}
         count = 1
         for k, v in dic.items():
-            csv_file = self.cal_export(v).merge(common_features, left_on=['date'], right_on=['date'])
+            csv_file = self.cal_export(v).merge(
+                common_features, left_on=['date'], right_on=['date'])
             csv_file['ticker'] = dic_map[k]
             csv_file.insert(2, 'ticker', csv_file.pop('ticker'))
-            csv_file.columns= csv_file.columns.str.lower()
+            csv_file.columns = csv_file.columns.str.lower()
             csv_file = csv_file.sort_values(by='date')
             csv_file.reset_index(inplace=True)
             csv_file = csv_file.drop(columns=['index'])
             csv_file['date'] = csv_file['date'].astype(str)
             dates = []
             for i in csv_file.index:
-                dates.append(df_date[df_date.index == csv_file['date'][i]]['YYMMDD'][0])
+                dates.append(
+                    df_date[df_date.index == csv_file['date'][i]]['YYMMDD'][0])
             csv_file['date'] = dates
             csv_file['date'] = pd.to_datetime(csv_file['date'])
             if count == 1:
                 paper11_final = csv_file
             else:
                 try:
-                    paper11_final = pd.concat([paper11_final, csv_file], ignore_index=True)
+                    paper11_final = pd.concat(
+                        [paper11_final, csv_file], ignore_index=True)
                 except:
                     # delisted companies
                     pass
             ticker_files[dic_map[k]] = csv_file
-            #csv_file.to_csv('../result/paper9/'+dic_map[k]+'.csv')
+            # csv_file.to_csv('../result/paper9/'+dic_map[k]+'.csv')
             print("\rPaper11 completed {}/{}.".format(count, 835), end='')
             sys.stdout.flush()
             count += 1
-        paper11_final.to_csv('../result/paper11/paper11_features.csv')
+        paper11_final.to_csv('../result/sp500/paper11/paper11_features.csv')
         return ticker_files
+
+    def generate(self):
+        if self.stock_pool == 'sp500':
+            return self.sp500_generate()
+
 
 if __name__ == "__main__":
     Paper11().generate()
     end = time.time()
     hours, rem = divmod(end-start, 3600)
     minutes, seconds = divmod(rem, 60)
-    print("\nExecution completed in {:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
-    
+    print("\nExecution completed in {:0>2}:{:0>2}:{:05.2f}".format(
+        int(hours), int(minutes), seconds))
+    print('Please check /result/' + Paper11().stock_pool +
+          '/paper11/paper11_features.csv')
